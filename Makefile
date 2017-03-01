@@ -10,8 +10,8 @@ game=game
 comp=AI
 piece=piece
 
-runchess: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(main).o $(game).o $(comp).o $(piece).o $(board.o)
-	g++ $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(main).o $(game).o $(comp).o $(piece).o $(board).o -o runchess
+runchess.out: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(main).o $(game).o $(comp).o $(piece).o $(board.o)
+	g++ $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(main).o $(game).o $(comp).o $(piece).o $(board).o -o runchess.out
 $(main).o: $(main).cpp $(game).o $(game).h
 	g++ -c $(main).cpp -o main.o
 $(game).o: $(board).o $(board).h
@@ -36,4 +36,4 @@ $(piece).o: $(piece).h
 	g++ -c $(piece).cpp -o $(piece).o
 clean:
 	rm *.o
-	rm runchess
+	rm runchess.out
