@@ -10,6 +10,7 @@ public:
 	~knight();
 
 	void setMoves();
+	std::vector<int*>* getAttacks();
 
 private:
 

@@ -35,3 +35,7 @@ void piece::addMove(int x, int y)
 	move[1] = y;
 	moves.push_back(move);
 }
+bool piece::inbounds(int x, int y)
+{
+	return x>=0 && x<8 && y>=0 && y<8;
+}

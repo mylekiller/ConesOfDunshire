@@ -1,5 +1,5 @@
 #include <vector>
-#include "board.h"
+
 
 
 #ifndef PIECE_H
@@ -10,6 +10,7 @@ public:
 	piece(int , int,bool);
 	~piece();
 	virtual void setMoves() = 0;
+	virtual std::vector<int*>* getAttacks() = 0;
 	std::vector<int*>* getMoves();
 	int getX();
 	int getY();
@@ -19,6 +20,8 @@ public:
 protected:	
 	std::vector<int*> moves;
 	void addMove(int , int);
+	
+	bool inbounds(int,int);
 
 
 private:
@@ -26,6 +29,7 @@ private:
 	int y;
 
 	bool team;
+
 };
 
 #endif
