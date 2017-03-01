@@ -11,12 +11,15 @@ class piece{
 		~piece();   //default constructor
 		virtual void setMoves() = 0;   //setter function; sets the moves possible for the piece
 		std::vector<int*>* getMoves();   //getter function; returns pointer to vector of possible moves
+		void setX(int);   //setter function; sets the current x position of the piece
 		int getX();   //getter function; gets the current x position of the piece
+		void setY(int);   //setter function; sets the current y position of the piece
 		int getY();   //getter function; gets the current y position of the piece
+		void setTeam(bool);   //setter function; sets the team of the piece
 		bool getTeam();   //getter function; gets the team of the current piece
 	protected:
 		std::vector<int*> moves;   //vector of pointers to integers arrays; represents the possible moves
-		void addMove(int , int);   //adds the possibility of a move to a specific space
+		void addMove(int, int);   //adds the possibility of a move to a specific space
 	private:
 		int x;   //piece's current x position
 		int y;   //piece's current y position

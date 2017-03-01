@@ -3,9 +3,9 @@
 //defautl constructor
 piece::piece(int x, int y, bool team)
 {
-	this -> x = x;
-	this -> y = y;
-	this -> team = team;
+	setX(x);
+	setY(y);
+	setTeam(team);
 }
 
 //destructor
@@ -23,16 +23,40 @@ std::vector<int*>* piece::getMoves()
 	return &moves;
 }
 
+//setter function; sets the current x position
+void piece::setX(int x)
+{
+	this -> x = x;
+}
+
 //getter function; returns the current x position
 int piece::getX()
 {
 	return x;
 }
 
+//setter function; sets the current y position
+void piece::setY(int y)
+{
+	this -> y = y;
+}
+
 //getter function; returns the current y position
 int piece::getY()
 {
 	return y;
+}
+
+//setter function; sets the team
+void piece::setTeam(bool team)
+{
+	this -> team = team;
+}
+
+//getter fucntion; gets the team
+bool piece::getTeam()
+{
+	return team;
 }
 
 //adds the move to the space (x,y) to the vector of possible moves "moves"
