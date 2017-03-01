@@ -1,8 +1,10 @@
+
 #include "knight.h"
 #include <iostream>
 
 int main()
 {
+
 	knight k(4,4,true);
 	k.setMoves();
 	std::cout<<"A knight at: "<<k.getX()<<","<<k.getY()<<"\n";
@@ -17,4 +19,6 @@ int main()
 		}
 		std::cout<<"\n";
 	}
+
 }
+
