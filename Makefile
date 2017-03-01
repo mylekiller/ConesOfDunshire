@@ -34,3 +34,6 @@ $(piece6).o: $(piece).o $(piece).h $(piece6).h
 	g++ -c $(piece6).cpp -o $(piece6).o
 $(piece).o: $(piece).h
 	g++ -c $(piece).cpp -o $(piece).o
+clean:
+	rm *.o
+	rm runchess
