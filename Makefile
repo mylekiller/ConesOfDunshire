@@ -35,5 +35,15 @@ $(piece6).o: $(piece).o $(piece).h $(piece6).h
 $(piece).o: $(piece).h
 	g++ -c $(piece).cpp -o $(piece).o
 clean:
-	rm *.o
+	rm $(piece).o
+	rm $(piece1).o
+	rm $(piece2).o
+	rm $(piece3).o
+	rm $(piece4).o
+	rm $(piece5).o
+	rm $(piece6).o
+	rm $(board).o
+	rm $(main).o
+	rm $(gmae).o
+	rm $(comp).o
 	rm runchess.out
