@@ -24,3 +24,8 @@ void knight::setMoves()
 		}
 	}
 }
+
+knight::knight(int x, int y, bool team) : piece(x,y,team)
+{
+}
+knight::~knight(){}
