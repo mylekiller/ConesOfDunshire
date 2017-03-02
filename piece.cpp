@@ -53,6 +53,13 @@ void piece::setTeam(bool team)
 	this -> team = team;
 }
 
+//"moves" this piece to the space (x,y)
+void piece::move(int x, int y)
+{
+	setX(x);
+	setY(y);
+}
+
 //getter fucntion; gets the team
 bool piece::getTeam()
 {
@@ -69,9 +76,9 @@ void piece::addMove(int x, int y)
 	moves.push_back(move);   //adds the new pointer based array to the vector of possible moves "moves"
 }
 
+//returns if a space (x,y) is on the board
 bool piece::inbounds(int x, int y)
 {
 	return x>=0 && x<8 && y>=0 && y<8;
 }
-	
 

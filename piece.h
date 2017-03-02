@@ -5,7 +5,8 @@
 #ifndef PIECE_H
 #define	PIECE_H
 
-class piece{
+class piece
+{
 public:
 	piece(int, int, bool);   //defualt constructor; args: x position, y position, team (black/white)
 	~piece();   //default constructor
@@ -17,15 +18,15 @@ public:
 	int getY();   //getter function; gets the current y position of the piece
 	void setTeam(bool);   //setter function; sets the team of the piece
 	bool getTeam();   //getter function; gets the team of the current piece
+	void move(int, int);   //"moves" the piece sets the pieces position to (x,y)
 protected:
 	std::vector<int*> moves;   //vector of pointers to integers arrays; represents the possible moves
 	void addMove(int, int);   //adds the possibility of a move to a specific space
-	bool inbounds(int,int);
+	bool inbounds(int,int);   //reutrns whethere a space is on the board
 private:
 	int x;   //piece's current x position
 	int y;   //piece's current y position
 	bool team;   //piece's team; whether piece is white (true=white, false=black)
-
 };
 
 
