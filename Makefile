@@ -1,4 +1,4 @@
-FLAGS = -std=c++11
+FLAGS =-std=c++11
 piece1=pawn
 piece2=knight
 piece3=bishop
@@ -12,8 +12,7 @@ comp=AI
 piece=piece
 
 runchess.out: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(main).o $(game).o $(comp).o $(piece).o $(board.o)
-	g++ $(FLAGS) $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o 
-	$(piece6).o $(main).o $(game).o $(comp).o $(piece).o $(board).o -o runchess.out
+	g++ $(FLAGS) $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(main).o $(game).o $(comp).o $(piece).o $(board).o -o runchess.out
 $(main).o: $(main).cpp $(game).o $(game).h
 	g++ -c $(FLAGS) $(main).cpp -o main.o
 $(game).o: $(board).o $(board).h

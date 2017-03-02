@@ -1,4 +1,4 @@
-#include "knight.h"
+ #include "knight.h"
 
 void knight::setMoves()
 {
