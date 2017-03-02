@@ -23,6 +23,15 @@ std::vector<int*>* piece::getMoves()
 	return &moves;
 }
 
+//clears the vector moves; allows setmoves to correctly update the moves
+void piece::resetMoves()
+{
+	for( int i = 0; i < moves.size(); i++)   //iterates through the vector of moves
+	{
+		delete [] moves[i];   //deletes each array fo integers
+	}
+}
+
 //setter function; sets the current x position
 void piece::setX(int x)
 {
@@ -58,6 +67,8 @@ void piece::move(int x, int y)
 {
 	setX(x);
 	setY(y);
+	resetMoves();
+	setMoves();
 }
 
 //getter fucntion; gets the team
