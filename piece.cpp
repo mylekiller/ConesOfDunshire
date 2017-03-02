@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "piece.h"
 
 //defautl constructor
@@ -31,10 +33,15 @@ void piece::resetMoves()
 		delete [] moves[i];   //deletes each array fo integers
 	}
 
-	for( auto it = moves.begin(); it != moves.end(); it++ )
+	auto it = moves.begin();
+	while( it != moves.end() )
 	{
 		moves.erase(it);
+		it = moves.begin();
 	}
+
+	std::cout<<"size:"<<moves.size()<<std::endl;
+
 }
 
 //setter function; sets the current x position
