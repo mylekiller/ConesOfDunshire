@@ -30,6 +30,11 @@ void piece::resetMoves()
 	{
 		delete [] moves[i];   //deletes each array fo integers
 	}
+
+	for( auto it = moves.begin(); it != moves.end(); it++ )
+	{
+		moves.erase(it);
+	}
 }
 
 //setter function; sets the current x position
