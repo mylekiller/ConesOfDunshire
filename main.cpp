@@ -1,38 +1,31 @@
 
 #include "knight.h"
+#include "bishop.h"
+#include "board.h"
 #include <iostream>
 
 int main()
 {
+	board bo;
 
-	knight k(4,4,true);
-	k.setMoves();
-	std::cout<<"A knight at: "<<k.getX()<<","<<k.getY()<<"\n";
-	std::cout<<"Can move to: \n\n";
-	for(int i = 0 ; i<k.getMoves() -> size(); i++)
+	bishop b(0,0,true);
+	bishop b2(4,4,true);
+
+	bo.addPiece(&b,0,0);
+	bo.addPiece(&b2,4,4);
+
+	bo.printBoard();
+
+
+	std::cout<<"\n\n";
+
+	b.setMoves(&bo);
+	std::cout<<b.getMoves() -> size()<<"\n";
+	for(int i = 0 ; i< b.getMoves()->size();i++)
 	{
-		for(int j = 0; j<2;j++)
-		{
-			std::cout<<(*(k.getMoves()))[i][j];
-			if(j == 0)
-				std::cout<<",";
-		}
-		std::cout<<"\n";
-	}
-
-	k.move(3,2);
-
-	std::cout<<"A knight at: "<<k.getX()<<","<<k.getY()<<"\n";
-	std::cout<<"Can move to: \n\n";
-	for(int i = 0 ; i<k.getMoves() -> size(); i++)
-	{
-		for(int j = 0; j<2;j++)
-		{
-			std::cout<<(*(k.getMoves()))[i][j];
-			if(j == 0)
-				std::cout<<",";
-		}
-		std::cout<<"\n";
+		std::cout<<((*b.getMoves())[i] == nullptr)<<"\n";
+		std::cout<<(*b.getMoves())[i][0]<<","<<(*b.getMoves())[i][1]<<"\n";
+		std::cout<<b.getMoves() -> size()<<"\n";
 	}
 
 }

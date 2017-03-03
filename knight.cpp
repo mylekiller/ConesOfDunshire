@@ -1,6 +1,6 @@
  #include "knight.h"
 
-void knight::setMoves()
+void knight::setMoves(board* bin)
 {
 	for(int xdir = -1;xdir<=1;xdir+=2)
 	{
@@ -22,6 +22,14 @@ void knight::setMoves()
  			}
 		}
 	}
+}
+
+void knight::print()
+{
+	if(getTeam())
+		std::cout<<'k';
+	else 
+		std::cout<<'K';
 }
 
 std::vector<int*>* knight::getAttacks()

@@ -2,6 +2,9 @@
 
 #include "piece.h"
 
+
+
+
 //defautl constructor
 piece::piece(int x, int y, bool team)
 {
@@ -80,7 +83,6 @@ void piece::move(int x, int y)
 	setX(x);
 	setY(y);
 	resetMoves();
-	setMoves();
 }
 
 //getter fucntion; gets the team
@@ -104,4 +106,5 @@ bool piece::inbounds(int x, int y)
 {
 	return x>=0 && x<8 && y>=0 && y<8;
 }
+
 

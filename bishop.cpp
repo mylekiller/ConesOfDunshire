@@ -1,6 +1,7 @@
 #include "bishop.h"
+#include "board.h"
 
-void bishop::setMoves()
+void bishop::setMoves(board* bin)
 {
 	for( int xdir = -1; xdir <= 1; xdir +=2 )
 	{
@@ -13,6 +14,12 @@ void bishop::setMoves()
 				x = getX() + xdir * dis;
 				y = getY() + ydir * dis;
 
+				if(inbounds(x,y) && bin -> isOccupied(x,y))
+				{
+					addMove(x,y);
+					break;
+				}
+
 				//DOES NOT ACCOUTN FOR PIECES BLOCKING
 
 				if( inbounds(x,y) )
@@ -24,6 +31,13 @@ void bishop::setMoves()
 	}
 }
 
+void bishop::print()
+{
+	if(getTeam())
+		std::cout<<'b';
+	else
+		std::cout<<'B';
+}
 std::vector<int*>* bishop::getAttacks()
 {
 	return getMoves();

@@ -9,8 +9,9 @@ class bishop:public piece
 	public:
 		bishop(int, int, bool);   //default constructor; args: x position, y position, team
 		~bishop();   //destructor
-		void setMoves();   //fils vector of "moves" with all possible moves
+		void setMoves(board*);   //fils vector of "moves" with all possible moves
 		std::vector<int*>* getAttacks();   //returns all spaces this piece is attacking
+		void print();
 	private:
 
 };
