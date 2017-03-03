@@ -13,8 +13,6 @@ class knight:public piece
 		std::vector<int*>* getAttacks();
 	private:
 
-
-
 };
 
 #endif
