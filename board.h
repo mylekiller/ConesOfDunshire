@@ -27,8 +27,10 @@ class board
 		~board();   //default destructor
 		bool isAttacked(int,int);   //returns whether a space (x,y) is attacked
 		bool isOccupied(int, int);   //returns whether a space (x,y) is occupied
+		bool getTeam(int, int); //returns team of the piece at (x,y) or false if no piece is there (should not be used without checking isOccupied)
 		void addPiece(piece*,int,int);
 		void printBoard();
+		void updateMoves();
 	private:
 		piece* gameboard[8][8];   //pointer based 2d array of pointers to pieces
 

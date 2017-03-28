@@ -1,3 +1,4 @@
+ #include "board.h"
  #include "knight.h"
 
 void knight::setMoves(board* bin)
@@ -9,14 +10,14 @@ void knight::setMoves(board* bin)
 			int x = getX() + xdir*2;
 			int y = getY() + ydir;
 
-			if(inbounds(x,y))
+			if(inbounds(x,y) && (! bin -> isOccupied(x,y) || bin -> getTeam(x,y) != getTeam()))
 			{
 				addMove(x,y);
  			}
 
  			x = getX() + xdir;
  			y = getY() + ydir*2;
-			if(inbounds(x,y))
+			if(inbounds(x,y) && (! bin -> isOccupied(x,y) || bin -> getTeam(x,y) != getTeam()))
  			{
  				addMove(x,y);
  			}
@@ -26,10 +27,10 @@ void knight::setMoves(board* bin)
 
 void knight::print()
 {
-	if(getTeam())
-		std::cout<<'k';
+	if(!getTeam())
+		std::cout<<'n';
 	else 
-		std::cout<<'K';
+		std::cout<<'N';
 }
 
 std::vector<int*>* knight::getAttacks()

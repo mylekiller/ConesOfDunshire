@@ -16,15 +16,19 @@ void bishop::setMoves(board* bin)
 
 				if(inbounds(x,y) && bin -> isOccupied(x,y))
 				{
-					addMove(x,y);
+					if(bin -> getTeam(x,y) != getTeam())
+					{
+						addMove(x,y);
+					}
 					break;
 				}
-
-				//DOES NOT ACCOUTN FOR PIECES BLOCKING
-
-				if( inbounds(x,y) )
+				if(inbounds(x,y))
 				{
 					addMove(x,y);
+				}
+				else
+				{
+					break;
 				}
 			}
 		}
@@ -33,7 +37,7 @@ void bishop::setMoves(board* bin)
 
 void bishop::print()
 {
-	if(getTeam())
+	if(!getTeam())
 		std::cout<<'b';
 	else
 		std::cout<<'B';

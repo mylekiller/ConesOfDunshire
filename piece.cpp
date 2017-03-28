@@ -1,3 +1,4 @@
+
 #include <iostream>
 
 #include "piece.h"
@@ -11,7 +12,9 @@ piece::piece(int x, int y, bool team)
 	setX(x);
 	setY(y);
 	setTeam(team);
+	hasmoved = false;
 }
+
 
 //destructor
 piece::~piece()
@@ -45,6 +48,11 @@ void piece::resetMoves()
 
 	std::cout<<"size:"<<moves.size()<<std::endl;
 
+}
+
+bool piece::hasMoved()
+{
+	return hasmoved;
 }
 
 //setter function; sets the current x position

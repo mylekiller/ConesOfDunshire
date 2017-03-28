@@ -20,6 +20,7 @@ public:
 	int getY();   //getter function; gets the current y position of the piece
 	void setTeam(bool);   //setter function; sets the team of the piece
 	bool getTeam();   //getter function; gets the team of the current piece
+	bool hasMoved();
 	void move(int, int);   //"moves" the piece sets the pieces position to (x,y)
 	virtual void print() = 0;
 protected:
@@ -30,6 +31,7 @@ private:
 	int x;   //piece's current x position
 	int y;   //piece's current y position
 	bool team;   //piece's team; whether piece is white (true=white, false=black)
+	bool hasmoved;
 };
 
 
