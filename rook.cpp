@@ -2,26 +2,58 @@
 
 void rook::setMoves(board* bin)
 {
+       
         for(int xdir = -1;xdir<=1;xdir+=2)
         {
-             for(int ydir = -1;ydir<=1;ydir+=2)
-             {
-                     int x = getX() + xdir;
-                     int y = getY();
+                int x,y; 
+                for (int dis = 1; dis <= 7; dis++) {
+                        x = getX() + xdir*dis;
+                        y = getY() + ydir;
+                        if(inbounds(x,y) && bin -> isOccupied(x,y))
+                        {
+                                if(bin -> getTeam(x,y) != getTeam())
+                                {
+                                        addMove(x,y);
+                                }
+                                break;
+                        }
+                        if(inbounds(x,y))
+                        {
+                                addMove(x,y);
+                        }
+                        else
+                        {
+                                break;
+                        }
+                }
+        }       
 
-                     if(inbounds(x,y))
-                     {
-                          addMove(x,y);
-                     }
+        for(int ydir = -1; ydir<=1; ydir+=2)
+        {     
+                int x,y;  
+                for (int dis = 1; dis <= 7; dis++) {
+                        x = getX() + xdir;
+                        y = getY() + ydir*dis;
 
-                     x = getX();
-                     y = getY() + ydir;
-                     if(inbounds(x,y))
-                     {
-                          addMove(x,y);
-                     }
-              }
-         }
+
+                        if(inbounds(x,y) && bin -> isOccupied(x,y))
+                        {
+                                if(bin -> getTeam(x,y) != getTeam())
+                                {
+                                        addMove(x,y);
+                                }
+                                break;
+                        }
+                        if(inbounds(x,y))
+                        {
+                                addMove(x,y);
+                        }
+                        else
+                        {
+                                break;
+                        }
+                }
+        }
  }
  
  void rook::print()
