@@ -39,9 +39,9 @@ void board::updateMoves()
 		}
 	}
 }
-void board::addPiece(piece* pin,int x, int y)
+void board::addPiece(piece* pin)
 {
-	gameboard[x][y] = pin;
+	gameboard[pin->getX()][pin->getY()] = pin;
 }
 void board::printBoard()
 {
@@ -95,17 +95,47 @@ void board::updateAttacks()
 }
 void board::execmove(piece * p, int x, int y )
 {
-	if(p -> getType() == PAWN)
+	if(p -> getType() == PAWN) //check for an enpassant capture
 	{
 		int teamval = p->getTeam() ? 1 : -1;
-		if(true)
+		if((x == p->getX() +1 || x==p->getX() -1)&& y == p->getY() + teamval && !isOccupied(x,y) )
+		{
+			delete gameboard[x][y-teamval];
+			gameboard[x][y] = p;
+			delete gameboard[p->getX()][p->getY()];
+			p->move(x,y);
+			update();
 			return;
+		} 
 	}
-}
+	if(p -> getType() == KING)
+	{
+		//do the castling check
+	}
+	if(isOccupied(x,y))
+	{
+		delete gameboard[x][y];
+	}
+	gameboard[x][y] = p;
+	delete gameboard[p->getX()][p->getY()];
+	p->move(x,y);
 
+	update();
+
+}
+void board::update()
+{
+	updateMoves();
+	updateAttacks();
+
+}
 bool board::inbounds(int x, int y)
 {
 	return x>=0 && x<8 && y>=0 && y<8;
+}
+piece* board::get(int x, int y)
+{
+	return gameboard[x][y];
 }
 bool board::checkEnPassant(int x, int y, bool team)
 {

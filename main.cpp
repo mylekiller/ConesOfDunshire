@@ -11,8 +11,8 @@ int main()
 	bishop b(0,0,true);
 	bishop b2(4,4,true);
 
-	bo.addPiece(&b,0,0);
-	bo.addPiece(&b2,4,4);
+	bo.addPiece(&b);
+	bo.addPiece(&b2);
 
 	bo.printBoard();
 
