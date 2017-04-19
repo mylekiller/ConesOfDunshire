@@ -11,6 +11,7 @@ public:
 	void print();
 	bool trymove(int,int,int,int);
 	piece* getpiece(int,int);
+	bool getTurn();
 private:
 	board boardGame;
 	bool turn; //again white = true black = false

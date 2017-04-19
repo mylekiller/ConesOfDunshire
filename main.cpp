@@ -1,32 +1,42 @@
 
-#include "knight.h"
-#include "bishop.h"
-#include "board.h"
+#include "game.h"
 #include <iostream>
 
+int* stomove(std::string, game&);
 int main()
 {
-	board bo;
-
-	bishop b(0,0,true);
-	bishop b2(4,4,true);
-
-	bo.addPiece(&b);
-	bo.addPiece(&b2);
-
-	bo.printBoard();
-
-
-	std::cout<<"\n\n";
-
-	b.setMoves(&bo);
-	std::cout<<b.getMoves() -> size()<<"\n";
-	for(int i = 0 ; i< b.getMoves()->size();i++)
+	game g;
+	bool done;
+	do
 	{
-		std::cout<<((*b.getMoves())[i] == nullptr)<<"\n";
-		std::cout<<(*b.getMoves())[i][0]<<","<<(*b.getMoves())[i][1]<<"\n";
-		std::cout<<b.getMoves() -> size()<<"\n";
-	}
+		g.print();
+		if(g.getTurn())
+		{
+			std::cout<<"White to move:  ";
+		}
+		else
+		{
+			std::cout<<"Black to move:  ";
+		}
+
+		std::string input;
+		std::getline(std::cin,input);
+
+		int * moveind = stomove(input);
+
+
+
+	}while(!done);
+
+}
+
+int* stomove(std::string, game&)
+{
+	int * result = new int[4];
+	for(int i = 0; i< 4; i++)
+		result[i] = 0;
+
+	
 
 }
 
