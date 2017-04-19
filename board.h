@@ -1,4 +1,4 @@
-
+//Format for the Board, 7 by 7 array of arrays to represent all the spaces on a common chess board
 /*
 		  BLACK
 7 [ ][ ][ ][ ][ ][ ][ ][ ]
