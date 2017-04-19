@@ -45,6 +45,6 @@ clean:
 	rm $(piece6).o
 	rm $(board).o
 	rm $(main).o
-	rm $(gmae).o
+	rm $(game).o
 	rm $(comp).o
 	rm runchess.out
