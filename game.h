@@ -12,7 +12,7 @@ public:
 	bool trymove(int,int,int,int);
 
 private:
-	board board;
+	board boardGame;
 	bool turn; //again white = true black = false
 
 
