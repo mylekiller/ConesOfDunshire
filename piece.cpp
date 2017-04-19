@@ -113,11 +113,11 @@ bool piece::inbounds(int x, int y)
 {
 	return x>=0 && x<8 && y>=0 && y<8;
 }
-type piece::getType()
+piecetype piece::getType()
 {
 	return type;
 }
-void piece::setType(enum type tin)
+void piece::setType(enum piecetype tin)
 {
 	type = tin;
 }

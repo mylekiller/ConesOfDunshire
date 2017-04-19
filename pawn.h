@@ -13,10 +13,9 @@ class pawn:public piece
 		void print();
 		void setMoves(board*);
 		std::vector<int*>* getAttacks();   //returns pointer to vector of pointer based integer arrays representing sqaures that are attacked by this pawn
-		enum type getType();
 
 		bool movedTwo();
-		
+
 
 	private:
 		bool movedtwo;

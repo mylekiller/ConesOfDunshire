@@ -5,7 +5,7 @@
 #ifndef PIECE_H
 #define	PIECE_H
 
-enum type
+enum piecetype
 {
 	PAWN,
 	KNIGHT,
@@ -35,9 +35,9 @@ public:
 	bool hasMoved();
 	void move(int, int);   //"moves" the piece sets the pieces position to (x,y)
 	virtual void print() = 0;
-	type getType();
+	piecetype getType();
 protected:
-	void setType(enum type);
+	void setType(enum piecetype);
 	std::vector<int*> moves;   //vector of pointers to integers arrays; represents the possible moves
 	void addMove(int, int);   //adds the possibility of a move to a specific space
 	bool inbounds(int,int);   //reutrns whethere a space is on the board
@@ -46,7 +46,7 @@ private:
 	int y;   //piece's current y position
 	bool team;   //piece's team; whether piece is white (true=white, false=black)
 	bool hasmoved;
-	type type; // the type of the piece
+	piecetype type; // the type of the piece
 };
 
 

@@ -8,7 +8,7 @@ class game{
 public:
 	game();
 	~game();
-
+	void print();
 	bool trymove(int,int,int,int);
 
 private:
