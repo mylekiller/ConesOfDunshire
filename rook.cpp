@@ -1,5 +1,5 @@
 #include "rook.h"
-
+#include "board.h"
 void rook::setMoves(board* bin)
 {
        
@@ -8,7 +8,7 @@ void rook::setMoves(board* bin)
                 int x,y; 
                 for (int dis = 1; dis <= 7; dis++) {
                         x = getX() + xdir*dis;
-                        y = getY() + ydir;
+                        y = getY();
                         if(inbounds(x,y) && bin -> isOccupied(x,y))
                         {
                                 if(bin -> getTeam(x,y) != getTeam())
@@ -32,7 +32,7 @@ void rook::setMoves(board* bin)
         {     
                 int x,y;  
                 for (int dis = 1; dis <= 7; dis++) {
-                        x = getX() + xdir;
+                        x = getX();
                         y = getY() + ydir*dis;
 
 

@@ -1,5 +1,6 @@
 
-#include "king.h"
+
+#include "piece.h"
 #ifndef KING_H
 #define KING_H
 
@@ -11,6 +12,7 @@ class king:public piece
 		~king();   //destructor
 		void setMoves(board*);
 		std::vector<int*>* getAttacks();   //returns pointer to vector of pointer based integer arrays representing sqaures that are attacked by this pawn
+		void print();
 	private:
 
 };

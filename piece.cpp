@@ -93,7 +93,7 @@ void piece::move(int x, int y)
 	resetMoves();
 }
 
-//getter fucntion; gets the team
+//getter fucntion; gets the team TRUE = WHITE FALSE = BLACK
 bool piece::getTeam()
 {
 	return team;

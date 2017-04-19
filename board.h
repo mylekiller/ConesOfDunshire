@@ -31,8 +31,10 @@ class board
 		void addPiece(piece*,int,int);
 		void printBoard();
 		void updateMoves();
+		void updateAttacks();
 	private:
 		piece* gameboard[8][8];   //pointer based 2d array of pointers to pieces
+		bool attacks[2][8][8]; //shows the squares that are attacked to check for check/checkmate/castling 1 = white 0 = black
 
 };
 

@@ -1,5 +1,6 @@
-#include "queen.h"
 
+#include "queen.h"
+#include "board.h"
 void queen::setMoves(board* bin)
 {
 
@@ -9,7 +10,7 @@ void queen::setMoves(board* bin)
                 int x,y; 
                 for (int dis = 1; dis <= 7; dis++) {
                         x = getX() + xdir*dis;
-                        y = getY() + ydir;
+                        y = getY();
                         if(inbounds(x,y) && bin -> isOccupied(x,y))
                         {
                                 if(bin -> getTeam(x,y) != getTeam())
@@ -33,7 +34,7 @@ void queen::setMoves(board* bin)
         {     
                 int x,y;  
                 for (int dis = 1; dis <= 7; dis++) {
-                        x = getX() + xdir;
+                        x = getX();
                         y = getY() + ydir*dis;
 
 
@@ -61,28 +62,31 @@ void queen::setMoves(board* bin)
         {
                 for(int ydir = -1;ydir<=1;ydir+=2)
                 {
-                        int x;
-                        int y;
-                       
-                        x = getX() + xdir*dis;
-                        y = getY() + ydir*dis;
-
-
-                        if(inbounds(x,y) && bin -> isOccupied(x,y))
+                        for (int dis = 1; dis <= 7; dis++) 
                         {
-                                if(bin -> getTeam(x,y) != getTeam())
+                                int x;
+                                int y;
+                               
+                                x = getX() + xdir*dis;
+                                y = getY() + ydir*dis;
+
+
+                                if(inbounds(x,y) && bin -> isOccupied(x,y))
+                                {
+                                        if(bin -> getTeam(x,y) != getTeam())
+                                        {
+                                                addMove(x,y);
+                                        }
+                                        break;
+                                }
+                                if(inbounds(x,y))
                                 {
                                         addMove(x,y);
                                 }
-                                break;
-                        }
-                        if(inbounds(x,y))
-                        {
-                                addMove(x,y);
-                        }
-                        else
-                        {
-                                break;
+                                else
+                                {
+                                        break;
+                                }
                         }
                 }
         }

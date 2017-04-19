@@ -61,3 +61,35 @@ void board::printBoard()
 		std::cout<<'\n';
 	}
 }
+
+void board::updateAttacks()
+{
+
+	for(int t = 0; t<=1; t++)
+	{
+		for(int i = 0; i<8;i++)
+		{
+			for(int j = 0; j<8;j++)
+			{
+				attacks[t][i][j] = false;
+			}
+		}
+	}
+	for(int i = 0; i< 8; i++)
+	{
+		for(int j = 0; j<8; j++)
+		{
+			if(isOccupied(i,j))
+			{
+				std::vector<int*>* attacks = gameboard[i][j] -> getAttacks();
+				for(auto it = attacks -> begin() ; it != attacks -> end() ; it++)
+				{
+					int teamnum = gameboard[i][j] -> getTeam() ? 1 : 0;
+					attacks[teamnum][(*it)[0]][(*it)[1]] = true;
+				}
+			}
+		}
+	}
+
+
+}
