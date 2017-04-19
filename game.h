@@ -10,7 +10,7 @@ public:
 	~game();
 	void print();
 	bool trymove(int,int,int,int);
-
+	piece* getpiece(int,int);
 private:
 	board boardGame;
 	bool turn; //again white = true black = false

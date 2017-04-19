@@ -37,7 +37,29 @@ game::game()
 }
 game::~game(){}
 
+piece* game::getpiece(int x,int y)
+{
+	return boardGame.get(x,y);
+}
 void game::print()
 {
 	boardGame.printBoard();
+}
+
+bool game::trymove(int sx,int sy, int tx, int ty)
+{
+	if(boardGame.isOccupied(sx,sy))
+	{
+		std::vector<int*>* moves = (boardGame.get(sx,sy)) -> getMoves();
+		for(auto it = moves -> begin(); it!= moves -> end(); it++)
+		{
+			if((*it)[0] ==tx && (*it)[1] == ty)
+			{
+				//check the check
+				boardGame.execmove(boardGame.get(sx,sy),tx,ty);
+				return true;
+			}
+		}
+	}
+	return false;
 }
