@@ -19,7 +19,7 @@ $(game).o: $(board).o $(board).h
 	g++ -c $(FLAGS) $(game).cpp -o $(game).o
 $(board).o: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(piece1).h $(piece2).h $(piece3).h $(piece4).h $(piece5).h $(piece6).h
 	g++ -c $(FLAGS) $(board).cpp -o $(board).o
-$(comp).o: 
+$(comp).o: $(comp).h 
 	g++ -c $(FLAGS) $(comp).cpp -o $(comp).o
 $(piece1).o: $(piece).o $(piece).h $(piece1).h
 	g++ -c $(FLAGS) $(piece1).cpp -o $(piece1).o
