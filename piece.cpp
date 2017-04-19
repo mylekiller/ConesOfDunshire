@@ -46,7 +46,6 @@ void piece::resetMoves()
 		it = moves.begin();
 	}
 
-	std::cout<<"size:"<<moves.size()<<std::endl;
 
 }
 
@@ -113,6 +112,14 @@ void piece::addMove(int x, int y)
 bool piece::inbounds(int x, int y)
 {
 	return x>=0 && x<8 && y>=0 && y<8;
+}
+type piece::getType()
+{
+	return type;
+}
+void piece::setType(enum type tin)
+{
+	type = tin;
 }
 
 

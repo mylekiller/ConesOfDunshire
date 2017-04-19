@@ -49,6 +49,6 @@ std::vector<int*>* bishop::getAttacks()
 
 bishop::bishop(int x, int y, bool team) : piece(x,y,team)
 {
-
+	setType(BISHOP);
 }
 bishop::~bishop(){}

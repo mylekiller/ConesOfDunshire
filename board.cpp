@@ -1,6 +1,6 @@
 
 #include "board.h"
-
+#include "pawn.h"
 
 bool board::isOccupied(int x, int y)
 {
@@ -92,4 +92,27 @@ void board::updateAttacks()
 	}
 
 
+}
+void board::execmove(piece * p, int x, int y )
+{
+	if(p -> getType() == PAWN)
+	{
+		int teamval = p->getTeam() ? 1 : -1;
+		if(true)
+			return;
+	}
+}
+
+bool board::inbounds(int x, int y)
+{
+	return x>=0 && x<8 && y>=0 && y<8;
+}
+bool board::checkEnPassant(int x, int y, bool team)
+{
+	int checkx = x;
+	int checky = team ? y+1 : y-1;
+
+	if(inbounds(checkx,checky) && isOccupied(checkx,checky) && gameboard[checkx][checky] -> getTeam() != team && gameboard[checkx][checky] -> getType() == PAWN && ((pawn*)(gameboard[x][y])) -> movedTwo())
+		return true;
+	return false;
 }

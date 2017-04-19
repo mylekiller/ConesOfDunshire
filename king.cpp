@@ -2,7 +2,9 @@
 #include "board.h"
 
 
-king::king(int x, int y,bool team):piece(x,y,team){}
+king::king(int x, int y,bool team):piece(x,y,team){
+	setType(KING);
+}
 
 //destructor
 king::~king(){}

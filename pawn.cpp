@@ -2,7 +2,9 @@
 #include "pawn.h"
 #include "board.h"
 //constructor; args: x position, y position, team
-pawn::pawn(int x, int y,bool team):piece(x,y,team){}
+pawn::pawn(int x, int y,bool team):piece(x,y,team){
+	setType(PAWN);
+}
 
 //destructor
 pawn::~pawn(){}
@@ -36,11 +38,18 @@ void pawn::setMoves(board* board)
 	{
 		int newy = getY() + teammult;
 		int newx = getX() + i;
+		//En passant check
+		if(board -> checkEnPassant(newx,newy,getTeam()))	
+		{
+			addMove(newx,newy);
+			continue;
+		}
 		if(!inbounds(newx,newy) || ! (board -> isOccupied(newx,newy)) ||  board -> getTeam(newx,newy) == getTeam())
 		{
 			continue;
 		}	
 		addMove(newx,newy);
+
 	}
 }
 
@@ -57,4 +66,8 @@ std::vector<int*>* pawn::getAttacks()
 		result.push_back(move);
 	}
 	return &result;
+}
+bool pawn::movedTwo()
+{
+	return movedtwo;
 }
