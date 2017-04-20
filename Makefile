@@ -1,5 +1,5 @@
 CC=	g++
-CFLAGS =	-std=c++11
+CFLAGS =	-std=c++11 -Wall
 LD=		g++
 LDFLAGS=	-L.
 AR=		ar
@@ -19,7 +19,7 @@ TARGETS=	runchess.out chesslib.a
 
 all: $(TARGETS)
 
-chesslib.a: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(game).o $(piece).o $(board.o)
+chesslib.a: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(game).o $(piece).o $(board).o
 	@echo "Linking $@..."
 	@$(AR) $(ARFLAGS) $@ $^
 
@@ -72,16 +72,5 @@ $(piece).o: $(piece).cpp $(piece).h
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm $(piece).o
-	rm $(piece1).o
-	rm $(piece2).o
-	rm $(piece3).o
-	rm $(piece4).o
-	rm $(piece5).o
-	rm $(piece6).o
-	rm $(board).o
-	rm $(main).o
-	rm $(game).o
-	rm $(comp).o
-	rm runchess.out
-	rm chesslib.a
+	rm *.o
+	rm $(TARGETS)
