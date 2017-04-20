@@ -2,6 +2,7 @@ CC=	g++
 CFLAGS =	-std=c++11 -Wall
 LD=		g++
 LDFLAGS=	-L.
+GFLAGS=	-lsdl2 -lsdl2_image
 AR=		ar
 ARFLAGS=	rcs
 piece1=	pawn
@@ -16,8 +17,23 @@ game=	game
 comp=	AI
 piece=	piece
 TARGETS=	runchess.out chesslib.a
+GRAPHICS= chess
 
 all: $(TARGETS)
+
+graphics: $(GRAPHICS)
+
+chess: chesslib.a LTexture.o chessboard.o
+	@echo "Linking $@..."
+	@$(LD) $(LDFLAGS) $(GFLAGS) -o $@ $^
+
+LTexture.o: LTexture.cpp LTexture.h
+	@echo "Compiling $@..."
+	@$(CC) $(CFLAGS) -c -o $@ $<
+
+chessboard.o: chessboard.cpp
+	@echo "Compiling $@..."
+	@$(CC) $(CFLAGS) -c -o $@ $<
 
 chesslib.a: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(game).o $(piece).o $(board).o
 	@echo "Linking $@..."
@@ -74,3 +90,8 @@ $(piece).o: $(piece).cpp $(piece).h
 clean:
 	rm *.o
 	rm $(TARGETS)
+
+cleangraphics:
+	rm *.o
+	rm chess
+	rm chesslib.a
