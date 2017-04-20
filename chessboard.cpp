@@ -89,13 +89,24 @@ int main( int argc, char* args[] )
 					if (e.type == SDL_MOUSEBUTTONDOWN) {
 						int x, y;
 						SDL_GetMouseState(&x, &y);
-						if (x/100 == xcord && y/100 == ycord && selected) {
-							selected = !selected;
+						if (selected) {
+							if (x/100 == xcord && y/100 == ycord) {
+								selected = !selected;
+							}
+							else {
+								bool test;
+								test = newGame.trymove(xcord, -1*(ycord-7), x/100, -1*((y/100)-7));
+								printf("Result of attempted move: %d\n", test);
+								selected = !selected;
+							}
 						}
 						else {
 							xcord = x/100;
 							ycord = y/100;
-							selected = true;
+							piece * p = newGame.getpiece(xcord, -1*(ycord-7));
+							if (p != nullptr) {
+								selected = true;
+							}
 						}
 					}
 				}

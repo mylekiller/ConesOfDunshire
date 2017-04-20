@@ -92,6 +92,4 @@ clean:
 	rm $(TARGETS)
 
 cleangraphics:
-	rm *.o
 	rm chess
-	rm chesslib.a
