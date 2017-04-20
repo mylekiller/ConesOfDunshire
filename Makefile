@@ -15,15 +15,15 @@ main=	main
 game=	game
 comp=	AI
 piece=	piece
-TARGETS=	runchess.out
+TARGETS=	runchess.out chesslib.a
 
 all: $(TARGETS)
 
-chesslib.a: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(game).o $(comp).o $(piece).o $(board.o)
+chesslib.a: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(game).o $(piece).o $(board.o)
 	@echo "Linking $@..."
 	@$(AR) $(ARFLAGS) $@ $^
 
-runchess.out: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(main).o $(game).o $(piece).o $(board.o)
+runchess.out: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(main).o $(game).o $(piece).o $(board).o
 	@echo "Linking $@..."
 	@$(LD) $(LDFLAGS) -o $@ $^
 
@@ -84,3 +84,4 @@ clean:
 	rm $(game).o
 	rm $(comp).o
 	rm runchess.out
+	rm chesslib.a
