@@ -1,5 +1,5 @@
 CC=	g++
-CFLAGS =	-std=c++11 -Wall
+CFLAGS =	-std=c++11 -Wall -ggdb
 LD=		g++
 LDFLAGS=	-L.
 GFLAGS=	-lsdl2 -lsdl2_image
