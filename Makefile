@@ -1,40 +1,76 @@
-FLAGS =-std=c++11
-piece1=pawn
-piece2=knight
-piece3=bishop
-piece4=rook
-piece5=king
-piece6=queen
-board=board
-main=main
-game=game
-comp=AI
-piece=piece
+CC=	g++
+CFLAGS =	-std=c++11
+LD=		g++
+LDFLAGS=	-L.
+AR=		ar
+ARFLAGS=	rcs
+piece1=	pawn
+piece2=	knight
+piece3=	bishop
+piece4=	rook
+piece5=	king
+piece6=	queen
+board=	board
+main=	main
+game=	game
+comp=	AI
+piece=	piece
+TARGETS=	runchess.out
 
-runchess.out: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(main).o $(game).o $(comp).o $(piece).o $(board.o)
-	g++ $(FLAGS) $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(main).o $(game).o $(comp).o $(piece).o $(board).o -o runchess.out
-$(main).o: $(main).cpp $(game).o $(game).h
-	g++ -c $(FLAGS) $(main).cpp -o main.o
-$(game).o: $(board).o $(board).h
-	g++ -c $(FLAGS) $(game).cpp -o $(game).o
-$(board).o: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(piece1).h $(piece2).h $(piece3).h $(piece4).h $(piece5).h $(piece6).h
-	g++ -c $(FLAGS) $(board).cpp -o $(board).o
-$(comp).o: $(comp).h 
-	g++ -c $(FLAGS) $(comp).cpp -o $(comp).o
-$(piece1).o: $(piece).o $(piece).h $(piece1).h
-	g++ -c $(FLAGS) $(piece1).cpp -o $(piece1).o
-$(piece2).o: $(piece).o $(piece).h $(piece2).h
-	g++ -c $(FLAGS) $(piece2).cpp -o $(piece2).o
-$(piece3).o: $(piece).o $(piece).h $(piece3).h
-	g++ -c $(FLAGS) $(piece3).cpp -o $(piece3).o
-$(piece4).o: $(piece).o $(piece).h $(piece4).h
-	g++ -c $(FLAGS) $(piece4).cpp -o $(piece4).o
-$(piece5).o: $(piece).o $(piece).h $(piece5).h
-	g++ -c $(FLAGS) $(piece5).cpp -o $(piece5).o
-$(piece6).o: $(piece).o $(piece).h $(piece6).h
-	g++ -c $(FLAGS) $(piece6).cpp -o $(piece6).o
-$(piece).o: $(piece).h
-	g++ -c $(FLAGS) $(piece).cpp -o $(piece).o
+all: $(TARGETS)
+
+chesslib.a: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(game).o $(comp).o $(piece).o $(board.o)
+	@echo "Linking $@..."
+	@$(AR) $(ARFLAGS) $@ $^
+
+runchess.out: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(main).o $(game).o $(piece).o $(board.o)
+	@echo "Linking $@..."
+	@$(LD) $(LDFLAGS) -o $@ $^
+
+$(main).o: $(main).cpp
+	@echo "Compiling $@..."
+	@$(CC) $(CFLAGS) -c -o $@ $<
+
+$(game).o: $(game).cpp $(game).h
+	@echo "Compiling $@..."
+	@$(CC) $(CFLAGS) -c -o $@ $<
+
+$(board).o: $(board).cpp $(board).h
+	@echo "Compiling $@..."
+	@$(CC) $(CFLAGS) -c -o $@ $<
+
+#$(comp).o: $(comp).h 
+#	@echo "Compiling $@..."
+#	@$(CC) $(CFLAGS) -c -o $@ $<
+
+$(piece1).o: $(piece1).cpp $(piece1).h
+	@echo "Compiling $@..."
+	@$(CC) $(CFLAGS) -c -o $@ $<
+
+$(piece2).o: $(piece2).cpp $(piece2).h
+	@echo "Compiling $@..."
+	@$(CC) $(CFLAGS) -c -o $@ $<
+
+$(piece3).o: $(piece3).cpp $(piece3).h
+	@echo "Compiling $@..."
+	@$(CC) $(CFLAGS) -c -o $@ $<
+
+$(piece4).o: $(piece4).cpp $(piece4).h
+	@echo "Compiling $@..."
+	@$(CC) $(CFLAGS) -c -o $@ $<
+
+$(piece5).o: $(piece5).cpp $(piece5).h
+	@echo "Compiling $@..."
+	@$(CC) $(CFLAGS) -c -o $@ $<
+
+$(piece6).o: $(piece6).cpp $(piece6).h
+	@echo "Compiling $@..."
+	@$(CC) $(CFLAGS) -c -o $@ $<
+
+$(piece).o: $(piece).cpp $(piece).h
+	@echo "Compiling $@..."
+	@$(CC) $(CFLAGS) -c -o $@ $<
+
 clean:
 	rm $(piece).o
 	rm $(piece1).o
