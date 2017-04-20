@@ -22,7 +22,7 @@ int main()
 		std::string input;
 		std::getline(std::cin,input);
 
-		int * moveind = stomove(input);
+		int * moveind = stomove(input , g);
 
 
 
@@ -36,7 +36,6 @@ int* stomove(std::string, game&)
 	for(int i = 0; i< 4; i++)
 		result[i] = 0;
 
-	
 
 }
 
