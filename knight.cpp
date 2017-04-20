@@ -40,6 +40,6 @@ std::vector<int*>* knight::getAttacks()
 
 knight::knight(int x, int y, bool team) : piece(x,y,team)
 {
-	type = KNIGHT;
+	setType(KNIGHT);
 }
 knight::~knight(){}
