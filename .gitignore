@@ -27,3 +27,10 @@
 *.exe
 *.out
 *.app
+
+# Mac Crap
+*.dSYM
+
+#Our Execuatbles
+chess
+runchess
