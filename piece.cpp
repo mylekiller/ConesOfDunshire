@@ -34,14 +34,12 @@ std::vector<int*>* piece::getMoves()
 //clears the vector moves; allows setmoves to correctly update the moves
 void piece::resetMoves()
 {
-	std::cout<<"YOOOO!\n\n";
+
 	for( size_t i = 0; i < moves.size(); i++)   //iterates through the vector of moves
 	{
 		delete [] moves[i];   //deletes each array fo integers
 	}
 
-
-	std::cout<<"HIIII!\n\n";
 	auto it = moves.begin();
 	while( it != moves.end() )
 	{
@@ -118,7 +116,6 @@ bool piece::inbounds(int x, int y)
 }
 piecetype piece::getType()
 {
-	std::cout<<"Getting type...  :" <<&type << "\n";
 	return type;
 }
 void piece::setType(enum piecetype tin)
