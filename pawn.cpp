@@ -31,9 +31,13 @@ void pawn::resetMoves()
 		attacks.erase(it);
 		it = attacks.begin();
 	}
+
+	std::cout<<"Done resetting moves.... \n";
 }
 void pawn::setMoves(board* board)
 {
+
+	std::cout<<"Setting moves... \n";
 	int teammult = getTeam() ? 1 : -1;
 	int limit = hasMoved() ? 1 : 2;
 	for(int i = 0; i< limit; i++)
@@ -54,6 +58,7 @@ void pawn::setMoves(board* board)
 		int newy = getY() + teammult;
 		int newx = getX() + i;
 		//En passant check
+		std::cout<<"CheckingEnPassant...\n";
 		if(board -> checkEnPassant(newx,newy,getTeam()))	
 		{
 
@@ -68,6 +73,7 @@ void pawn::setMoves(board* board)
 		addMove(newx,newy);
 	}
 
+	std::cout<<"Done checking ENPassant... \n";
 	
 	for(int delx = -1 ;delx<=1;delx+=2)
 	{
@@ -81,7 +87,7 @@ void pawn::setMoves(board* board)
 				attacks.push_back(move);
 	}
 	
-
+	std::cout<<"Done setting moves... \n";
 
 }
 

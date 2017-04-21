@@ -166,12 +166,18 @@ piece* board::get(int x, int y)
 {
 	return gameboard[x][y];
 }
-bool board::checkEnPassant(int x, int y, bool team)
+bool board::checkEnPassant( int x, int y, bool team)
 {
+	std::cout<<"Coordinates: "<<x<<","<<y<<"\n";
+	std::cout<<"isOccupied(x,y)?:  "<<isOccupied(x,y)<<"\n";
+	std::cout<<"In En passant func ... \n";
+	
 	int checkx = x;
 	int checky = team ? y+1 : y-1;
 
-	if(inbounds(checkx,checky) && isOccupied(checkx,checky) && gameboard[checkx][checky] -> getTeam() != team && gameboard[checkx][checky] -> getType() == PAWN && ((pawn*)(gameboard[x][y])) -> movedTwo())
+	if(inbounds(checkx,checky) && isOccupied(checkx,checky) && gameboard[checkx][checky] -> getTeam() != team && gameboard[checkx][checky] -> getType() == PAWN && ((pawn*)(gameboard[checkx][checky])) -> movedTwo())
 		return true;
 	return false;
+
+	std::cout<<"Leaving ep func ... \n ";
 }
