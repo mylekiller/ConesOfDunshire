@@ -13,12 +13,13 @@ class pawn:public piece
 		void print();
 		void setMoves(board*);
 		std::vector<int*>* getAttacks();   //returns pointer to vector of pointer based integer arrays representing sqaures that are attacked by this pawn
-
+		void resetMoves();
 		bool movedTwo();
 
 
 	private:
 		bool movedtwo;
+		std::vector<int*> attacks;
 };
 
 #endif

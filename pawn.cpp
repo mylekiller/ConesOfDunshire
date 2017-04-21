@@ -17,6 +17,21 @@ void pawn::print()
 	else
 		std::cout<<'p';
 }
+void pawn::resetMoves()
+{
+	piece::resetMoves();
+	for( int i = 0; i < attacks.size(); i++)   //iterates through the vector of moves
+	{
+		delete [] attacks[i];   //deletes each array fo integers
+	}
+
+	auto it = attacks.begin();
+	while( it != attacks.end() )
+	{
+		attacks.erase(it);
+		it = attacks.begin();
+	}
+}
 void pawn::setMoves(board* board)
 {
 	int teammult = getTeam() ? 1 : -1;
@@ -41,6 +56,7 @@ void pawn::setMoves(board* board)
 		//En passant check
 		if(board -> checkEnPassant(newx,newy,getTeam()))	
 		{
+
 			addMove(newx,newy);
 			continue;
 		}
@@ -48,24 +64,31 @@ void pawn::setMoves(board* board)
 		{
 			continue;
 		}	
-		addMove(newx,newy);
 
+		addMove(newx,newy);
 	}
+
+	
+	for(int delx = -1 ;delx<=1;delx+=2)
+	{
+
+		int* move = new int[2];
+		move[0] = getX() + delx;
+		move[1] = getY();
+
+
+		if(inbounds(move[0],move[1]))
+				attacks.push_back(move);
+	}
+	
+
+
 }
 
 //returns pointer to vector of pointer based integer arrays representing what spaces this pawn is attacking
 std::vector<int*>* pawn::getAttacks()
 {
-	std::vector<int*> result;
-
-	for(int delx = -1 ;delx<=1;delx+=2)
-	{
-		int* move = new int[2];
-		move[0] = getX() + delx;
-		move[1] = getY();
-		result.push_back(move);
-	}
-	return &result;
+	return &attacks;
 }
 bool pawn::movedTwo()
 {

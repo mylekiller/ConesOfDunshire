@@ -96,9 +96,9 @@ void queen::setMoves(board* bin)
 void queen::print() //prints the queen on the board, q or Q depending on black or white pieces
 {
         if(getTeam())
-                std::cout<<'q';
-        else
                 std::cout<<'Q';
+        else
+                std::cout<<'q';
 }
 
 std::vector<int*>* queen::getAttacks()

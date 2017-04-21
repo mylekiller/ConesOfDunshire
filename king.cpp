@@ -34,6 +34,8 @@ void king::setMoves(board* bin)
 				{
 					addMove(x,y);
 				}
+				else
+					continue;
 				
 			}
 			if(inbounds(x,y))

@@ -86,17 +86,23 @@ void board::updateAttacks()
 			}
 		}
 	}
+
 	for(int i = 0; i< 8; i++)
 	{
 		for(int j = 0; j<8; j++)
 		{
+		
 			if(isOccupied(i,j))
 			{
-				std::vector<int*>* attacks = gameboard[i][j] -> getAttacks();
-				for(auto it = attacks -> begin() ; it != attacks -> end() ; it++)
+				
+				std::vector<int*>* temp = gameboard[i][j] -> getAttacks();
+				
+				for(auto it = temp -> begin() ; it != temp -> end() ; it++)
 				{
 					int teamnum = gameboard[i][j] -> getTeam() ? 1 : 0;
+					
 					attacks[teamnum][(*it)[0]][(*it)[1]] = true;
+				
 				}
 			}
 		}
@@ -113,8 +119,12 @@ void board::execmove(piece * p, int x, int y )
 		{
 			delete gameboard[x][y-teamval];
 			gameboard[x][y] = p;
-			delete gameboard[p->getX()][p->getY()];
-			p->move(x,y);
+
+
+			
+			gameboard[p->getX()][p->getY()] = NULL;
+
+			gameboard[x][y]->move(x,y);
 			update();
 			return;
 		} 
@@ -128,15 +138,23 @@ void board::execmove(piece * p, int x, int y )
 		delete gameboard[x][y];
 	}
 	gameboard[x][y] = p;
-	delete gameboard[p->getX()][p->getY()];
-	p->move(x,y);
+
+	int tempx = p->getX();
+	int tempy = p->getY();
+
+	gameboard[p->getX()][p->getY()] = NULL;
+
+	gameboard[x][y]->move(x,y);
 
 	update();
 
 }
 void board::update()
 {
+
 	updateMoves();
+	
+
 	updateAttacks();
 
 }

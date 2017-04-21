@@ -21,11 +21,11 @@ class piece
 {
 public:
 	piece(int, int, bool);   //defualt constructor; args: x position, y position, team (black/white)
-	~piece();   //default constructor
+	virtual ~piece();   //default constructor
 	virtual void setMoves(board*) = 0;   //setter function; sets the moves possible for the piece
 	std::vector<int*>* getMoves();   //getter function; returns pointer to vector of possible moves
 	virtual std::vector<int*>* getAttacks() = 0;
-	void resetMoves();   //clears the vector "moves" to allow it to be updated
+	virtual void resetMoves();   //clears the vector "moves" to allow it to be updated
 	void setX(int);   //setter function; sets the current x position of the piece
 	int getX();   //getter function; gets the current x position of the piece
 	void setY(int);   //setter function; sets the current y position of the piece

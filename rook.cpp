@@ -59,9 +59,9 @@ void rook::setMoves(board* bin)
  void rook::print()
  {
          if(getTeam())
-                 std::cout<<'r';
-         else
                  std::cout<<'R';
+         else
+                 std::cout<<'r';
  }
  
  std::vector<int*>* rook::getAttacks()

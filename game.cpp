@@ -29,10 +29,14 @@ game::game()
 	boardGame.addPiece(new bishop(5,7,false));
 	boardGame.addPiece(new knight(6,7,false));
 	boardGame.addPiece(new rook(7,7,false));
+
+
+
 	for(int i = 0;i<8;i++)
 	{
 		boardGame.addPiece(new pawn(i,6,false));
 	}
+	boardGame.update();
 
 }
 game::~game(){}
