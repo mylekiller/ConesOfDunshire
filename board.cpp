@@ -46,6 +46,14 @@ void board::updateMoves()
 		for(int j = 0;j<8;j++)
 		{
 			if(gameboard[i][j] != nullptr)
+				gameboard[i][j] -> resetMoves();
+		}
+	}
+	for(int i = 0; i< 8; i++)
+	{
+		for(int j = 0;j<8;j++)
+		{
+			if(gameboard[i][j] != nullptr)
 				gameboard[i][j] -> setMoves(this);
 		}
 	}
@@ -168,9 +176,7 @@ piece* board::get(int x, int y)
 }
 bool board::checkEnPassant( int x, int y, bool team)
 {
-	std::cout<<"Coordinates: "<<x<<","<<y<<"\n";
-	std::cout<<"isOccupied(x,y)?:  "<<isOccupied(x,y)<<"\n";
-	std::cout<<"In En passant func ... \n";
+	
 	
 	int checkx = x;
 	int checky = team ? y+1 : y-1;
@@ -179,5 +185,4 @@ bool board::checkEnPassant( int x, int y, bool team)
 		return true;
 	return false;
 
-	std::cout<<"Leaving ep func ... \n ";
 }
