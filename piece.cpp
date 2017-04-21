@@ -90,7 +90,7 @@ void piece::move(int x, int y)
 {
 	setX(x);
 	setY(y);
-	resetMoves();
+	hasmoved = true;
 }
 
 //getter fucntion; gets the team TRUE = WHITE FALSE = BLACK
