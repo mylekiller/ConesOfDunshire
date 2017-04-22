@@ -24,22 +24,27 @@ class board
 {
 	public:
 		board();   //default constructor
+		board(const board&);
 		~board();   //default destructor
 		bool isAttacked(int,int);   //returns whether a space (x,y) is attacked
 		bool isOccupied(int, int);   //returns whether a space (x,y) is occupied
 		bool getTeam(int, int); //returns team of the piece at (x,y) or false if no piece is there (should not be used without checking isOccupied)
 		void addPiece(piece*);
 		void printBoard();
+		void printAttacks();
 		void updateMoves();
 		void updateAttacks();
 		bool checkEnPassant(int, int,bool);
 		bool inbounds(int,int);
 		void execmove(piece *, int, int);
 		void update();
+		int check(); // returns 0 if no check -1 if black in check 1 if white in check
+
 		piece* get(int,int);
 	private:
 		piece* gameboard[8][8];   //pointer based 2d array of pointers to pieces
 		bool attacks[2][8][8]; //shows the squares that are attacked to check for check/checkmate/castling 1 = white 0 = black
+		piece* copypiece(piece*);
 
 };
 

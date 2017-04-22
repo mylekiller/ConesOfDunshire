@@ -34,6 +34,7 @@ public:
 	bool getTeam();   //getter function; gets the team of the current piece
 	bool hasMoved();
 	void move(int, int);   //"moves" the piece sets the pieces position to (x,y)
+	bool canMove();
 	virtual void print() = 0;
 	piecetype getType();
 protected:
@@ -41,12 +42,14 @@ protected:
 	std::vector<int*> moves;   //vector of pointers to integers arrays; represents the possible moves
 	void addMove(int, int);   //adds the possibility of a move to a specific space
 	bool inbounds(int,int);   //reutrns whethere a space is on the board
-private:
+
 	int x;   //piece's current x position
 	int y;   //piece's current y position
 	bool team;   //piece's team; whether piece is white (true=white, false=black)
 	bool hasmoved;
 	piecetype type; // the type of the piece
+private:
+	
 };
 
 

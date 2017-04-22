@@ -5,6 +5,10 @@
 king::king(int x, int y,bool team):piece(x,y,team){
 	setType(KING);
 }
+king::king(const king& kin) : piece(kin.x,kin.y,kin.team)
+{
+	setType(KING);
+}
 
 //destructor
 king::~king(){}

@@ -1,6 +1,11 @@
 
 #include "board.h"
 #include "pawn.h"
+#include "rook.h"
+#include "bishop.h"
+#include "queen.h"
+#include "king.h"
+#include "knight.h"
 
 bool board::isOccupied(int x, int y)
 {
@@ -16,6 +21,41 @@ board::board(){
 		}
 	}
 }
+board::board(const board& bin)
+{
+
+	for(int i = 0 ;i<8;i++)
+	{
+		for(int j = 0 ;j < 8;j++)
+		{
+			gameboard[i][j] = nullptr;
+		}
+	}
+	
+	for(int i = 0;i<8;i++)
+	{
+		for(int j = 0; j<8; j++)
+		{
+			if(bin.gameboard[i][j])
+			{
+				gameboard[i][j] = copypiece(bin.gameboard[i][j]);
+				
+			}
+		}
+	}
+	for(int t = 0; t<=1; t++)
+	{
+		for(int i = 0;i<8;i++)
+		{
+			for(int j = 0; j<8; j++)
+			{
+				attacks[t][i][j] = bin.attacks[t][i][j];
+			}
+		}
+	}
+	update();
+
+}	
 
 board::~board(){
 	for(int i = 0; i<8; i++)
@@ -30,6 +70,59 @@ board::~board(){
 	}
 }
 
+
+piece* board::copypiece(piece* p)
+{
+	switch(p -> getType())
+	{
+		case PAWN:
+			return new pawn(*((pawn*)(p)));
+			break;
+		case KNIGHT:
+			return new knight(*((knight*)(p)));
+			break;
+		case BISHOP:
+			return new bishop(*((bishop*)(p)));
+			break;
+		case QUEEN:
+			return new queen(*((queen*)(p)));
+			break;
+		case ROOK:
+			return new rook(*((rook*)(p)));
+			break;
+		case KING:
+			return new king(*((king*)(p)));
+			break;
+	}
+}
+
+
+void board::printAttacks()
+{
+	std::cout<<"\n";
+	for(int i =0; i<20;i++)
+		std::cout<<"-";
+	std::cout<<"\n";
+	for(int i = 7; i >= 0 ;i--)
+	{
+		for(int j = 0;j <8;j++)
+		{
+			if(attacks[0][j][i])
+			{
+				std::cout<<"*";
+			}
+			else
+			{
+				std::cout<<"X";
+			}
+		}
+		std::cout<<"\n";
+	}
+
+	for(int i =0; i<20;i++)
+		std::cout<<"-";
+	std::cout<<"\n";
+}
 bool board::getTeam(int x, int y)
 {
 	if(isOccupied(x,y))
@@ -45,10 +138,17 @@ void board::updateMoves()
 	{
 		for(int j = 0;j<8;j++)
 		{
+			
 			if(gameboard[i][j] != nullptr)
+			{
+				
 				gameboard[i][j] -> resetMoves();
+
+			}
 		}
 	}
+
+	
 	for(int i = 0; i< 8; i++)
 	{
 		for(int j = 0;j<8;j++)
@@ -145,11 +245,16 @@ void board::execmove(piece * p, int x, int y )
 	{
 		delete gameboard[x][y];
 	}
+
+
+
 	gameboard[x][y] = p;
+
 
 	int tempx = p->getX();
 	int tempy = p->getY();
 
+	
 	gameboard[p->getX()][p->getY()] = NULL;
 
 	gameboard[x][y]->move(x,y);
@@ -173,6 +278,26 @@ bool board::inbounds(int x, int y)
 piece* board::get(int x, int y)
 {
 	return gameboard[x][y];
+}
+
+int board::check()
+{
+	for(int i = 0; i<8;i++)
+	{
+		for(int j = 0; j<8;j++)
+		{
+			if(isOccupied(i,j) && gameboard[i][j] -> getType() == KING  )
+			{
+				int teamnum = gameboard[i][j] ->getTeam() ? 0 : 1;
+				if(attacks[teamnum][i][j])
+				{
+					int teammult = gameboard[i][j] -> getTeam()? 1 : -1;
+					return teammult;
+				}
+			}	
+		}
+	}
+	return 0; 
 }
 bool board::checkEnPassant( int x, int y, bool team)
 {

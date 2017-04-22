@@ -9,6 +9,7 @@ class rook:public piece
 {
         public:
                 rook(int, int, bool);   //default constructor with arguments for the x, y positions, and attacks
+                rook(const rook&);
                 ~rook();   //destructor
                 void setMoves(board* bin);
                 std::vector<int*>* getAttacks(); //gets vector of attack moves

@@ -5,7 +5,10 @@
 pawn::pawn(int x, int y,bool team):piece(x,y,team){
 	setType(PAWN);
 }
-
+pawn::pawn(const pawn& pin) : piece(pin.x,pin.y,pin.team)
+{
+	setType(PAWN);
+}
 //destructor
 pawn::~pawn(){}
 
@@ -19,6 +22,7 @@ void pawn::print()
 }
 void pawn::resetMoves()
 {
+	
 	piece::resetMoves();
 	for( int i = 0; i < attacks.size(); i++)   //iterates through the vector of moves
 	{
@@ -32,12 +36,12 @@ void pawn::resetMoves()
 		it = attacks.begin();
 	}
 
-	std::cout<<"Done resetting moves.... \n";
+	
+
 }
 void pawn::setMoves(board* board)
 {
 
-	std::cout<<"Setting moves... \n";
 	int teammult = getTeam() ? 1 : -1;
 	int limit = hasMoved() ? 1 : 2;
 	for(int i = 0; i< limit; i++)
@@ -48,7 +52,13 @@ void pawn::setMoves(board* board)
 		{
 			if(board -> isOccupied(newx,newy))
 				break;
-
+			if(getX() == 3 && getY() == 3)
+			{
+				if(newx == getX() && newy == getY() + 1 )
+				{
+					std::cout<<"Occupied? :  "<<board -> isOccupied(newx , newy) << "\n";
+				}
+			}
 			addMove(newx,newy);
 		}
 	}
@@ -58,11 +68,14 @@ void pawn::setMoves(board* board)
 		int newy = getY() + teammult;
 		int newx = getX() + i;
 		//En passant check
-		std::cout<<"CheckingEnPassant...\n";
 		if(board -> checkEnPassant(newx,newy,getTeam()))	
 		{
 
 			addMove(newx,newy);
+			if(newx == getX() && newy == getY() + teammult)
+			{
+				std::cout<<"!!!!!!!!!!\n!!!!!!!!!!!\n!!!!!!!!!!!!\n!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!\n!!!!!!!!!!!!!\n";
+			}
 			continue;
 		}
 		if(!inbounds(newx,newy) || ! (board -> isOccupied(newx,newy)) ||  board -> getTeam(newx,newy) == getTeam())
@@ -71,9 +84,12 @@ void pawn::setMoves(board* board)
 		}	
 
 		addMove(newx,newy);
+		if(newx == getX() && newy == getY() + teammult)
+		{
+			std::cout<<"!!!!!!!!!!\n!!!!!!!!!!!\n!!!!!!!!!!!!\n!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!\n!!!!!!!!!!!!!\n";
+		}
 	}
 
-	std::cout<<"Done checking ENPassant... \n";
 	
 	for(int delx = -1 ;delx<=1;delx+=2)
 	{
@@ -87,7 +103,6 @@ void pawn::setMoves(board* board)
 				attacks.push_back(move);
 	}
 	
-	std::cout<<"Done setting moves... \n";
 
 }
 

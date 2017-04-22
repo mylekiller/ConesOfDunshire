@@ -8,6 +8,7 @@ class knight:public piece
 {
 	public:
 		knight(int, int, bool);   //default constructor; args: x postion, y position, team
+		knight(const knight&);
 		~knight();   //destructor
 		void setMoves(board* bin);
 		std::vector<int*>* getAttacks();
