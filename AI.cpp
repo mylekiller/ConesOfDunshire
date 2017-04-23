@@ -31,8 +31,9 @@ std::pair<std::pair<int,int>,std::pair<int,int>> AI::minimax(board& currentBoard
 			//if the current space occupied and the piece is the color the AI is playing
 			if(currentBoard.isOccupied(i,j) && currentBoard.get(i,j)->getTeam() == team)
 			{
+				
 				//list of moves piece in current sqaure can make
-				auto moves = currentBoard.get(i,j)->getMoves();
+				std::vector<int*>* moves = currentBoard.get(i,j)->getMoves();
 				//iterate through all the moves the piece in current sqaure can make
 				for(auto it = moves->begin(); it != moves->end(); ++it)
 				{
@@ -40,8 +41,10 @@ std::pair<std::pair<int,int>,std::pair<int,int>> AI::minimax(board& currentBoard
 					board newBoard(currentBoard);    //newBoard is where each move is tried
 					if(!newBoard.isAllowed(newBoard.get(i,j), (*it)[0], (*it)[1], team))
 					{
+						std::cout<<"Skipping move... Can't move: "<<newBoard.get(i,j)->getTeam() <<" from: "<<newBoard.get(i,j) -> getX() <<","<<newBoard.get(i,j)->getY() <<" to : "<<(*it)[0]<<","<< (*it)[1]<<"\n";
 						continue;
 					}
+
 					newBoard.execmove(newBoard.get(i,j), (*it)[0], (*it)[1]);
 
 					int value;
@@ -50,6 +53,7 @@ std::pair<std::pair<int,int>,std::pair<int,int>> AI::minimax(board& currentBoard
 						value = maxSearch(newBoard, depth-1);
 						if(value > bestValue)
 						{
+
 							bestValue = 			 value;
 							bestMove.first.first = 	 i;
 							bestMove.first.second =  j;
@@ -62,6 +66,7 @@ std::pair<std::pair<int,int>,std::pair<int,int>> AI::minimax(board& currentBoard
 						value = minSearch(newBoard, depth-1);
 						if(value < bestValue)
 						{
+							std::cout<<"Found a better move...\n";
 							bestValue = 			 value;
 							bestMove.first.first =	 i;
 							bestMove.first.second =  j;
@@ -78,6 +83,7 @@ std::pair<std::pair<int,int>,std::pair<int,int>> AI::minimax(board& currentBoard
 
 int AI::minSearch(board& currentBoard, int depth)
 {
+	std::cout<<"Min search at depth... "<<depth << "\n";
 	if(depth == 0)
 	{
 		return evaluate(currentBoard);
@@ -114,6 +120,7 @@ int AI::minSearch(board& currentBoard, int depth)
 
 int AI::maxSearch(board& currentBoard, int depth)
 {
+	std::cout<<"Max search at depth... "<<depth << "\n";
 	if(depth == 0)
 	{
 		return evaluate(currentBoard);
@@ -180,6 +187,7 @@ int AI::evaluate(board& currentBoard)
 			}
 		}
 	}
+	std::cout<<"Evaluated a board to... "<<value<<"\n";
 	return value;
 }
 
