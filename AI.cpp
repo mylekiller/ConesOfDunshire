@@ -1,17 +1,11 @@
 #include <vector>
 #include "AI.h"
 
-AI::AI()
-{
+AI::AI(){}
 
-}
+AI::~AI(){}
 
-AI::~AI()
-{
-
-}
-
-pair<pair<int,int>,pair<int,int>> AI::minimax(board currentBoard, bool team, int depth)
+std::pair<std::pair<int,int>,std::pair<int,int>> AI::minimax(board currentBoard, bool team, int depth)
 {
 	int bestValue = INT_MAX;    //placeholder value, should be exceeded by anything
 	if(team)    //if AI is playing for white
@@ -25,7 +19,7 @@ pair<pair<int,int>,pair<int,int>> AI::minimax(board currentBoard, bool team, int
 								//black is seeking to minimize values (most negative)
 	}
 
-	pair<pair<int,int>,pair<int,int>> bestMove;    //tracks the best move that been found
+	std::pair<std::pair<int,int>,std::pair<int,int>> bestMove;    //tracks the best move that been found
 
 	for(int i = 0; i < 8; ++i)    //iterates through the 8x8
 	{
