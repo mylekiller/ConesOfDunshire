@@ -27,9 +27,11 @@ int const BLACKPAWN = 6;
 
 //The windows for the main chess game
 SDL_Window* gWindow = NULL;
+//The window for the splash menu
 SDL_Window* splashWindow = NULL;
 //The main window renderer
 SDL_Renderer* gRenderer = NULL;
+//Renderer for the splash menu
 SDL_Renderer* splashRenderer = NULL;
 
 SDL_Rect gChessPieces[ 12 ];
@@ -44,6 +46,8 @@ LTexture gSelected;
 LTexture gSplash;
 //Overlay for Splash Buttons
 LTexture gOverlay;
+//Texture to Display when a king is in check
+LTexture gCheck;
 
 //Starts up SDL and creates window
 bool init();
@@ -144,7 +148,7 @@ int main( int argc, char* args[] )
 			int ycord;
 			//While application is running
 			while( !quit )
-			{
+			{	
 				//Handle events on queue
 				while( SDL_PollEvent( &e ) != 0 )
 				{
@@ -152,6 +156,11 @@ int main( int argc, char* args[] )
 					if( e.type == SDL_QUIT )
 					{
 						quit = true;
+					}
+					if (e.type == SDL_WINDOWEVENT) {
+						if (e.window.event == SDL_WINDOWEVENT_CLOSE) {
+							quit = true;
+						}
 					}
 					if (e.type == SDL_MOUSEBUTTONDOWN) {
 						int x, y;
@@ -194,6 +203,12 @@ int main( int argc, char* args[] )
 					for (int j = 0; j < 8; j++) {
 						piece * p = newGame.getpiece(j, -1*(i-7));
 						if (p != nullptr) {
+							if (p -> getType() == KING && newGame.inCheck(p -> getTeam())) {
+								gCheck.render(gRenderer, j*100, i*100, NULL);
+								if (selected) {
+									gSelected.render(gRenderer, xcord*100, ycord*100, NULL);
+								}
+							}
 							gChessPiecesTexture.render(gRenderer, j*100, i*100, &gChessPieces[ p -> getType()+(!p->getTeam()*6) ]);
 						}
 					}
@@ -270,7 +285,7 @@ bool loadMedia()
 	//Loading success flag
 	bool success = true;
 
-	if ( !gChessBoard.loadFromFile("Chessboard.bmp", gRenderer)) 
+	if ( !gChessBoard.loadFromFile("images/Chessboard.bmp", gRenderer)) 
 	{
 		printf("Failed to load chessboard background!\n");
 		success = false;
@@ -278,7 +293,7 @@ bool loadMedia()
 	else {
 		gChessBoard.scaleToScreen();
 		//Load sprite sheet texture
-		if( !gChessPiecesTexture.loadFromFile( "dots.png", gRenderer ) )
+		if( !gChessPiecesTexture.loadFromFile( "images/pieces.png", gRenderer ) )
 		{
 			printf( "Failed to load pieces texture!\n" );
 			success = false;
@@ -358,7 +373,7 @@ bool loadMedia()
 			gChessPieces[ BLACKPAWN ].h = 333;
 		}
 	}
-	if ( !gSelected.loadFromFile("selected.png", gRenderer)) 
+	if ( !gSelected.loadFromFile("images/selected.png", gRenderer)) 
 	{
 		printf( "Failed to load selected background texture!\n" );
 		success = false;
@@ -369,7 +384,7 @@ bool loadMedia()
 		gSelected.setBlendMode(SDL_BLENDMODE_BLEND);
 		gSelected.setAlpha(180);
 	}
-	if (!gSplash.loadFromFile("splash.png", splashRenderer)) {
+	if (!gSplash.loadFromFile("images/splash.png", splashRenderer)) {
 		printf("Failed to load splash screen!\n");
 		success = false;
 	}
@@ -377,7 +392,7 @@ bool loadMedia()
 		gSplash.setWidth(SPLASH_WIDTH);
 		gSplash.setHeight(SPLASH_HEIGHT);
 	}
-	if (!gOverlay.loadFromFile("overlay.png", splashRenderer)) {
+	if (!gOverlay.loadFromFile("images/overlay.png", splashRenderer)) {
 		printf("Failed to load splash buttons overlay!\n");
 		success = false;
 	}
@@ -386,6 +401,14 @@ bool loadMedia()
 		gOverlay.setHeight(138);
 		gOverlay.setBlendMode( SDL_BLENDMODE_BLEND );
 		gOverlay.setAlpha(60);
+	}
+	if (!gCheck.loadFromFile("images/check.png", gRenderer)) {
+		printf("Failed to load king check background!\n");
+		success = false;
+	}
+	else {
+		gCheck.setWidth(100);
+		gCheck.setHeight(100);
 	}
 	return success;
 }
@@ -398,6 +421,7 @@ void close()
 	//Destroy window	
 	SDL_DestroyRenderer( gRenderer );
 	SDL_DestroyWindow( gWindow );
+	SDL_DestroyWindow(splashWindow);
 	gWindow = NULL;
 	gRenderer = NULL;
 
@@ -407,16 +431,15 @@ void close()
 }
 
 void closeSplash() {
+	//Show the main chess window
+	SDL_ShowWindow(gWindow);
+	SDL_RaiseWindow(gWindow);
 	//Free Splash Image
 	gSplash.free();
 
 	//Destroy Old Window
 	SDL_DestroyRenderer(splashRenderer);
-	SDL_DestroyWindow(splashWindow);
+	SDL_HideWindow(splashWindow);
 	splashRenderer = NULL;
 	splashWindow = NULL;
-
-	//Show the main chess Window
-	SDL_ShowWindow(gWindow);
-	SDL_RaiseWindow(gWindow);
 }

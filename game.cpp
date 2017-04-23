@@ -81,3 +81,7 @@ bool game::trymove(int sx,int sy, int tx, int ty)
 	}
 	return false;
 }
+
+int game::inCheck(bool team) {
+	return boardGame.check(team);
+}
