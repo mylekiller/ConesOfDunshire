@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "piece.h"
-
+#include "pawn.h"
 
 
 
@@ -110,6 +110,10 @@ void piece::setTeam(bool team)
 void piece::move(int x, int y)
 {
 
+	if(getType() == PAWN && x == getX() && y == (getTeam() ? 1 : -1) * 2 + getY())
+	{
+		((pawn*)(this)) -> setMovedTwo(true);
+	}
 	setX(x);
 	setY(y);
 	hasmoved = true;

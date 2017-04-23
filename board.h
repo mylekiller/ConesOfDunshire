@@ -36,7 +36,8 @@ class board
 		bool inbounds(int,int);
 		void execmove(piece *, int, int);
 		bool isAllowed(piece *, int, int,bool);
-		void update();
+		void update(bool);
+		void printMovedTwo();
 		int check(bool); // returns 0 if no check -1 if black in check 1 if white in check
 
 		piece* get(int,int);

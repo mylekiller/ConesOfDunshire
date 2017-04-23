@@ -3,10 +3,12 @@
 #include "board.h"
 //constructor; args: x position, y position, team
 pawn::pawn(int x, int y,bool team):piece(x,y,team){
+	movedtwo = false;
 	setType(PAWN);
 }
 pawn::pawn(const pawn& pin) : piece(pin.x,pin.y,pin.team)
 {
+	movedtwo = pin.movedtwo;
 	setType(PAWN);
 }
 //destructor
@@ -21,24 +23,10 @@ void pawn::print()
 		std::cout<<'p';
 }
 void pawn::resetMoves()
-{
-	
+{	
 	piece::resetMoves();
-	for( int i = 0; i < attacks.size(); i++)   //iterates through the vector of moves
-	{
-		delete [] attacks[i];   //deletes each array fo integers
-	}
-
-	auto it = attacks.begin();
-	while( it != attacks.end() )
-	{
-		attacks.erase(it);
-		it = attacks.begin();
-	}
-
-	
-
 }
+
 void pawn::setMoves(board* board)
 {
 
@@ -70,7 +58,7 @@ void pawn::setMoves(board* board)
 		//En passant check
 		if(board -> checkEnPassant(newx,newy,getTeam()))	
 		{
-
+			std::cout<<"Adding en passant move!... \n ";
 			addMove(newx,newy);
 			if(newx == getX() && newy == getY() + teammult)
 			{
@@ -92,6 +80,10 @@ void pawn::setMoves(board* board)
 
 }
 
+void pawn::setMovedTwo(bool in)
+{
+	movedtwo = in;
+}
 void pawn::setAttacks(board * bin)
 {
 	int teammult = getTeam() ? 1 : -1;

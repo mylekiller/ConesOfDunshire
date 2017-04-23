@@ -16,6 +16,7 @@ class pawn:public piece
 		void setAttacks(board*);
 		void resetMoves();
 		bool movedTwo();
+		void setMovedTwo(bool);
 
 
 	private:

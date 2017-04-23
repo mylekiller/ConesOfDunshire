@@ -63,7 +63,7 @@ board::board(const board& bin)
 			}
 		}
 	}
-	update();
+	//update();
 
 }	
 
@@ -133,6 +133,31 @@ void board::printAttacks()
 		std::cout<<"-";
 	std::cout<<"\n";
 }
+
+void board::printMovedTwo()
+{
+	std::cout<<"\n";
+	for(int i =0; i<20;i++)
+		std::cout<<"-";
+	std::cout<<"\n";
+	for(int i = 7; i >= 0 ;i--)
+	{
+		for(int j = 0;j <8;j++)
+		{
+			
+				if(isOccupied(j,i) && gameboard[j][i] -> getType() == PAWN && ((pawn*)gameboard[j][i]) -> movedTwo())
+					std::cout<<"*";
+				else
+					std::cout<<"X";
+			
+		}
+		std::cout<<"\n";
+	}
+
+	for(int i =0; i<20;i++)
+		std::cout<<"-";
+	std::cout<<"\n";
+}
 bool board::getTeam(int x, int y)
 {
 	if(isOccupied(x,y))
@@ -175,6 +200,7 @@ void board::execmove(piece * p, int x, int y )
 		if((x == p->getX() +1 || x==p->getX() -1)&& y == p->getY() + teamval && !isOccupied(x,y) )
 		{
 			delete gameboard[x][y-teamval];
+			gameboard[x][y-teamval] = NULL;
 			gameboard[x][y] = p;
 
 
@@ -182,7 +208,8 @@ void board::execmove(piece * p, int x, int y )
 			gameboard[p->getX()][p->getY()] = NULL;
 
 			gameboard[x][y]->move(x,y);
-			update();
+			update( p -> getTeam());
+
 			return;
 		} 
 	}
@@ -198,7 +225,7 @@ void board::execmove(piece * p, int x, int y )
 				gameboard[x+1][y] = NULL;
 				p -> move(x,y);
 				gameboard[x-1][y] -> move(x-1,y);
-				update();
+				update(p -> getTeam());
 				return;
 			}
 		}
@@ -212,7 +239,7 @@ void board::execmove(piece * p, int x, int y )
 				gameboard[x-2][y] = NULL;
 				p -> move(x,y);
 				gameboard[x+1][y] -> move(x+1,y);
-				update();
+				update(p -> getTeam());
 				return;
 			}
 		}
@@ -235,11 +262,14 @@ void board::execmove(piece * p, int x, int y )
 
 	gameboard[x][y]->move(x,y);
 
-	update();
+	update(p -> getTeam());
 
 }
-void board::update()
+void board::update(bool team)
 {
+
+	
+
 
 	for(int t = 0; t<=1; t++)
 	{
@@ -259,7 +289,10 @@ void board::update()
 			
 			if(gameboard[i][j] != nullptr)
 			{
-				
+				if(gameboard[i][j] -> getType() == PAWN && gameboard[i][j] -> getTeam() != team)
+				{
+					((pawn*)gameboard[i][j]) -> setMovedTwo(false);
+				} 
 				gameboard[i][j] -> reset();
 
 			}
@@ -378,10 +411,13 @@ bool board::checkEnPassant( int x, int y, bool team)
 	
 	
 	int checkx = x;
-	int checky = team ? y+1 : y-1;
+	int checky = team ? y-1 : y+1;
 
-	if(inbounds(checkx,checky) && isOccupied(checkx,checky) && gameboard[checkx][checky] -> getTeam() != team && gameboard[checkx][checky] -> getType() == PAWN && ((pawn*)(gameboard[checkx][checky])) -> movedTwo())
-		return true;
+	if(inbounds(checkx,checky) && isOccupied(checkx,checky) && gameboard[checkx][checky] -> getTeam() != team && gameboard[checkx][checky] -> getType() == PAWN)
+	{
+	 	if (((pawn*)(gameboard[checkx][checky])) -> movedTwo())
+			return true;
+	}
 	return false;
 
 }
