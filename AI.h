@@ -8,7 +8,7 @@ class AI{
 public:
 	AI();
 	~AI();
-	pair<pair<int,int>,pair<int,int>> minimax(board, bool, int);
+	std::pair<std::pair<int,int>,std::pair<int,int>> minimax(board, bool, int);
 	int minSearch(board, int);
 	int maxSearch(board, int);
 	int evaluate(board);    //evaluates board state; number is pieces in favor of white
