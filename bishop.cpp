@@ -51,4 +51,8 @@ bishop::bishop(int x, int y, bool team) : piece(x,y,team)
 {
 	setType(BISHOP);
 }
+bishop::bishop(const bishop& bin) : piece(bin.x,bin.y,bin.team)
+{
+	setType(BISHOP);
+}
 bishop::~bishop(){}

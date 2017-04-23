@@ -35,10 +35,25 @@ void knight::print()
 
 std::vector<int*>* knight::getAttacks()
 {
+	if(getX() == 2)
+	{
+		std::cout<<"Returning knight attacks... \n";
+		std::cout<<"The knight on: "<<getX() <<","<<getY() <<"\n";
+
+		for(auto it = getMoves() -> begin(); it!= getMoves() -> end(); it++)
+		{
+			std::cout<<(*it)[0] << "," <<(*it)[1] << "\n";
+		}
+	}
+	
 	return getMoves();
 }
 
 knight::knight(int x, int y, bool team) : piece(x,y,team)
+{
+	setType(KNIGHT);
+}
+knight::knight(const knight& kin) : piece(kin.x,kin.y,kin.team)
 {
 	setType(KNIGHT);
 }

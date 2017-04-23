@@ -8,6 +8,7 @@ class pawn:public piece
 {
 	public:
 		pawn(int, int ,bool);   //consturctorl; args: x, y, team
+		pawn(const pawn&);
 		~pawn();   //destructor
 
 		void print();

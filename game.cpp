@@ -36,6 +36,7 @@ game::game()
 	{
 		boardGame.addPiece(new pawn(i,6,false));
 	}
+
 	boardGame.update();
 
 }
@@ -62,10 +63,18 @@ bool game::trymove(int sx,int sy, int tx, int ty)
 		{
 			if((*it)[0] ==tx && (*it)[1] == ty)
 			{
-				//check the check
-				boardGame.execmove(boardGame.get(sx,sy),tx,ty);
-				turn = !turn;
-				return true;
+			
+				board temp(boardGame);
+			
+				temp.execmove(temp.get(sx,sy),tx,ty);
+		
+				if(temp.check() != (turn ? 1 : -1))
+				{
+					boardGame.printAttacks();
+					boardGame.execmove(boardGame.get(sx,sy),tx,ty);
+					turn = !turn;
+					return true;
+				}
 			}
 		}
 	}

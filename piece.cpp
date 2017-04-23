@@ -35,6 +35,7 @@ std::vector<int*>* piece::getMoves()
 void piece::resetMoves()
 {
 
+
 	for( size_t i = 0; i < moves.size(); i++)   //iterates through the vector of moves
 	{
 		delete [] moves[i];   //deletes each array fo integers
@@ -49,6 +50,8 @@ void piece::resetMoves()
 
 
 }
+
+
 
 bool piece::hasMoved()
 {
@@ -88,10 +91,13 @@ void piece::setTeam(bool team)
 //"moves" this piece to the space (x,y)
 void piece::move(int x, int y)
 {
+
 	setX(x);
 	setY(y);
 	hasmoved = true;
+	
 }
+
 
 //getter fucntion; gets the team TRUE = WHITE FALSE = BLACK
 bool piece::getTeam()
@@ -121,6 +127,11 @@ piecetype piece::getType()
 void piece::setType(enum piecetype tin)
 {
 	type = tin;
+}
+
+bool piece::canMove()
+{
+	return moves.size() != 0;
 }
 
 
