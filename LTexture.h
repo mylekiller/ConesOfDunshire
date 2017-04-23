@@ -6,6 +6,8 @@
 #ifndef LTEXTURE_H
 #define LTEXTURE_H
 
+const int SPLASH_WIDTH = 1400;
+const int SPLASH_HEIGHT = 700;
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 800;
 
@@ -25,7 +27,13 @@ class LTexture
 		void free();
 
 		//Renders texture at given point
-		void render( SDL_Renderer* gRenderer, int x, int y, SDL_Rect* clip = NULL);
+		void render( SDL_Renderer* gRenderer, int x, int y, SDL_Rect* clip = NULL, int w = 100, int h = 100);
+
+		//Set Blend Mode
+		void setBlendMode(SDL_BlendMode blending);
+
+		//Set alpha Modulation
+		void setAlpha(Uint8 alpha);
 
 		//Gets and sets image dimensions
 		int getWidth();

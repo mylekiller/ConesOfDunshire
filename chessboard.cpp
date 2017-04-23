@@ -1,5 +1,5 @@
-/*This source code copyrighted by Lazy Foo' Productions (2004-2015)
-and may not be redistributed without written permission.*/
+/* Main for the Cones of Dunshire chess game, includes all graphics rendering and interacts with 
+all of the chess classes to make a game */
 
 //Using SDL, SDL_image, standard math, and strings
 #include <SDL2/SDL.h>
@@ -11,7 +11,7 @@ and may not be redistributed without written permission.*/
 #include "piece.h"
 
 
-//Macros for Different Pieces 
+//Constants for Different Pieces 
 int const WHITEKING = 5;
 int const WHITEQUEEN = 4;
 int const WHITEBISHOP = 2;
@@ -25,11 +25,12 @@ int const BLACKKNIGHT = 7;
 int const BLACKROOK = 9;
 int const BLACKPAWN = 6;
 
-//The window we'll be rendering to
+//The windows for the main chess game
 SDL_Window* gWindow = NULL;
-
-//The window renderer
+SDL_Window* splashWindow = NULL;
+//The main window renderer
 SDL_Renderer* gRenderer = NULL;
+SDL_Renderer* splashRenderer = NULL;
 
 SDL_Rect gChessPieces[ 12 ];
 
@@ -39,6 +40,10 @@ LTexture gChessPiecesTexture;
 LTexture gChessBoard;
 //Selected Background 
 LTexture gSelected;
+//Splash Screen 
+LTexture gSplash;
+//Overlay for Splash Buttons
+LTexture gOverlay;
 
 //Starts up SDL and creates window
 bool init();
@@ -49,8 +54,12 @@ bool loadMedia();
 //Frees media and shuts down SDL
 void close();
 
+//Frees and Closes Splash Screen
+void closeSplash();
+
 int main( int argc, char* args[] )
 {
+	// Create a new game object to interact with
 	game newGame;
 	//Start up SDL and create window
 	if( !init() )
@@ -72,6 +81,64 @@ int main( int argc, char* args[] )
 			//Event handler
 			SDL_Event e;
 
+			bool chooseMode = false;
+			bool onePlayer = false;
+			bool twoPlayer = false;
+			int players = 0;
+			while (!chooseMode && !quit) {
+				while (SDL_PollEvent( &e ) != 0) {
+					if (e.type == SDL_QUIT) {
+						quit = true;
+					}
+					if (e.type == SDL_WINDOWEVENT) {
+						if (e.window.event == SDL_WINDOWEVENT_CLOSE) {
+							quit = true;
+						}
+					}
+					if (e.type == SDL_MOUSEMOTION) {
+						int x,y;
+						SDL_GetMouseState(&x,&y);
+						if (x >365 && x <1035) {
+							if (y > 103 && y < 241) {
+								onePlayer = true;
+							}
+							else if (y > 396 && y < 534) {
+								twoPlayer = true;
+							}
+							else {
+								onePlayer = false;
+								twoPlayer = false;
+							}
+						}
+						else {
+							onePlayer = false;
+							twoPlayer = false;
+						}
+					}
+					if (e.type == SDL_MOUSEBUTTONDOWN) {
+						if(onePlayer) {
+							players = 1;
+							chooseMode = true;
+						}
+						else if (twoPlayer) {
+							players = 2;
+							chooseMode = true;
+						}
+					}
+				}
+				SDL_SetRenderDrawColor( splashRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+				SDL_RenderClear( splashRenderer );
+				gSplash.render(splashRenderer,0,0,NULL);
+				if (onePlayer) {
+					gOverlay.render(splashRenderer,365,103,NULL);
+				}
+				if (twoPlayer) {
+					gOverlay.render(splashRenderer,365,396,NULL);
+				}
+				SDL_RenderPresent(splashRenderer);
+			}
+
+			closeSplash();
 			bool selected = false;
 			int xcord;
 			int ycord;
@@ -104,7 +171,7 @@ int main( int argc, char* args[] )
 							xcord = x/100;
 							ycord = y/100;
 							piece * p = newGame.getpiece(xcord, -1*(ycord-7));
-							if (p != nullptr) {
+							if (p != nullptr && p -> getTeam() == newGame.getTurn()) {
 								selected = true;
 							}
 						}
@@ -162,8 +229,9 @@ bool init()
 		}
 
 		//Create window
-		gWindow = SDL_CreateWindow( "Cones of Dunshire", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
-		if( gWindow == NULL )
+		splashWindow = SDL_CreateWindow("Cones of Dunshire", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SPLASH_WIDTH, SPLASH_HEIGHT, SDL_WINDOW_SHOWN);
+		gWindow = SDL_CreateWindow( "Cones of Dunshire", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_HIDDEN);
+		if( gWindow == NULL || splashWindow == NULL )
 		{
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
 			success = false;
@@ -171,8 +239,9 @@ bool init()
 		else
 		{
 			//Create renderer for window
+			splashRenderer = SDL_CreateRenderer(splashWindow, -1, SDL_RENDERER_ACCELERATED);
 			gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED );
-			if( gRenderer == NULL )
+			if( gRenderer == NULL || splashRenderer == NULL)
 			{
 				printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
 				success = false;
@@ -181,7 +250,7 @@ bool init()
 			{
 				//Initialize renderer color
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-
+				SDL_SetRenderDrawColor( splashRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				//Initialize PNG loading
 				int imgFlags = IMG_INIT_PNG;
 				if( !( IMG_Init( imgFlags ) & imgFlags ) )
@@ -297,6 +366,26 @@ bool loadMedia()
 	else {
 		gSelected.setWidth(100);
 		gSelected.setHeight(100);
+		gSelected.setBlendMode(SDL_BLENDMODE_BLEND);
+		gSelected.setAlpha(180);
+	}
+	if (!gSplash.loadFromFile("splash.png", splashRenderer)) {
+		printf("Failed to load splash screen!\n");
+		success = false;
+	}
+	else {
+		gSplash.setWidth(SPLASH_WIDTH);
+		gSplash.setHeight(SPLASH_HEIGHT);
+	}
+	if (!gOverlay.loadFromFile("overlay.png", splashRenderer)) {
+		printf("Failed to load splash buttons overlay!\n");
+		success = false;
+	}
+	else {
+		gOverlay.setWidth(670);
+		gOverlay.setHeight(138);
+		gOverlay.setBlendMode( SDL_BLENDMODE_BLEND );
+		gOverlay.setAlpha(60);
 	}
 	return success;
 }
@@ -315,4 +404,19 @@ void close()
 	//Quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
+}
+
+void closeSplash() {
+	//Free Splash Image
+	gSplash.free();
+
+	//Destroy Old Window
+	SDL_DestroyRenderer(splashRenderer);
+	SDL_DestroyWindow(splashWindow);
+	splashRenderer = NULL;
+	splashWindow = NULL;
+
+	//Show the main chess Window
+	SDL_ShowWindow(gWindow);
+	SDL_RaiseWindow(gWindow);
 }
