@@ -332,6 +332,47 @@ int board::check(bool team)
 	}
 	return 0; 
 }
+bool board::isAllowed(piece* p , int x , int y, bool turn)
+{
+
+		std::vector<int*>* moves = p -> getMoves();
+		for(auto it = moves -> begin(); it!= moves -> end(); it++)
+		{
+			if((*it)[0] ==x && (*it)[1] == y)
+			{
+				if(p -> getType() == KING)
+				{
+					if(x == p ->getX() - 2)
+					{
+						for(int cx = p->getX(); cx > p->getX() - 2 ; cx--)
+						{
+							if(attacks[p->getTeam() ? 0 : 1][cx][p->getY()])
+								return false;
+						}
+					}
+					if(x == p->getX() + 2)
+					{
+						for(int cx = p->getX(); cx < p->getX() + 2 ; cx++)
+						{
+							if(attacks[p->getTeam() ? 0 : 1][cx][p->getY()])
+								return false;
+						}
+					}
+				}
+				board temp(*this);
+			
+				temp.execmove(temp.get(p->getX(),p->getY()),x,y);
+
+		
+				if(temp.check(turn) == 0)
+				{
+					return true;
+				}
+			}
+		}
+	
+	return false;
+}
 bool board::checkEnPassant( int x, int y, bool team)
 {
 	

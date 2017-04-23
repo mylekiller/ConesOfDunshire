@@ -58,6 +58,14 @@ bool game::trymove(int sx,int sy, int tx, int ty)
 {
 	if(boardGame.isOccupied(sx,sy) && boardGame.getTeam(sx,sy) == turn)
 	{
+
+		if(boardGame.isAllowed(boardGame.get(sx,sy), tx, ty, turn))
+		{
+			boardGame.execmove(boardGame.get(sx,sy),tx,ty);
+			turn = !turn;
+			return true;
+		}
+		/*
 		std::vector<int*>* moves = (boardGame.get(sx,sy)) -> getMoves();
 		for(auto it = moves -> begin(); it!= moves -> end(); it++)
 		{
@@ -77,7 +85,7 @@ bool game::trymove(int sx,int sy, int tx, int ty)
 					return true;
 				}
 			}
-		}
+		}*/
 	}
 	return false;
 }
