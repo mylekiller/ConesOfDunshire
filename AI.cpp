@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vector>
 #include "AI.h"
 
@@ -5,18 +6,20 @@ AI::AI(){}
 
 AI::~AI(){}
 
-std::pair<std::pair<int,int>,std::pair<int,int>> AI::minimax(board currentBoard, bool team, int depth)
+std::pair<std::pair<int,int>,std::pair<int,int>> AI::minimax(board& currentBoard, bool team, int depth)
 {
 	int bestValue = INT_MAX;    //placeholder value, should be exceeded by anything
 	if(team)    //if AI is playing for white
 	{
 		bestValue = -INT_MAX;    //starting best value is large negative number
 								 //white is seeking to maximize values (most positive)
+		std::cout<<"AI playing white\n";
 	}
 	else    //if AI is playing for black
 	{
 		bestValue = INT_MAX;    //starting best value is large positive number
 								//black is seeking to minimize values (most negative)
+		std::cout<<"AI playing black\n";
 	}
 
 	std::pair<std::pair<int,int>,std::pair<int,int>> bestMove;    //tracks the best move that been found
@@ -73,7 +76,7 @@ std::pair<std::pair<int,int>,std::pair<int,int>> AI::minimax(board currentBoard,
 	return bestMove;
 }
 
-int AI::minSearch(board currentBoard, int depth)
+int AI::minSearch(board& currentBoard, int depth)
 {
 	if(depth == 0)
 	{
@@ -109,7 +112,7 @@ int AI::minSearch(board currentBoard, int depth)
 	return bestValue;
 }
 
-int AI::maxSearch(board currentBoard, int depth)
+int AI::maxSearch(board& currentBoard, int depth)
 {
 	if(depth == 0)
 	{
@@ -145,7 +148,7 @@ int AI::maxSearch(board currentBoard, int depth)
 	return bestValue;
 }
 
-int AI::evaluate(board currentBoard)
+int AI::evaluate(board& currentBoard)
 {
 	int value = 0;
 	for(int i = 0; i < 8; ++i)
@@ -156,18 +159,22 @@ int AI::evaluate(board currentBoard)
 			{
 				if(currentBoard.getTeam(i,j) == true)
 				{
+					/*
 					if(currentBoard.get(i,j)->getType() == KING && currentBoard.get(i,j)->getMoves()->size() == 0)
 					{
 						return -INT_MAX;
 					}
+					*/
 					value += getPieceValue(currentBoard.get(i,j)->getType());
 				}
 				else
 				{
+					/*
 					if(currentBoard.get(i,j)->getType() == KING && currentBoard.get(i,j)->getMoves()->size() == 0)
 					{
 						return INT_MAX;
 					}
+					*/
 					value -= getPieceValue(currentBoard.get(i,j)->getType());
 				}
 			}
