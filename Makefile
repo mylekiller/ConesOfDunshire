@@ -35,7 +35,7 @@ chessboard.o: chessboard.cpp
 	@echo "Compiling $@..."
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
-chesslib.a: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(game).o $(piece).o $(board).o
+chesslib.a: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(game).o $(piece).o $(board).o $(comp).o
 	@echo "Linking $@..."
 	@$(AR) $(ARFLAGS) $@ $^
 
@@ -55,9 +55,9 @@ $(board).o: $(board).cpp $(board).h
 	@echo "Compiling $@..."
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
-#$(comp).o: $(comp).h 
-#	@echo "Compiling $@..."
-#	@$(CC) $(CFLAGS) -c -o $@ $<
+$(comp).o: $(comp).h 
+	@echo "Compiling $@..."
+	@$(CC) $(CFLAGS) -c -o $@ $<
 
 $(piece1).o: $(piece1).cpp $(piece1).h
 	@echo "Compiling $@..."
