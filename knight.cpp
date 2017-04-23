@@ -63,5 +63,6 @@ knight::knight(int x, int y, bool team) : piece(x,y,team)
 knight::knight(const knight& kin) : piece(kin.x,kin.y,kin.team)
 {
 	setType(KNIGHT);
+	copyData((piece*)(&kin));
 }
 knight::~knight(){}

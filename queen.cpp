@@ -198,5 +198,6 @@ queen::queen(int x, int y, bool team) : piece(x,y,team)
 queen::queen(const queen& qin) : piece(qin.x, qin.y ,qin.team)
 {
         setType(QUEEN);
+        copyData((piece*)(&qin));
 }
 queen::~queen(){}

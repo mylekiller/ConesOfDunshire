@@ -177,4 +177,17 @@ std::vector<int*>* piece::getAttacks()
 	return &attacks;
 }
 
+void piece::copyData(piece * in)
+{
+	reset();
+	for(auto it = in ->getMoves() -> begin() ; it != in->getMoves() -> end(); it++)
+	{
+		addMove((*it)[0],(*it)[1]);
+	}
+	for(auto it = in ->getAttacks() -> begin() ; it != in->getAttacks() -> end(); it++)
+	{
+		addAttack((*it)[0],(*it)[1]);
+	}
+}
+
 

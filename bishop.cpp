@@ -83,5 +83,6 @@ bishop::bishop(int x, int y, bool team) : piece(x,y,team)
 bishop::bishop(const bishop& bin) : piece(bin.x,bin.y,bin.team)
 {
 	setType(BISHOP);
+	copyData((piece*)(&bin));
 }
 bishop::~bishop(){}

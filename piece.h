@@ -39,6 +39,7 @@ public:
 	bool canMove();
 	void reset();
 	void update(board*);
+	void copyData(piece*);
 	virtual void print() = 0;
 	piecetype getType();
 protected:

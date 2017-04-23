@@ -125,5 +125,6 @@ void rook::setMoves(board* bin)
  rook::rook(const rook& rin) : piece(rin.x,rin.y,rin.team)
  {
     setType(ROOK);
+    copyData((piece*)(&rin));
  }
  rook::~rook(){}

@@ -10,6 +10,7 @@ pawn::pawn(const pawn& pin) : piece(pin.x,pin.y,pin.team)
 {
 	movedtwo = pin.movedtwo;
 	setType(PAWN);
+	copyData((piece*)(&pin));
 }
 //destructor
 pawn::~pawn(){}
