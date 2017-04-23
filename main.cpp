@@ -11,36 +11,35 @@ int main()
 	do
 	{
 		g.print();
+		int * moveind;
 		if(g.getTurn())
 		{
 			std::cout<<"White to move:  ";
-		}
-		else
-		{
-			std::cout<<"Black to move:  ";
-		}
+			
+			
 
-		std::string input;
-		std::getline(std::cin,input);
-		if (input == "q") {
-			std::cout << "Are you sure you want to quit? Press y for yes, press n to continue playing:    " ;
-			std::cout << std::endl;
-			std::string input2;
-			std::getline(std::cin, input2);
-			if (input2 == "y") {
-				done = true;
-				std::cout << "Thanks for playing!";
+			std::string input;
+			std::getline(std::cin,input);
+			if (input == "q") {
+				std::cout << "Are you sure you want to quit? Press y for yes, press n to continue playing:    " ;
 				std::cout << std::endl;
-				break;
-			}
-			else if(input2 == "n" ) {
-				done = false;
-				continue;
-			}
-		} 
-		int * moveind;
-		if(g.getTurn())
+				std::string input2;
+				std::getline(std::cin, input2);
+				if (input2 == "y") {
+					done = true;
+					std::cout << "Thanks for playing!";
+					std::cout << std::endl;
+					break;
+				}
+				else if(input2 == "n" ) {
+					done = false;
+					continue;
+				}
+			} 
+		
+			
 			moveind = stomove(input , g);
+		}	
 		else
 		{
 			std::pair<std::pair<int,int>, std::pair<int,int> > move = g.getAIMove();
