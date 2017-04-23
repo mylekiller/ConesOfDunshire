@@ -77,7 +77,7 @@ int AI::minSearch(board currentBoard, int depth)
 {
 	if(depth == 0)
 	{
-		return evaluate(board);
+		return evaluate(currentBoard);
 	}
 
 	int bestValue = INT_MAX;
@@ -85,13 +85,13 @@ int AI::minSearch(board currentBoard, int depth)
 	{
 		for(int j = 0;  j < 8; ++j)
 		{
-			if(currentBoard.isOccupied() && !currentBoard.get(i,j)->getTeam())
+			if(currentBoard.isOccupied(i,j) && !currentBoard.get(i,j)->getTeam())
 			{
 				auto moves = currentBoard.get(i,j)->getMoves();
 				for(auto it = moves->begin(); it != moves->end(); ++it)
 				{
 					board newBoard(currentBoard);
-					if(!newBoard.isAllowed(newBoard.get(i,j), (*it)[0], (*it)[1], false)
+					if(!newBoard.isAllowed(newBoard.get(i,j), (*it)[0], (*it)[1], false))
 					{
 						continue;
 					}
@@ -113,7 +113,7 @@ int AI::maxSearch(board currentBoard, int depth)
 {
 	if(depth == 0)
 	{
-		return evaluate(board);
+		return evaluate(currentBoard);
 	}
 
 	int bestValue = -INT_MAX;
@@ -121,7 +121,7 @@ int AI::maxSearch(board currentBoard, int depth)
 	{
 		for(int j = 0; j < 8; ++j)
 		{
-			if(currentBoard.isOccupied() && currentBoard.get(i,j)->getTeam())
+			if(currentBoard.isOccupied(i,j) && currentBoard.get(i,j)->getTeam())
 			{
 				auto moves = currentBoard.get(i,j)->getMoves();
 				for(auto it = moves->begin(); it != moves->end(); ++it)
@@ -147,7 +147,7 @@ int AI::maxSearch(board currentBoard, int depth)
 
 int AI::evaluate(board currentBoard)
 {
-	int value;
+	int value = 0;
 	for(int i = 0; i < 8; ++i)
 	{
 		for(int j = 0; j < 8; ++j)
@@ -173,6 +173,7 @@ int AI::evaluate(board currentBoard)
 			}
 		}
 	}
+	return value;
 }
 
 int AI::getPieceValue(enum piecetype type)

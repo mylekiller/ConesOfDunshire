@@ -174,8 +174,9 @@ void board::addPiece(piece* pin)
 }
 void board::printBoard()
 {
-	for(int j = 0; j<8;j++)
+	for(int j = 7; j>=0;j--)
 	{
+		std::cout<<"|";
 		for(int i =0 ; i<8;i++)
 		{
 			if(gameboard[i][j] != nullptr)
@@ -186,9 +187,19 @@ void board::printBoard()
 			{
 				std::cout<<"*";
 			}
+			std::cout<<"|";
 		}
-		std::cout<<'\n';
+		std::cout<<j;
+		std::cout<<"\n";
 	}
+	std::cout<<" ";
+	for(int i =0 ; i<8;i++)
+	{
+		std::cout<<i;
+		if(i != 7)
+			std::cout<<" ";
+	}
+	std::cout<<"\n";
 }
 
 

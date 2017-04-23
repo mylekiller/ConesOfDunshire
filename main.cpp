@@ -6,6 +6,7 @@ int* stomove(std::string, game&);
 int main()
 {
 	game g;
+
 	bool done = false;
 	do
 	{
@@ -37,7 +38,18 @@ int main()
 				continue;
 			}
 		} 
-		int * moveind = stomove(input , g);
+		int * moveind;
+		if(g.getTurn())
+			moveind = stomove(input , g);
+		else
+		{
+			std::pair<std::pair<int,int>, std::pair<int,int> > move = g.getAIMove();
+			moveind = new int[4];
+			moveind[0] = move.first.first;
+			moveind[1] = move.first.second;
+			moveind[2] = move.second.first;
+			moveind[3] = move.second.second;
+		}
 		piece * temp = g.getpiece(moveind[0],moveind[1]);
 
 	

@@ -39,7 +39,7 @@ chesslib.a: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6
 	@echo "Linking $@..."
 	@$(AR) $(ARFLAGS) $@ $^
 
-runchess.out: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(main).o $(game).o $(piece).o $(board).o
+runchess.out: $(piece1).o $(piece2).o $(piece3).o $(piece4).o $(piece5).o $(piece6).o $(main).o $(game).o $(piece).o $(board).o $(comp).o
 	@echo "Linking $@..."
 	@$(LD) $(LDFLAGS) -o $@ $^
 
@@ -55,7 +55,7 @@ $(board).o: $(board).cpp $(board).h
 	@echo "Compiling $@..."
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
-$(comp).o: $(comp).h 
+$(comp).o: $(comp).cpp $(comp).h 
 	@echo "Compiling $@..."
 	@$(CC) $(CFLAGS) -c -o $@ $<
 

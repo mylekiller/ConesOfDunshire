@@ -94,3 +94,8 @@ bool game::trymove(int sx,int sy, int tx, int ty)
 int game::inCheck(bool team) {
 	return boardGame.check(team);
 }
+
+std::pair<std::pair<int,int> , std::pair<int,int> > game::getAIMove()
+{
+	return ai.minimax(boardGame, turn, 10);
+}
