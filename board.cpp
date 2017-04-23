@@ -188,7 +188,34 @@ void board::execmove(piece * p, int x, int y )
 	}
 	if(p -> getType() == KING)
 	{
-		//do the castling check
+		if(x == p->getX() + 2)
+		{
+			if(gameboard[x+1][y] -> getType() == ROOK)
+			{
+				gameboard[x][y] = p;
+				gameboard[p->getX()][p->getY()] = NULL;
+				gameboard[x-1][y] = gameboard[x+1][y];
+				gameboard[x+1][y] = NULL;
+				p -> move(x,y);
+				gameboard[x-1][y] -> move(x-1,y);
+				update();
+				return;
+			}
+		}
+		if(x == p->getX() - 2)
+		{
+			if(gameboard[x-2][y] -> getType() == ROOK)
+			{
+				gameboard[x][y] = p;
+				gameboard[p->getX()][p->getY()] = NULL;
+				gameboard[x+1][y] = gameboard[x-2][y];
+				gameboard[x-2][y] = NULL;
+				p -> move(x,y);
+				gameboard[x+1][y] -> move(x+1,y);
+				update();
+				return;
+			}
+		}
 	}
 	if(isOccupied(x,y))
 	{

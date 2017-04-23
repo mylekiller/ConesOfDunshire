@@ -49,6 +49,24 @@ void king::setMoves(board* bin)
 		}
 	}
 
+
+	//CASTLING
+
+	int newx = getX() + 2;
+	int newy = getY();
+	if(!hasmoved && inbounds(newx, newy) && inbounds(newx+1,newy) && bin -> isOccupied(newx+1,newy) && bin -> get(newx+1,newy) -> getType() == ROOK && bin->get(newx+1,newy) -> hasMoved() == false)
+	{
+		addMove(newx,newy);
+	}
+
+	newx = getX() - 2;
+	newy = getY();
+	if(!hasmoved && inbounds(newx, newy) && inbounds(newx-2,newy) && bin -> isOccupied(newx-2,newy) && bin -> get(newx-2,newy) -> getType() == ROOK && bin->get(newx-2,newy) -> hasMoved() == false)
+	{
+		addMove(newx,newy);
+	}
+
+
 }
 void king::setAttacks(board* bin)
 {
