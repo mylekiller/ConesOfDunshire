@@ -1,4 +1,4 @@
-
+#include <string.h>
 #include "game.h"
 #include <iostream>
 
@@ -21,7 +21,22 @@ int main()
 
 		std::string input;
 		std::getline(std::cin,input);
-
+		if (input == "q") {
+			std::cout << "Are you sure you want to quit? Press y for yes, press n to continue playing:    " ;
+			std::cout << std::endl;
+			std::string input2;
+			std::getline(std::cin, input2);
+			if (input2 == "y") {
+				done = true;
+				std::cout << "Thanks for playing!";
+				std::cout << std::endl;
+				break;
+			}
+			else if(input2 == "n" ) {
+				done = false;
+				continue;
+			}
+		} 
 		int * moveind = stomove(input , g);
 		piece * temp = g.getpiece(moveind[0],moveind[1]);
 
