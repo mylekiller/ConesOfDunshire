@@ -12,7 +12,7 @@ class rook:public piece
                 rook(const rook&);
                 ~rook();   //destructor
                 void setMoves(board* bin);
-                std::vector<int*>* getAttacks(); //gets vector of attack moves
+                void setAttacks(board*);
                 void print(); 
         private:
 

@@ -23,9 +23,11 @@ public:
 	piece(int, int, bool);   //defualt constructor; args: x position, y position, team (black/white)
 	virtual ~piece();   //default constructor
 	virtual void setMoves(board*) = 0;   //setter function; sets the moves possible for the piece
+	virtual void setAttacks(board*) = 0;
 	std::vector<int*>* getMoves();   //getter function; returns pointer to vector of possible moves
-	virtual std::vector<int*>* getAttacks() = 0;
-	virtual void resetMoves();   //clears the vector "moves" to allow it to be updated
+	std::vector<int*>* getAttacks();
+	void resetMoves();   //clears the vector "moves" to allow it to be updated
+	void resetAttacks();
 	void setX(int);   //setter function; sets the current x position of the piece
 	int getX();   //getter function; gets the current x position of the piece
 	void setY(int);   //setter function; sets the current y position of the piece
@@ -35,12 +37,16 @@ public:
 	bool hasMoved();
 	void move(int, int);   //"moves" the piece sets the pieces position to (x,y)
 	bool canMove();
+	void reset();
+	void update(board*);
 	virtual void print() = 0;
 	piecetype getType();
 protected:
 	void setType(enum piecetype);
 	std::vector<int*> moves;   //vector of pointers to integers arrays; represents the possible moves
+	std::vector<int*> attacks;
 	void addMove(int, int);   //adds the possibility of a move to a specific space
+	void addAttack(int , int);
 	bool inbounds(int,int);   //reutrns whethere a space is on the board
 
 	int x;   //piece's current x position

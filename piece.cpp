@@ -23,6 +23,10 @@ piece::~piece()
 	{
 		delete [] moves[i];   //deletes each array of integers
 	}
+	for(int i = 0; i<attacks.size();i++)   //iterates through the vector of moves
+	{
+		delete [] attacks[i];   //deletes each array of integers
+	}
 }
 
 //getter function; reutnrs pointer to the vecotor of possible moves "moves"
@@ -47,8 +51,22 @@ void piece::resetMoves()
 		moves.erase(it);
 		it = moves.begin();
 	}
+}
+void piece::resetAttacks()
+{
+	
 
+	for( size_t i = 0; i < attacks.size(); i++)   //iterates through the vector of moves
+	{
+		delete [] attacks[i];   //deletes each array fo integers
+	}
 
+	auto it = attacks.begin();
+	while( it != attacks.end() )
+	{
+		attacks.erase(it);
+		it = attacks.begin();
+	}
 }
 
 
@@ -114,6 +132,13 @@ void piece::addMove(int x, int y)
 	move[1] = y;   //second element contains y position of possible move
 	moves.push_back(move);   //adds the new pointer based array to the vector of possible moves "moves"
 }
+void piece::addAttack(int x ,int y)
+{
+	int* move = new int[2];   
+	move[0] = x;   
+	move[1] = y;  
+	attacks.push_back(move);
+}
 
 //returns if a space (x,y) is on the board
 bool piece::inbounds(int x, int y)
@@ -128,10 +153,24 @@ void piece::setType(enum piecetype tin)
 {
 	type = tin;
 }
+void piece::update(board* bin)
+{
+	setMoves(bin);
+	setAttacks(bin);
+}
 
+void piece::reset()
+{
+	resetAttacks();
+	resetMoves();
+}
 bool piece::canMove()
 {
 	return moves.size() != 0;
+}
+std::vector<int*>* piece::getAttacks()
+{
+	return &attacks;
 }
 
 

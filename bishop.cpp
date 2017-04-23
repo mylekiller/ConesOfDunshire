@@ -34,6 +34,38 @@ void bishop::setMoves(board* bin)
 		}
 	}
 }
+void bishop::setAttacks(board* bin)
+{
+	for( int xdir = -1; xdir <= 1; xdir +=2 )
+	{
+		for( int ydir = -1; ydir <= 1; ydir +=2 )
+		{
+			int x, y;
+
+			for( int dis = 1; dis <= 7; dis++ )
+			{
+				x = getX() + xdir * dis;
+				y = getY() + ydir * dis;
+
+				if(inbounds(x,y) && bin -> isOccupied(x,y))
+				{
+					
+					addAttack(x,y);
+					
+					break;
+				}
+				if(inbounds(x,y))
+				{
+					addAttack(x,y);
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+	}
+}
 
 void bishop::print()
 {
@@ -42,10 +74,7 @@ void bishop::print()
 	else
 		std::cout<<'B';
 }
-std::vector<int*>* bishop::getAttacks()
-{
-	return getMoves();
-}
+
 
 bishop::bishop(int x, int y, bool team) : piece(x,y,team)
 {

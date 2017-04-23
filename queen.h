@@ -10,7 +10,7 @@ class queen:public piece
                 queen(const queen&);
                 ~queen();   //destructor
                 void setMoves(board* bin);
-                std::vector<int*>* getAttacks();
+                void setAttacks(board*);
                 void print();
         private:
 

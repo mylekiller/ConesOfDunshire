@@ -20,6 +20,16 @@ board::board(){
 			gameboard[i][j] = nullptr;
 		}
 	}
+	for(int t = 0; t<=1; t++)
+	{
+		for(int i = 0;i<8;i++)
+		{
+			for(int j = 0; j<8; j++)
+			{
+				attacks[t][i][j] =false;
+			}
+		}
+	}
 }
 board::board(const board& bin)
 {
@@ -132,32 +142,7 @@ bool board::getTeam(int x, int y)
 	return false;
 }
 
-void board::updateMoves()
-{
-	for(int i = 0; i< 8; i++)
-	{
-		for(int j = 0;j<8;j++)
-		{
-			
-			if(gameboard[i][j] != nullptr)
-			{
-				
-				gameboard[i][j] -> resetMoves();
 
-			}
-		}
-	}
-
-	
-	for(int i = 0; i< 8; i++)
-	{
-		for(int j = 0;j<8;j++)
-		{
-			if(gameboard[i][j] != nullptr)
-				gameboard[i][j] -> setMoves(this);
-		}
-	}
-}
 void board::addPiece(piece* pin)
 {
 	gameboard[pin->getX()][pin->getY()] = pin;
@@ -181,43 +166,7 @@ void board::printBoard()
 	}
 }
 
-void board::updateAttacks()
-{
 
-	for(int t = 0; t<=1; t++)
-	{
-		for(int i = 0; i<8;i++)
-		{
-			for(int j = 0; j<8;j++)
-			{
-				attacks[t][i][j] = false;
-			}
-		}
-	}
-
-	for(int i = 0; i< 8; i++)
-	{
-		for(int j = 0; j<8; j++)
-		{
-		
-			if(isOccupied(i,j))
-			{
-				
-				std::vector<int*>* temp = gameboard[i][j] -> getAttacks();
-				
-				for(auto it = temp -> begin() ; it != temp -> end() ; it++)
-				{
-					int teamnum = gameboard[i][j] -> getTeam() ? 1 : 0;
-					
-					attacks[teamnum][(*it)[0]][(*it)[1]] = true;
-				
-				}
-			}
-		}
-	}
-
-
-}
 void board::execmove(piece * p, int x, int y )
 {
 	if(p -> getType() == PAWN) //check for an enpassant capture
@@ -265,10 +214,67 @@ void board::execmove(piece * p, int x, int y )
 void board::update()
 {
 
-	updateMoves();
-	
+	for(int t = 0; t<=1; t++)
+	{
+		for(int i = 0;i<8;i++)
+		{
+			for(int j = 0; j<8; j++)
+			{
+				attacks[t][i][j] =false;
+			}
+		}
+	}
 
-	updateAttacks();
+	for(int i = 0; i< 8; i++)
+	{
+		for(int j = 0;j<8;j++)
+		{
+			
+			if(gameboard[i][j] != nullptr)
+			{
+				
+				gameboard[i][j] -> reset();
+
+			}
+		}
+	}
+
+	
+	for(int i = 0; i< 8; i++)
+	{
+		for(int j = 0;j<8;j++)
+		{
+			if(gameboard[i][j] != nullptr)
+				gameboard[i][j] -> update(this);
+		}
+	}
+
+
+	for(int i = 0; i< 8; i++)
+	{
+		for(int j = 0; j<8; j++)
+		{
+		
+			if(isOccupied(i,j))
+			{
+				
+				std::vector<int*>* temp = gameboard[i][j] -> getAttacks();
+				
+				for(auto it = temp -> begin() ; it != temp -> end() ; it++)
+				{
+					int teamnum = gameboard[i][j] -> getTeam() ? 1 : 0;
+					if(!inbounds((*it)[0],(*it)[1]))
+					{
+						for(int i = 0; i<100;i++) std::cout<<"!";
+						std::cout<<"\n";
+					}
+
+ 					attacks[teamnum][(*it)[0]][(*it)[1]] = true;
+				
+				}
+			}
+		}
+	}
 
 }
 bool board::inbounds(int x, int y)
@@ -280,20 +286,20 @@ piece* board::get(int x, int y)
 	return gameboard[x][y];
 }
 
-int board::check()
+int board::check(bool team)
 {
 	for(int i = 0; i<8;i++)
 	{
 		for(int j = 0; j<8;j++)
 		{
-			if(isOccupied(i,j) && gameboard[i][j] -> getType() == KING  )
+			if(isOccupied(i,j) && gameboard[i][j] -> getType() == KING  && gameboard[i][j] -> getTeam() == team )
 			{
-				int teamnum = gameboard[i][j] ->getTeam() ? 0 : 1;
-				if(attacks[teamnum][i][j])
+				
+				if(attacks[team ? 0 : 1][i][j])
 				{
-					int teammult = gameboard[i][j] -> getTeam()? 1 : -1;
-					return teammult;
+					return 1;
 				}
+				return 0;
 			}	
 		}
 	}

@@ -32,13 +32,11 @@ class board
 		void addPiece(piece*);
 		void printBoard();
 		void printAttacks();
-		void updateMoves();
-		void updateAttacks();
 		bool checkEnPassant(int, int,bool);
 		bool inbounds(int,int);
 		void execmove(piece *, int, int);
 		void update();
-		int check(); // returns 0 if no check -1 if black in check 1 if white in check
+		int check(bool); // returns 0 if no check -1 if black in check 1 if white in check
 
 		piece* get(int,int);
 	private:

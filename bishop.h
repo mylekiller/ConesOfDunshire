@@ -11,7 +11,8 @@ class bishop:public piece
 		bishop(const bishop&);
 		~bishop();   //destructor
 		void setMoves(board*);   //fils vector of "moves" with all possible moves
-		std::vector<int*>* getAttacks();   //returns all spaces this piece is attacking
+		void setAttacks(board*);
+
 
 		void print();
 	private:

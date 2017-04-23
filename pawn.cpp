@@ -90,27 +90,21 @@ void pawn::setMoves(board* board)
 		}
 	}
 
-	
+}
+
+void pawn::setAttacks(board * bin)
+{
+	int teammult = getTeam() ? 1 : -1;
 	for(int delx = -1 ;delx<=1;delx+=2)
 	{
+		int newx = getX() + delx;
+		int newy = getY() + teammult;
 
-		int* move = new int[2];
-		move[0] = getX() + delx;
-		move[1] = getY();
-
-
-		if(inbounds(move[0],move[1]))
-				attacks.push_back(move);
+		if(inbounds(newx,newy))
+				addAttack(newx,newy);
 	}
-	
-
 }
 
-//returns pointer to vector of pointer based integer arrays representing what spaces this pawn is attacking
-std::vector<int*>* pawn::getAttacks()
-{
-	return &attacks;
-}
 bool pawn::movedTwo()
 {
 	return movedtwo;

@@ -11,7 +11,7 @@ class knight:public piece
 		knight(const knight&);
 		~knight();   //destructor
 		void setMoves(board* bin);
-		std::vector<int*>* getAttacks();
+		void setAttacks(board*);
 		void print();
 	private:
 

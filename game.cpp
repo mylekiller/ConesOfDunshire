@@ -67,10 +67,11 @@ bool game::trymove(int sx,int sy, int tx, int ty)
 				board temp(boardGame);
 			
 				temp.execmove(temp.get(sx,sy),tx,ty);
+
 		
-				if(temp.check() != (turn ? 1 : -1))
+				if(temp.check(turn) == 0)
 				{
-					boardGame.printAttacks();
+			
 					boardGame.execmove(boardGame.get(sx,sy),tx,ty);
 					turn = !turn;
 					return true;

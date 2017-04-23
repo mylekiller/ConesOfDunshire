@@ -12,7 +12,7 @@ class king:public piece
 		king(const king&);
 		~king();   //destructor
 		void setMoves(board*);
-		std::vector<int*>* getAttacks();   //returns pointer to vector of pointer based integer arrays representing sqaures that are attacked by this pawn
+		void setAttacks(board*);   //returns pointer to vector of pointer based integer arrays representing sqaures that are attacked by this pawn
 		void print();
 	private:
 
