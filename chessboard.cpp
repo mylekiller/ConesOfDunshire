@@ -88,6 +88,7 @@ int main( int argc, char* args[] )
 			bool chooseMode = false;
 			bool onePlayer = false;
 			bool twoPlayer = false;
+			bool playerColor = true;
 			int players = 0;
 			while (!chooseMode && !quit) {
 				while (SDL_PollEvent( &e ) != 0) {
@@ -144,8 +145,13 @@ int main( int argc, char* args[] )
 
 			closeSplash();
 			bool selected = false;
-			int xcord;
+			bool moved = false;
+			int xcord; //The Constantly updated Cords based on clicks 
 			int ycord;
+			int xcordi;//The initial cords of a successful move
+			int ycordi;
+			int xcordf;//The final cords of a successful move
+			int ycordf;
 			//While application is running
 			while( !quit )
 			{	
@@ -170,18 +176,24 @@ int main( int argc, char* args[] )
 								selected = !selected;
 							}
 							else {
-								bool test;
-								test = newGame.trymove(xcord, -1*(ycord-7), x/100, -1*((y/100)-7));
-								printf("Result of attempted move: %d\n", test);
+								bool outcome;
+								outcome = newGame.trymove(xcord, -1*(ycord-7), x/100, -1*((y/100)-7));
 								selected = !selected;
+								if (outcome) {
+									xcordi = xcord;
+									ycordi = ycord;
+									xcordf = x/100;
+									ycordf = y/100;
+									moved = true;
+								}
 							}
 						}
 						else {
-							xcord = x/100;
-							ycord = y/100;
-							piece * p = newGame.getpiece(xcord, -1*(ycord-7));
+							piece * p = newGame.getpiece(x/100, -1*((y/100)-7));
 							if (p != nullptr && p -> getTeam() == newGame.getTurn()) {
 								selected = true;
+								xcord = x/100;
+								ycord = y/100;
 							}
 						}
 					}
@@ -198,6 +210,11 @@ int main( int argc, char* args[] )
 					gSelected.render(gRenderer,xcord*100, ycord*100, NULL);
 				}
 
+				if(moved) {
+					gSelected.render(gRenderer,xcordi*100, ycordi*100, NULL);
+					gSelected.render(gRenderer,xcordf*100, ycordf*100, NULL);
+				}
+
 				//Render each piece in proper area
 				for (int i = 0; i < 8; i++) {
 					for (int j = 0; j < 8; j++) {
@@ -205,7 +222,7 @@ int main( int argc, char* args[] )
 						if (p != nullptr) {
 							if (p -> getType() == KING && newGame.inCheck(p -> getTeam())) {
 								gCheck.render(gRenderer, j*100, i*100, NULL);
-								if (selected) {
+								if (selected && p -> getType() == KING) {
 									gSelected.render(gRenderer, xcord*100, ycord*100, NULL);
 								}
 							}
@@ -214,6 +231,15 @@ int main( int argc, char* args[] )
 					}
 				}
 				SDL_RenderPresent( gRenderer );
+				if (players == 1 && (newGame.getTurn() != playerColor)) {
+					std::pair<std::pair<int,int>, std::pair<int,int>> tofrom = newGame.getAIMove();
+					newGame.trymove(tofrom.first.first, tofrom.first.second, tofrom.second.first, tofrom.second.second);
+					xcord = tofrom.first.first;
+					ycord = -1*(tofrom.first.second-7);
+					xcordf = tofrom.second.first;
+					ycordf = -1*(tofrom.second.second-7);
+					moved = true;
+				}
 			}
 		}
 	}
