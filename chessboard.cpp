@@ -234,8 +234,8 @@ int main( int argc, char* args[] )
 				if (players == 1 && (newGame.getTurn() != playerColor)) {
 					std::pair<std::pair<int,int>, std::pair<int,int>> tofrom = newGame.getAIMove();
 					newGame.trymove(tofrom.first.first, tofrom.first.second, tofrom.second.first, tofrom.second.second);
-					xcord = tofrom.first.first;
-					ycord = -1*(tofrom.first.second-7);
+					xcordi = tofrom.first.first;
+					ycordi = -1*(tofrom.first.second-7);
 					xcordf = tofrom.second.first;
 					ycordf = -1*(tofrom.second.second-7);
 					moved = true;
