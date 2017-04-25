@@ -240,6 +240,7 @@ int main( int argc, char* args[] )
 					ycordf = -1*(tofrom.second.second-7);
 					moved = true;
 				}
+				SDL_Delay(100);
 			}
 		}
 	}
