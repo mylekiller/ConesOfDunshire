@@ -1,8 +1,25 @@
 #include <iostream>
 #include <vector>
 #include "AI.h"
+#include <time.h>
 
-AI::AI(){}
+AI::AI(){
+
+	srand(time(NULL));
+	for(size_t t = 0; t<12 ;t++)
+	{
+		for(size_t i = 0; i<8;i++)
+		{
+			for(size_t j = 0; j<8;j++)
+			{
+				hashvalues[t][i][j] = rand();
+			}
+		}
+	}
+
+	transpositions.reserve(50000);
+	std::cout<<"Randomizing the numbers...\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+}
 
 AI::~AI(){}
 
@@ -50,7 +67,7 @@ std::pair<std::pair<int,int>,std::pair<int,int>> AI::minimax(board& currentBoard
 					int value;
 					if(team)    //fi AI is playing for white
 					{
-						value = maxSearch(newBoard, depth-1);
+						value = minSearch(newBoard, depth-1 , -INT_MAX, INT_MAX);
 						if(value > bestValue)
 						{
 
@@ -63,7 +80,7 @@ std::pair<std::pair<int,int>,std::pair<int,int>> AI::minimax(board& currentBoard
 					}
 					else    //if AI is playing for black
 					{
-						value = minSearch(newBoard, depth-1);
+						value = maxSearch(newBoard, depth-1 , -INT_MAX, INT_MAX);
 						if(value < bestValue)
 						{
 							std::cout<<"Found a better move...\n";
@@ -78,12 +95,13 @@ std::pair<std::pair<int,int>,std::pair<int,int>> AI::minimax(board& currentBoard
 			}
 		}
 	}
+	std::cout<<"The value of the best move was: "<<bestValue<<"\n";
 	return bestMove;
 }
 
-int AI::minSearch(board& currentBoard, int depth)
+int AI::minSearch(board& currentBoard, int depth , int alpha, int beta)
 {
-	std::cout<<"Min search at depth... "<<depth << "\n";
+	
 	if(depth == 0)
 	{
 		return evaluate(currentBoard);
@@ -104,12 +122,40 @@ int AI::minSearch(board& currentBoard, int depth)
 					{
 						continue;
 					}
+
 					newBoard.execmove(newBoard.get(i,j), (*it)[0], (*it)[1]);
 
-					int value = maxSearch(newBoard, depth-1);
+					int value;
+					if(transpositions.find(newBoard) != transpositions.end())
+					{
+						value = transpositions.find(newBoard) -> second;
+					}
+					else
+					{
+						value = maxSearch(newBoard, depth-1 , alpha , beta);
+						transpositions[newBoard]=value;
+						board newnewboard(newBoard);
+						std::cout<<"Initial test..."<<(newBoard==newnewboard)<<"\n";
+						std::cout<<"The current size is ... "<<transpositions.size()<<"\n";
+						std::cout<<"This should be tru too......."<<(transpositions[newBoard] == value)<<"\n";
+						
+						std::cout<<"This should be tru:...."<<transpositions.count(newBoard)<<"\n";
+
+						std::cout<<"Final test..." << (newBoard == newnewboard)<<"\n";
+					}
 					if(value < bestValue )
 					{
 						bestValue = value;
+					}
+
+					if(value < beta)
+					{
+						beta = value;
+					}
+					if(beta <= alpha)
+					{
+						std::cout<<"Beta cutoff!\n";
+						break;
 					}
 				}
 			}
@@ -118,9 +164,9 @@ int AI::minSearch(board& currentBoard, int depth)
 	return bestValue;
 }
 
-int AI::maxSearch(board& currentBoard, int depth)
+int AI::maxSearch(board& currentBoard, int depth , int alpha , int beta)
 {
-	std::cout<<"Max search at depth... "<<depth << "\n";
+	
 	if(depth == 0)
 	{
 		return evaluate(currentBoard);
@@ -143,10 +189,30 @@ int AI::maxSearch(board& currentBoard, int depth)
 					}
 					newBoard.execmove(newBoard.get(i,j), (*it)[0], (*it)[1]);
 
-					int value = minSearch(newBoard, depth-1);
+					int value;
+
+					if(transpositions.find(newBoard) != transpositions.end())
+					{
+						std::cout<<"Found a match!!!!!\n\n\n\n\n\n\n";
+						value = transpositions.find(newBoard) -> second;
+					}
+					else
+					{
+						value= minSearch(newBoard, depth-1, alpha, beta);
+						transpositions[newBoard]=value;
+					}
 					if(value > bestValue)
 					{
 						bestValue = value;
+					}
+					if(value > alpha )
+					{
+						alpha = value;
+					}
+					if(beta <= alpha)
+					{
+						std::cout<<"Alpha cutoff!\n";
+						break;
 					}
 				}
 			}
@@ -187,7 +253,6 @@ int AI::evaluate(board& currentBoard)
 			}
 		}
 	}
-	std::cout<<"Evaluated a board to... "<<value<<"\n";
 	return value;
 }
 
