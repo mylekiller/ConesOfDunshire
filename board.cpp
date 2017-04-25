@@ -13,6 +13,8 @@ bool board::isOccupied(int x, int y)
 }
 
 board::board(){
+
+
 	for(int i = 0 ;i<8;i++)
 	{
 		for(int j = 0 ;j < 8;j++)
@@ -63,8 +65,6 @@ board::board(const board& bin)
 			}
 		}
 	}
-	//update();
-
 }	
 
 board::~board(){
@@ -80,6 +80,33 @@ board::~board(){
 	}
 }
 
+
+bool board::operator==( const board& bin) const
+{
+	for(int i = 0; i<8;i++)
+	{
+		for(int j = 0; j<8;j++)
+		{
+			if(gameboard[i][j])
+			{
+				if(bin.gameboard[i][j])
+				{
+					if((*gameboard[i][j]) == (*bin.gameboard[i][j]))
+					{
+						continue;
+					}
+				}
+				
+				return false;
+			}
+			else if(bin.gameboard[i][j])
+			{
+				return false;	
+			}
+		}
+	}
+	return true;
+}
 
 piece* board::copypiece(piece* p)
 {
@@ -352,7 +379,7 @@ bool board::inbounds(int x, int y)
 {
 	return x>=0 && x<8 && y>=0 && y<8;
 }
-piece* board::get(int x, int y)
+piece* board::get(int x, int y) const
 {
 	return gameboard[x][y];
 }
@@ -418,9 +445,7 @@ bool board::isAllowed(piece* p , int x , int y, bool turn)
 	return false;
 }
 bool board::checkEnPassant( int x, int y, bool team)
-{
-	
-	
+{	
 	int checkx = x;
 	int checky = team ? y-1 : y+1;
 
@@ -430,5 +455,4 @@ bool board::checkEnPassant( int x, int y, bool team)
 			return true;
 	}
 	return false;
-
 }

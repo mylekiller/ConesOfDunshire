@@ -75,7 +75,16 @@ void bishop::print()
 		std::cout<<'B';
 }
 
-
+bool bishop::operator==(const piece& pin) const
+{
+	if(pin.getType() == BISHOP)
+	{
+		bishop* p = (bishop*) (&pin);
+		if(p -> x == x && p->y == y && p->team==team && p->hasmoved == hasmoved)
+			return true;
+	}
+	return false;
+}
 bishop::bishop(int x, int y, bool team) : piece(x,y,team)
 {
 	setType(BISHOP);

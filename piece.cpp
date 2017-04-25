@@ -149,7 +149,7 @@ bool piece::inbounds(int x, int y)
 {
 	return x>=0 && x<8 && y>=0 && y<8;
 }
-piecetype piece::getType()
+piecetype piece::getType() const
 {
 	return type;
 }
@@ -188,6 +188,7 @@ void piece::copyData(piece * in)
 	{
 		addAttack((*it)[0],(*it)[1]);
 	}
+	hasmoved = in -> hasmoved;
 }
 
 

@@ -41,7 +41,9 @@ public:
 	void update(board*);
 	void copyData(piece*);
 	virtual void print() = 0;
-	piecetype getType();
+	piecetype getType() const;
+
+	virtual bool operator==(const piece& pin) const  = 0;
 protected:
 	void setType(enum piecetype);
 	std::vector<int*> moves;   //vector of pointers to integers arrays; represents the possible moves

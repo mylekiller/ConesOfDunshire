@@ -48,6 +48,17 @@ void knight::setAttacks(board* bin)
 	}
 }
 
+bool knight::operator==(const piece& pin) const 
+{
+	if(pin.getType() == KNIGHT)
+	{
+		knight* p = (knight*) (&pin);
+		if( p -> x == x && p->y == y && p->team==team && p->hasmoved == hasmoved)
+			return true;
+	}
+	return false;
+}
+
 void knight::print()
 {
 	if(!getTeam())

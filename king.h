@@ -14,6 +14,8 @@ class king:public piece
 		void setMoves(board*);
 		void setAttacks(board*);   //returns pointer to vector of pointer based integer arrays representing sqaures that are attacked by this pawn
 		void print();
+
+		bool operator==(const piece& pin) const;
 	private:
 
 };

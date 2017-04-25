@@ -182,6 +182,18 @@ void queen::setAttacks(board* bin)
         
 }
 
+
+bool queen::operator==(const piece& pin) const
+{
+        if(pin.getType() == QUEEN)
+        {
+                queen* p = (queen*) (&pin);
+                if(p -> x == x && p->y == y && p->team==team && p->hasmoved == hasmoved)
+                        return true;
+        }
+        return false;
+}
+
 void queen::print() //prints the queen on the board, q or Q depending on black or white pieces
 {
         if(getTeam())

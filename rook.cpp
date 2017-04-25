@@ -109,6 +109,18 @@ void rook::setMoves(board* bin)
         }
  }
  
+
+bool rook::operator==(const piece& pin) const
+{
+    if(pin.getType() == ROOK)
+    {
+        rook* p = (rook*) (&pin);
+        if(p -> x == x && p->y == y && p->team==team && p->hasmoved == hasmoved)
+            return true;
+    }
+    return false;
+}
+
  void rook::print()
  {
          if(getTeam())

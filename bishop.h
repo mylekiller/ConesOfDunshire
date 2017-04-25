@@ -15,6 +15,8 @@ class bishop:public piece
 
 
 		void print();
+
+		bool operator==(const piece& pin) const;
 	private:
 
 };

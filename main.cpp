@@ -1,13 +1,55 @@
 #include <string.h>
 #include "game.h"
+#include "bishop.h"
+#include "pawn.h"
 #include <iostream>
 
+//extern size_t hashvalues[12][8][8];
+
 int* stomove(std::string, game&);
+/*
+size_t testHash(const board& val)
+{
+		size_t result = 0;
+		for(int i = 0; i<8;i++)
+		{
+			for(int j = 0; j<8;j++)
+			{
+				if(val.get(i,j))
+					result = result ^ hashvalues[val.get(i,j) -> getType()*(val.get(i,j) -> getTeam() ? 1 : 2)][i][j];
+			}
+
+		}
+		return result;
+}
+*/
 int main()
 {
 	game g;
 
 	bool done = false;
+
+	/*board b;
+	b.addPiece(new bishop(3,3,false));
+	board b2;
+	b2.addPiece(new bishop(3,3,false));
+	std::cout<<testHash(b)<<"\n";
+	std::cout<<testHash(b2)<<"\n";
+	std::cout<<(b == b2)<<"\n";
+	bishop bish1(3,3,false);
+	bishop bish2(3,3,false);
+	std::cout<<(bish1==bish2)<<"\n";
+	pawn p1(2,2,true);
+	pawn p2(2,2,true);
+	std::cout<<(p1 == p2)<<"\n";
+
+	b.addPiece(&p1);
+	b2.addPiece(&p2);
+
+	std::cout<<testHash(b)<<"\n";
+	std::cout<<testHash(b2)<<"\n";
+	std::cout<<(b == b2)<<"\n";
+	std:*/
 	do
 	{
 		g.print();

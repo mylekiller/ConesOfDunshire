@@ -18,6 +18,8 @@ class pawn:public piece
 		bool movedTwo();
 		void setMovedTwo(bool);
 
+		bool operator==(const piece& pin) const;
+
 
 	private:
 		bool movedtwo;

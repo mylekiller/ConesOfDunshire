@@ -14,6 +14,8 @@ class rook:public piece
                 void setMoves(board* bin);
                 void setAttacks(board*);
                 void print(); 
+
+               bool operator==(const piece& pin) const;
         private:
 
 };

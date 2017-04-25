@@ -28,6 +28,17 @@ void pawn::resetMoves()
 	piece::resetMoves();
 }
 
+
+bool pawn::operator==(const piece& pin) const
+{
+	if(pin.getType() == PAWN)
+	{
+		pawn* p = (pawn*) (&pin);
+		if(p->movedtwo == movedtwo && p -> x == x && p->y == y && p->team==team && p->hasmoved == hasmoved)
+			return true;
+	}
+	return false;
+}
 void pawn::setMoves(board* board)
 {
 
@@ -41,13 +52,6 @@ void pawn::setMoves(board* board)
 		{
 			if(board -> isOccupied(newx,newy))
 				break;
-			if(getX() == 3 && getY() == 3)
-			{
-				if(newx == getX() && newy == getY() + 1 )
-				{
-					std::cout<<"Occupied? :  "<<board -> isOccupied(newx , newy) << "\n";
-				}
-			}
 			addMove(newx,newy);
 		}
 	}
@@ -59,7 +63,6 @@ void pawn::setMoves(board* board)
 		//En passant check
 		if(board -> checkEnPassant(newx,newy,getTeam()))	
 		{
-			std::cout<<"Adding en passant move!... \n ";
 			addMove(newx,newy);
 			if(newx == getX() && newy == getY() + teammult)
 			{

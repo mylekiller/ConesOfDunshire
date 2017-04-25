@@ -22,6 +22,18 @@ void king::print()
 		std::cout<<'k';
 }
 
+
+bool king::operator==(const piece& pin) const
+{
+	if(pin.getType() == KING)
+	{
+		king* p = (king*) (&pin);
+		if(p -> x == x && p->y == y && p->team==team && p->hasmoved == hasmoved)
+			return true;
+	}
+	return false;
+}
+
 void king::setMoves(board* bin)
 {
 	for(int xdir = -1 ; xdir <=1;xdir++)
