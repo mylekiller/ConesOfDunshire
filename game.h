@@ -14,6 +14,7 @@ public:
 	piece* getpiece(int,int);
 	bool getTurn();
 	int inCheck(bool team);
+	bool checkPromotion(int,int,int,int);
 	std::pair<std::pair<int,int> , std::pair<int,int> > getAIMove();
 private:
 	board boardGame;

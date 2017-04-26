@@ -91,6 +91,10 @@ bool game::trymove(int sx,int sy, int tx, int ty, enum piecetype ptype)
 	return false;
 }
 
+bool game::checkPromotion(int fx,int fy, int tx, int ty)
+{
+	return boardGame.isAllowed(boardGame.get(fx,fy),tx,ty,turn);
+}
 int game::inCheck(bool team) {
 	return boardGame.check(team);
 }
