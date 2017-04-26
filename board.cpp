@@ -422,14 +422,41 @@ int board::check(bool team)
 				
 				if(attacks[team ? 0 : 1][i][j])
 				{
-					return 1;
+					if(hasMove(team))
+						return 1;
+					return 2;
 				}
+				if(!hasMove(team))
+					return 3;
 				return 0;
 			}	
 		}
 	}
+	if(!hasMove(team))
+		return 3;
 	return 0; 
 }
+
+bool board::hasMove(bool team)
+{
+	for(int i = 0; i<8;i++)
+	{
+		for(int j = 0; j<8;j++)
+		{
+			if(isOccupied(i,j) && gameboard[i][j] -> getTeam() == team )
+			{
+				auto moves = gameboard[i][j] ->getMoves();
+				for(auto it = moves -> begin() ; it!=moves -> end() ; it++)
+				{
+					if(isAllowed(gameboard[i][j], (*it)[0], (*it)[1],team))
+						return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
 bool board::isAllowed(piece* p , int x , int y, bool turn)
 {
 

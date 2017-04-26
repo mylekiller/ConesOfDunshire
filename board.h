@@ -50,6 +50,8 @@ class board
 		bool attacks[2][8][8]; //shows the squares that are attacked to check for check/checkmate/castling 1 = white 0 = black
 		piece* copypiece(piece*);
 
+		bool hasMove(bool);
+
 };
 
 #endif
