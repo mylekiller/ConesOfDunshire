@@ -10,7 +10,7 @@ public:
 	game();
 	~game();
 	void print();
-	bool trymove(int,int,int,int);
+	bool trymove(int,int,int,int, enum piecetype = QUEEN);
 	piece* getpiece(int,int);
 	bool getTurn();
 	int inCheck(bool team);

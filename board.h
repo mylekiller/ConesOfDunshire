@@ -35,7 +35,7 @@ class board
 		void printAttacks();
 		bool checkEnPassant(int, int,bool);
 		bool inbounds(int,int);
-		void execmove(piece *, int, int);
+		void execmove(piece *, int, int,enum piecetype = QUEEN);
 		bool isAllowed(piece *, int, int,bool);
 		void update(bool);
 		void printMovedTwo();

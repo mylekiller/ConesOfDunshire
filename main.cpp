@@ -3,10 +3,10 @@
 #include "bishop.h"
 #include "pawn.h"
 #include <iostream>
-
-//extern size_t hashvalues[12][8][8];
+#include "AI.h"
 
 int* stomove(std::string, game&);
+
 /*
 size_t testHash(const board& val)
 {
@@ -25,11 +25,12 @@ size_t testHash(const board& val)
 */
 int main()
 {
+
 	game g;
 
 	bool done = false;
-
-	/*board b;
+/*
+	board b;
 	b.addPiece(new bishop(3,3,false));
 	board b2;
 	b2.addPiece(new bishop(3,3,false));
@@ -49,7 +50,7 @@ int main()
 	std::cout<<testHash(b)<<"\n";
 	std::cout<<testHash(b2)<<"\n";
 	std::cout<<(b == b2)<<"\n";
-	std:*/
+	*/
 	do
 	{
 		g.print();

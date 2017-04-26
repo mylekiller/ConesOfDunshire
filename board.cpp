@@ -51,6 +51,7 @@ board::board(const board& bin)
 			if(bin.gameboard[i][j])
 			{
 				gameboard[i][j] = copypiece(bin.gameboard[i][j]);
+
 				
 			}
 		}
@@ -230,8 +231,9 @@ void board::printBoard()
 }
 
 
-void board::execmove(piece * p, int x, int y )
+void board::execmove(piece * p, int x, int y, enum piecetype ptype )
 {
+	bool team = p->getTeam();
 	if(p -> getType() == PAWN) //check for an enpassant capture
 	{
 		int teamval = p->getTeam() ? 1 : -1;
@@ -250,6 +252,8 @@ void board::execmove(piece * p, int x, int y )
 
 			return;
 		} 
+
+
 	}
 	if(p -> getType() == KING)
 	{
@@ -298,9 +302,32 @@ void board::execmove(piece * p, int x, int y )
 	
 	gameboard[p->getX()][p->getY()] = NULL;
 
+
+
 	gameboard[x][y]->move(x,y);
 
-	update(p -> getTeam());
+	if( p->getType() == PAWN && y == (team ? 7 : 0))
+	{
+
+		delete gameboard[x][y];
+		gameboard[x][y] = NULL;
+		switch(ptype)
+		{
+			case QUEEN:
+				addPiece(new queen(x,y,team));
+				break;
+			case KNIGHT:
+				addPiece(new knight(x,y,team));
+				break;
+			case ROOK:
+				addPiece(new rook(x,y,team));
+				break;
+			case BISHOP:
+				addPiece(new bishop(x,y,team));
+				break;
+		}
+	}
+	update(team);
 
 }
 void board::update(bool team)

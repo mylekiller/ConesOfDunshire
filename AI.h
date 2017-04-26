@@ -13,6 +13,39 @@
 static size_t hashvalues[12][8][8];
 
 
+typedef std::pair<std::pair<int,int>,std::pair<int,int> > move;
+
+struct refutation
+{
+	move m;
+	int depth;
+	bool operator==(const refutation& min) const
+	{
+		return m.first.first == min.m.first.first && m.first.second == min.m.first.second && m.second.first==min.m.second.first && m.second.second == min.m.second.second && depth == min.depth;
+	}
+};
+struct moveResult{
+	move m;
+	double value;
+	int depth;
+
+	bool operator==(const moveResult& min) const
+	{
+		return m.first.first == min.m.first.first && m.first.second == min.m.first.second && m.second.first==min.m.second.first && m.second.second == min.m.second.second && value == min.value && depth == min.depth;
+	}
+
+};
+struct movesHash{
+	std::size_t operator() (const refutation& val) const
+	{
+		size_t result = 0;
+		result = result ^ (val.m.first.first * hashvalues[0][0][0]);
+		result = result ^ (val.m.first.second * hashvalues[1][0][0]);
+		result = result ^ (val.m.second.first * hashvalues[2][0][0]);
+		result = result ^ (val.m.second.second * hashvalues[3][0][0]);
+		return result;
+	}
+};
 struct boardHash{
 	std::size_t operator() (const board& val) const
 	{
@@ -34,15 +67,20 @@ class AI{
 public:
 	AI();
 	~AI();
-	std::pair<std::pair<int,int>,std::pair<int,int> > minimax(board&, bool, int);
-	int minSearch(board&, int , int ,int );
-	int maxSearch(board&, int, int ,int );
-	int evaluate(board&);    //evaluates board state; number is pieces in favor of white
-	int getPieceValue(enum piecetype);    //returns value of a piece
+	moveResult minimax(board&, bool, int);
+	moveResult iterate(board&, bool, int);
+	double minSearch(board&, int , int ,int,int );
+	double maxSearch(board&, int, int ,int ,int);
+	double evaluate(board&);    //evaluates board state; number is pieces in favor of white
+	double getPieceValue(enum piecetype);    //returns value of a piece
+	bool isRefutation(int,int,int,int,int);
+	void addRefutation(int,int,int,int,int,int);
 
 	
 private:
-	std::unordered_map<board ,  int,  boardHash>  transpositions;
+	std::unordered_map<board ,  moveResult,  boardHash>  transpositions;
+
+	std::unordered_map<refutation,moveResult,movesHash > refutations;
 
 
 

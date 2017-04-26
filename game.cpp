@@ -54,7 +54,7 @@ bool game::getTurn()
 {
 	return turn;
 }
-bool game::trymove(int sx,int sy, int tx, int ty)
+bool game::trymove(int sx,int sy, int tx, int ty, enum piecetype ptype)
 {
 	if(boardGame.isOccupied(sx,sy) && boardGame.getTeam(sx,sy) == turn)
 	{
@@ -62,6 +62,7 @@ bool game::trymove(int sx,int sy, int tx, int ty)
 		if(boardGame.isAllowed(boardGame.get(sx,sy), tx, ty, turn))
 		{
 			boardGame.execmove(boardGame.get(sx,sy),tx,ty);
+			boardGame.printAttacks();
 			turn = !turn;
 			return true;
 		}
@@ -96,5 +97,5 @@ int game::inCheck(bool team) {
 
 std::pair<std::pair<int,int> , std::pair<int,int> > game::getAIMove()
 {
-	return ai.minimax(boardGame, turn, 3);
+	return ai.iterate(boardGame, turn, 3).m;
 }
