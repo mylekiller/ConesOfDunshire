@@ -18,3 +18,6 @@ Usage: How to use the program
 When the user first runs the program, they are prompted for which type of play they want to do to: 2 player mode or playing the computer. Then a chessboard appears in the GUI with all the pieces set up on the board. The user can move their pieces according to the rules of Chess. We included in our rules the general rules of chess, including castling, promotion, and en passant. If the user tries to perform an illegal move, the piece will not move and the user must then move the piece in another, legal way. The game continues like this until either white wins (by checkmate), black wins (by checkmate), stalemate, or someone quits the game. If white wins, a message appears on the screen (same if black wins or if there is a stalemate). 
 
 Design: How things are structured
+
+User Manual for needed software and how to run program:
+1. Need to download SDL2 onto machine 
