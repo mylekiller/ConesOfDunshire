@@ -68,194 +68,242 @@ void close();
 void closeSplash();
 
 //Do the promotion
-bool doPromotion(game&, int, int, int, int);
+bool doPromotion(game&, int, int, int, int, bool&, bool&);
 
-int main( int argc, char* args[] )
-{
-	// Create a new game object to interact with
-	game newGame;
+int main( int argc, char* args[] ) {
 	//Start up SDL and create window
-	if( !init() )
-	{
+	if( !init() ) {
 		printf( "Failed to initialize!\n" );
 	}
-	else
-	{
+	else {
 		//Load media
-		if( !loadMedia() )
-		{
+		if( !loadMedia() ) {
 			printf( "Failed to load media!\n" );
 		}
-		else
-		{	
-			//Main loop flag
-			bool quit = false;
+		else {	
 
 			//Event handler
 			SDL_Event e;
 
-			bool chooseMode = false;
-			bool onePlayer = false;
-			bool twoPlayer = false;
-			bool playerColor = true;
-			int players = 0;
-			while (!chooseMode && !quit) {
-				while (SDL_PollEvent( &e ) != 0) {
-					if (e.type == SDL_QUIT) {
-						quit = true;
-					}
-					if (e.type == SDL_WINDOWEVENT) {
-						if (e.window.event == SDL_WINDOWEVENT_CLOSE) {
+			bool keepPlaying = true;
+			while (keepPlaying) {
+				// Create a new game object to interact with
+				bool quit = false;
+				bool chooseMode = false;
+				bool onePlayer = false;
+				bool twoPlayer = false;
+				bool playerColor = true;
+				int players = 0;
+				game newGame;
+				while (!chooseMode && !quit) {
+					while (SDL_PollEvent( &e ) != 0) {
+						if (e.type == SDL_QUIT) {
 							quit = true;
+							keepPlaying = false;
 						}
-					}
-					if (e.type == SDL_MOUSEMOTION) {
-						int x,y;
-						SDL_GetMouseState(&x,&y);
-						if (x >365 && x <1035) {
-							if (y > 103 && y < 241) {
-								onePlayer = true;
+						if (e.type == SDL_WINDOWEVENT) {
+							if (e.window.event == SDL_WINDOWEVENT_CLOSE) {
+								quit = true;
+								keepPlaying = false;
 							}
-							else if (y > 396 && y < 534) {
-								twoPlayer = true;
+						}
+						if (e.type == SDL_MOUSEMOTION) {
+							int x,y;
+							SDL_GetMouseState(&x,&y);
+							if (x >365 && x <1035) {
+								if (y > 103 && y < 241) {
+									onePlayer = true;
+								}
+								else if (y > 396 && y < 534) {
+									twoPlayer = true;
+								}
+								else {
+									onePlayer = false;
+									twoPlayer = false;
+								}
 							}
 							else {
 								onePlayer = false;
 								twoPlayer = false;
 							}
 						}
-						else {
-							onePlayer = false;
-							twoPlayer = false;
-						}
-					}
-					if (e.type == SDL_MOUSEBUTTONDOWN) {
-						if(onePlayer) {
-							players = 1;
-							chooseMode = true;
-						}
-						else if (twoPlayer) {
-							players = 2;
-							chooseMode = true;
-						}
-					}
-				}
-				SDL_SetRenderDrawColor( splashRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-				SDL_RenderClear( splashRenderer );
-				gSplash.render(splashRenderer,0,0,NULL);
-				if (onePlayer) {
-					gOverlay.render(splashRenderer,365,103,NULL);
-				}
-				if (twoPlayer) {
-					gOverlay.render(splashRenderer,365,396,NULL);
-				}
-				SDL_RenderPresent(splashRenderer);
-			}
-
-			closeSplash();
-			bool selected = false;
-			bool moved = false;
-			int xcord; //The Constantly updated Cords based on clicks 
-			int ycord;
-			int xcordi;//The initial cords of a successful move
-			int ycordi;
-			int xcordf;//The final cords of a successful move
-			int ycordf;
-			//While application is running
-			while( !quit )
-			{	
-				//Handle events on queue
-				while( SDL_PollEvent( &e ) != 0 )
-				{
-					//User requests quit
-					if( e.type == SDL_QUIT )
-					{
-						quit = true;
-					}
-					if (e.type == SDL_WINDOWEVENT) {
-						if (e.window.event == SDL_WINDOWEVENT_CLOSE) {
-							quit = true;
-						}
-					}
-					if (e.type == SDL_MOUSEBUTTONDOWN) {
-						int x, y;
-						SDL_GetMouseState(&x, &y);
-						if (selected) {
-							if (x/100 == xcord && y/100 == ycord) {
-								selected = !selected;
+						if (e.type == SDL_MOUSEBUTTONDOWN) {
+							if(onePlayer) {
+								players = 1;
+								chooseMode = true;
 							}
-							else {
-								bool outcome;
-								piece * p = newGame.getpiece(xcord, -1*(ycord-7));
-								if(p -> getType() == PAWN && ((p -> getTeam() && y/100 == 0) || (!(p->getTeam()) && y/100 == 7))) {
-									outcome = doPromotion(newGame, xcord, ycord, x/100, y/100);
+							else if (twoPlayer) {
+								players = 2;
+								chooseMode = true;
+							}
+						}
+					}
+					SDL_SetRenderDrawColor( splashRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+					SDL_RenderClear( splashRenderer );
+					gSplash.render(splashRenderer,0,0,NULL);
+					if (onePlayer) {
+						gOverlay.render(splashRenderer,365,103,NULL);
+					}
+					if (twoPlayer) {
+						gOverlay.render(splashRenderer,365,396,NULL);
+					}
+					SDL_RenderPresent(splashRenderer);
+				}
+
+				closeSplash();
+				bool selected = false;
+				bool moved = false;
+				int xcord; //The Constantly updated Cords based on clicks 
+				int ycord;
+				int xcordi;//The initial cords of a successful move
+				int ycordi;
+				int xcordf;//The final cords of a successful move
+				int ycordf;
+				int endGame = 0;
+				//While application is running
+				while( !quit && keepPlaying) {	
+					//Handle events on queue
+					while( SDL_PollEvent( &e ) != 0 ) {
+						//User requests quit
+						if( e.type == SDL_QUIT ) {
+							quit = true;
+							keepPlaying = false;
+						}
+						if (e.type == SDL_WINDOWEVENT) {
+							if (e.window.event == SDL_WINDOWEVENT_CLOSE) {
+								quit = true;
+								keepPlaying = false;
+							}
+						}
+						if (e.type == SDL_MOUSEBUTTONDOWN) {
+							int x, y;
+							SDL_GetMouseState(&x, &y);
+							if (selected) {
+								if (x/100 == xcord && y/100 == ycord) {
+									selected = !selected;
 								}
 								else {
-									outcome = newGame.trymove(xcord, -1*(ycord-7), x/100, -1*((y/100)-7));
+									bool outcome;
+									piece * p = newGame.getpiece(xcord, -1*(ycord-7));
+									if(p -> getType() == PAWN && ((p -> getTeam() && y/100 == 0) || (!(p->getTeam()) && y/100 == 7))) {
+										outcome = doPromotion(newGame, xcord, ycord, x/100, y/100, quit, keepPlaying);
+									}
+									else {
+										outcome = newGame.trymove(xcord, -1*(ycord-7), x/100, -1*((y/100)-7));
+									}
+									selected = !selected;
+									if (outcome) {
+										xcordi = xcord;
+										ycordi = ycord;
+										xcordf = x/100;
+										ycordf = y/100;
+										moved = true;
+									}
 								}
-								selected = !selected;
-								if (outcome) {
-									xcordi = xcord;
-									ycordi = ycord;
-									xcordf = x/100;
-									ycordf = y/100;
-									moved = true;
+							}
+							else {
+								piece * p = newGame.getpiece(x/100, -1*((y/100)-7));
+								if (p != nullptr && p -> getTeam() == newGame.getTurn()) {
+									selected = true;
+									xcord = x/100;
+									ycord = y/100;
 								}
 							}
 						}
-						else {
-							piece * p = newGame.getpiece(x/100, -1*((y/100)-7));
-							if (p != nullptr && p -> getTeam() == newGame.getTurn()) {
-								selected = true;
-								xcord = x/100;
-								ycord = y/100;
+					}
+
+					//Clear screen
+					SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+					SDL_RenderClear( gRenderer );
+
+					//Render Background Image
+					gChessBoard.render(gRenderer,0,0,NULL);
+
+					if (selected) {
+						gSelected.render(gRenderer,xcord*100, ycord*100, NULL);
+					}
+
+					if(moved) {
+						gSelected.render(gRenderer,xcordi*100, ycordi*100, NULL);
+						gSelected.render(gRenderer,xcordf*100, ycordf*100, NULL);
+					}
+
+					//Render each piece in proper area
+					for (int i = 0; i < 8; i++) {
+						for (int j = 0; j < 8; j++) {
+							piece * p = newGame.getpiece(j, -1*(i-7));
+							if (p != nullptr) {
+								if (p -> getType() == KING && (newGame.inCheck(p -> getTeam()) == 1 || newGame.inCheck(p -> getTeam()) == 2)) {
+									gCheck.render(gRenderer, j*100, i*100, NULL);
+									if (selected && p -> getType() == KING) {
+										gSelected.render(gRenderer, xcord*100, ycord*100, NULL);
+									}
+								}
+								gChessPiecesTexture.render(gRenderer, j*100, i*100, &gChessPieces[ p -> getType()+(!p->getTeam()*6) ]);
 							}
 						}
 					}
-				}
-
-				//Clear screen
-				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-				SDL_RenderClear( gRenderer );
-
-				//Render Background Image
-				gChessBoard.render(gRenderer,0,0,NULL);
-
-				if (selected) {
-					gSelected.render(gRenderer,xcord*100, ycord*100, NULL);
-				}
-
-				if(moved) {
-					gSelected.render(gRenderer,xcordi*100, ycordi*100, NULL);
-					gSelected.render(gRenderer,xcordf*100, ycordf*100, NULL);
-				}
-
-				//Render each piece in proper area
-				for (int i = 0; i < 8; i++) {
-					for (int j = 0; j < 8; j++) {
-						piece * p = newGame.getpiece(j, -1*(i-7));
-						if (p != nullptr) {
-							if (p -> getType() == KING && newGame.inCheck(p -> getTeam())) {
-								gCheck.render(gRenderer, j*100, i*100, NULL);
-								if (selected && p -> getType() == KING) {
-									gSelected.render(gRenderer, xcord*100, ycord*100, NULL);
-								}
-							}
-							gChessPiecesTexture.render(gRenderer, j*100, i*100, &gChessPieces[ p -> getType()+(!p->getTeam()*6) ]);
-						}
+					SDL_RenderPresent( gRenderer );
+					if (players == 1 && (newGame.getTurn() != playerColor)) {
+						std::pair<std::pair<int,int>, std::pair<int,int>> tofrom = newGame.getAIMove();
+						newGame.trymove(tofrom.first.first, tofrom.first.second, tofrom.second.first, tofrom.second.second);
+						xcordi = tofrom.first.first;
+						ycordi = -1*(tofrom.first.second-7);
+						xcordf = tofrom.second.first;
+						ycordf = -1*(tofrom.second.second-7);
+						moved = true;
+					}
+					SDL_Delay(100);
+					endGame = newGame.inCheck(newGame.getTurn());
+					if (endGame != 0 && endGame != 1) {
+						quit = 1;
 					}
 				}
-				SDL_RenderPresent( gRenderer );
-				if (players == 1 && (newGame.getTurn() != playerColor)) {
-					std::pair<std::pair<int,int>, std::pair<int,int>> tofrom = newGame.getAIMove();
-					newGame.trymove(tofrom.first.first, tofrom.first.second, tofrom.second.first, tofrom.second.second);
-					xcordi = tofrom.first.first;
-					ycordi = -1*(tofrom.first.second-7);
-					xcordf = tofrom.second.first;
-					ycordf = -1*(tofrom.second.second-7);
-					moved = true;
+				quit = 0;
+				if (keepPlaying) {
+					SDL_HideWindow(gWindow);
+					SDL_ShowWindow(splashWindow);
+					SDL_RaiseWindow(splashWindow);
+					bool readyToMoveOn = false;
+					while (!readyToMoveOn && !quit) {
+						while (SDL_PollEvent(&e) != 0) {
+							if( e.type == SDL_QUIT ) {
+								quit = true;
+								keepPlaying = false;
+							}
+							if (e.type == SDL_WINDOWEVENT) {
+								if (e.window.event == SDL_WINDOWEVENT_CLOSE) {
+									quit = true;
+									keepPlaying = false;
+								}
+							}
+							if (e.type == SDL_KEYDOWN) {
+								if (e.key.keysym.sym == SDLK_RETURN) {
+									readyToMoveOn = true;
+								}
+								else if (e.key.keysym.sym == SDLK_q) {
+									readyToMoveOn = true;
+									keepPlaying = false;
+								}
+							}
+						}
+						SDL_SetRenderDrawColor( splashRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+						SDL_RenderClear( splashRenderer);
+
+						if (endGame == 2 && newGame.getTurn()) {
+							gBlackWins.render(splashRenderer, 0, 0, NULL);
+						}
+						else if (endGame == 2 && !(newGame.getTurn())) {
+							gWhiteWins.render(splashRenderer, 0, 0, NULL);
+						}
+						else if (endGame == 3) {
+							gStalemate.render(splashRenderer, 0, 0, NULL);
+						}
+
+						SDL_RenderPresent(splashRenderer);
+						SDL_Delay(100);
+					}
 				}
-				SDL_Delay(100);
 			}
 		}
 	}
@@ -458,7 +506,7 @@ bool loadMedia()
 	}
 	else {
 		gBlackWins.setWidth(SPLASH_WIDTH);
-		gBlackWins.setWidth(SPLASH_HEIGHT);
+		gBlackWins.setHeight(SPLASH_HEIGHT);
 	}
 	if (!gWhiteWins.loadFromFile("images/WhiteWins.png", splashRenderer)) {
 		printf("Failed to load White Wins Image");
@@ -483,13 +531,33 @@ void close()
 {
 	//Free loaded images
 	gChessPiecesTexture.free();
+	
+	gChessBoard.free();
+	
+	gSelected.free();
+	
+	gSplash.free();
+	
+	gOverlay.free();
+	
+	gCheck.free();
+	
+	gBlackWins.free();
+	
+	gWhiteWins.free();
+	
+	gStalemate.free();
+
 
 	//Destroy window	
 	SDL_DestroyRenderer( gRenderer );
+	SDL_DestroyRenderer (splashRenderer);
 	SDL_DestroyWindow( gWindow );
 	SDL_DestroyWindow(splashWindow);
 	gWindow = NULL;
 	gRenderer = NULL;
+	splashRenderer = NULL;
+	splashWindow = NULL;
 
 	//Quit SDL subsystems
 	IMG_Quit();
@@ -500,26 +568,25 @@ void closeSplash() {
 	//Show the main chess window
 	SDL_ShowWindow(gWindow);
 	SDL_RaiseWindow(gWindow);
-	//Free Splash Image
-	gSplash.free();
 
-	//Destroy Old Window
-	SDL_DestroyRenderer(splashRenderer);
+	//Hide Old Window
 	SDL_HideWindow(splashWindow);
-	splashRenderer = NULL;
-	splashWindow = NULL;
 }
 
-bool doPromotion(game& newGame, int xinit, int yinit, int xfinal, int yfinal) {
+bool doPromotion(game& newGame, int xinit, int yinit, int xfinal, int yfinal, bool& quit, bool& keepPlaying) {
 	if (newGame.checkPromotion(xinit, -1*(yinit-7), xfinal, -1*(yfinal -7))) {
 		SDL_Event e;
 		while (1) {
 			while (SDL_PollEvent(&e) != 0) {
 				if( e.type == SDL_QUIT ) {
+					quit = true;
+					keepPlaying = false;
 					return false;
 				}
 				if (e.type == SDL_WINDOWEVENT) {
 					if (e.window.event == SDL_WINDOWEVENT_CLOSE) {
+						quit = true;
+						keepPlaying = false;
 						return false;
 					}
 				}
