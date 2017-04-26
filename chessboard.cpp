@@ -48,6 +48,12 @@ LTexture gSplash;
 LTexture gOverlay;
 //Texture to Display when a king is in check
 LTexture gCheck;
+//Texture for Black Winning 
+LTexture gBlackWins;
+//Texture for White Winning
+LTexture gWhiteWins;
+//Texture for Stalemate
+LTexture gStalemate;
 
 //Starts up SDL and creates window
 bool init();
@@ -60,6 +66,9 @@ void close();
 
 //Frees and Closes Splash Screen
 void closeSplash();
+
+//Do the promotion
+bool doPromotion(game&, int, int, int, int);
 
 int main( int argc, char* args[] )
 {
@@ -177,7 +186,13 @@ int main( int argc, char* args[] )
 							}
 							else {
 								bool outcome;
-								outcome = newGame.trymove(xcord, -1*(ycord-7), x/100, -1*((y/100)-7));
+								piece * p = newGame.getpiece(xcord, -1*(ycord-7));
+								if(p -> getType() == PAWN && ((p -> getTeam() && y/100 == 0) || (!(p->getTeam()) && y/100 == 7))) {
+									outcome = doPromotion(newGame, xcord, ycord, x/100, y/100);
+								}
+								else {
+									outcome = newGame.trymove(xcord, -1*(ycord-7), x/100, -1*((y/100)-7));
+								}
 								selected = !selected;
 								if (outcome) {
 									xcordi = xcord;
@@ -437,6 +452,30 @@ bool loadMedia()
 		gCheck.setWidth(100);
 		gCheck.setHeight(100);
 	}
+	if(!gBlackWins.loadFromFile("images/BlackWins.png", splashRenderer)) {
+		printf("Failed to load Black Wins Image");
+		success = false;
+	}
+	else {
+		gBlackWins.setWidth(SPLASH_WIDTH);
+		gBlackWins.setWidth(SPLASH_HEIGHT);
+	}
+	if (!gWhiteWins.loadFromFile("images/WhiteWins.png", splashRenderer)) {
+		printf("Failed to load White Wins Image");
+		success = false;
+	}
+	else {
+		gWhiteWins.setWidth(SPLASH_WIDTH);
+		gWhiteWins.setHeight(SPLASH_HEIGHT);
+	}
+	if (!gStalemate.loadFromFile("images/Stalemate.png", splashRenderer)) {
+		printf("Failed to load Stalemate Image");
+		success = false;
+	}
+	else {
+		gStalemate.setWidth(SPLASH_WIDTH);
+		gStalemate.setHeight(SPLASH_HEIGHT);
+	}
 	return success;
 }
 
@@ -469,4 +508,58 @@ void closeSplash() {
 	SDL_HideWindow(splashWindow);
 	splashRenderer = NULL;
 	splashWindow = NULL;
+}
+
+bool doPromotion(game& newGame, int xinit, int yinit, int xfinal, int yfinal) {
+	if (newGame.checkPromotion(xinit, -1*(yinit-7), xfinal, -1*(yfinal -7))) {
+		SDL_Event e;
+		while (1) {
+			while (SDL_PollEvent(&e) != 0) {
+				if( e.type == SDL_QUIT ) {
+					return false;
+				}
+				if (e.type == SDL_WINDOWEVENT) {
+					if (e.window.event == SDL_WINDOWEVENT_CLOSE) {
+						return false;
+					}
+				}
+				if (e.type == SDL_MOUSEBUTTONDOWN) {
+					int x,y;
+					SDL_GetMouseState(&x,&y);
+					x = x/100;
+					y = y/100;
+					if (y == 3) {
+						if (x == 2) {
+							return newGame.trymove(xinit, -1*(yinit-7), xfinal, -1*(yfinal-7), QUEEN);
+						}
+						else if (x == 3) {
+							return newGame.trymove(xinit, -1*(yinit-7), xfinal, -1*(yfinal-7), KNIGHT);
+						}
+						else if (x == 4) {
+							return newGame.trymove(xinit, -1*(yinit-7), xfinal, -1*(yfinal-7), ROOK);
+						}
+						else if (x == 5) {
+							return newGame.trymove(xinit, -1*(yinit-7), xfinal, -1*(yfinal-7), BISHOP);
+						}
+					}
+				}
+			}
+			SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+			SDL_RenderClear( gRenderer );
+
+			//Render Background Image
+			gChessBoard.render(gRenderer,0,0,NULL);
+			//Render Piece Promotion Options
+			gChessPiecesTexture.render(gRenderer, 200,300,&gChessPieces[ QUEEN +(!newGame.getTurn()*6) ]);
+			gChessPiecesTexture.render(gRenderer, 300,300,&gChessPieces[ KNIGHT +(!newGame.getTurn()*6) ]);
+			gChessPiecesTexture.render(gRenderer, 400,300,&gChessPieces[ ROOK +(!newGame.getTurn()*6) ]);
+			gChessPiecesTexture.render(gRenderer, 500,300,&gChessPieces[ BISHOP +(!newGame.getTurn()*6) ]);
+
+			SDL_RenderPresent(gRenderer);
+			SDL_Delay(100);
+		}
+	}
+	else {
+		return false;
+	}
 }
