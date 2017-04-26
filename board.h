@@ -40,7 +40,7 @@ class board
 		void update(bool);
 		void printMovedTwo();
 		int check(bool); // returns 0 if no check -1 if black in check 1 if white in check
-
+		bool inCheck(bool);
 		bool operator==(const board& ) const; 
 
 		piece* get(int,int) const ;

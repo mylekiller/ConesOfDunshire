@@ -411,8 +411,10 @@ piece* board::get(int x, int y) const
 	return gameboard[x][y];
 }
 
+
 int board::check(bool team)
 {
+
 	for(int i = 0; i<8;i++)
 	{
 		for(int j = 0; j<8;j++)
@@ -420,45 +422,79 @@ int board::check(bool team)
 			if(isOccupied(i,j) && gameboard[i][j] -> getType() == KING  && gameboard[i][j] -> getTeam() == team )
 			{
 				
+			
 				if(attacks[team ? 0 : 1][i][j])
 				{
 					if(hasMove(team))
+					{
+						
 						return 1;
+					}
 					return 2;
 				}
 				if(!hasMove(team))
+				{
+					
 					return 3;
+				}
+			
 				return 0;
 			}	
 		}
 	}
+
 	if(!hasMove(team))
 		return 3;
 	return 0; 
+
 }
 
+bool board::inCheck(bool team)
+{
+	for(int i = 0; i<8;i++)
+	{
+		for(int j = 0; j<8;j++)
+		{
+			if(isOccupied(i,j) && gameboard[i][j] -> getType() == KING  && gameboard[i][j] -> getTeam() == team )
+			{
+				if(attacks[team ? 0 : 1][i][j])
+					return true;
+				return false;
+			}
+		}
+	}
+	return false;
+}
 bool board::hasMove(bool team)
 {
+
 	for(int i = 0; i<8;i++)
 	{
 		for(int j = 0; j<8;j++)
 		{
 			if(isOccupied(i,j) && gameboard[i][j] -> getTeam() == team )
 			{
+		
 				auto moves = gameboard[i][j] ->getMoves();
 				for(auto it = moves -> begin() ; it!=moves -> end() ; it++)
 				{
+					
 					if(isAllowed(gameboard[i][j], (*it)[0], (*it)[1],team))
+					{
+			
 						return true;
+					}
 				}
 			}
 		}
 	}
+
 	return false;
 }
 
 bool board::isAllowed(piece* p , int x , int y, bool turn)
 {
+
 
 		std::vector<int*>* moves = p -> getMoves();
 		for(auto it = moves -> begin(); it!= moves -> end(); it++)
@@ -489,7 +525,7 @@ bool board::isAllowed(piece* p , int x , int y, bool turn)
 				temp.execmove(temp.get(p->getX(),p->getY()),x,y);
 
 		
-				if(temp.check(turn) == 0)
+				if(!temp.inCheck(turn))
 				{
 					return true;
 				}
