@@ -388,7 +388,28 @@ double AI::maxSearch(board& currentBoard, int depth , int alpha , int beta , int
 
 double AI::evaluate(board& currentBoard)
 {
-	double value = 0;
+	bool team = currentBoard.toMove();
+	double value = 0 , mater=0, center =0 , ksaf = 0, mob = 0;
+	int checkval = currentBoard.check(team);
+
+	int control[8][8];
+	for(int i = 0;i<8;i++)
+	{
+		for(int j = 0; j<8;j++)
+		{
+			control[i][j] = 0;
+		}
+	}
+
+	switch(checkval)
+	{
+		case 2:
+			return INT_MAX * (team ? -1 : 1);
+		break;
+		case 3:
+			return 0;
+		break;
+	}
 	for(int i = 0; i < 8; ++i)
 	{
 		for(int j = 0; j < 8; ++j)
@@ -397,15 +418,59 @@ double AI::evaluate(board& currentBoard)
 			{
 				if(currentBoard.getTeam(i,j) == true)
 				{
-					value += getPieceValue(currentBoard.get(i,j)->getType());
+					mater += getPieceValue(currentBoard.get(i,j)->getType());
 				}
 				else
 				{
-					value -= getPieceValue(currentBoard.get(i,j)->getType());
+					mater -= getPieceValue(currentBoard.get(i,j)->getType());
+				}
+
+				auto attacks = currentBoard.get(i,j) -> getAttacks();
+				for(auto it = attacks -> begin();it!= attacks -> end();it++)
+				{
+					control[(*it)[0]][(*it)[1]] += currentBoard.get(i,j)->getTeam() ? 1 : -1; 
 				}
 			}
 		}
 	}
+
+	for(int i = 3;i<5;i++)
+	{
+		for(int j = 3; j<5;j++)
+		{
+			center+=control[i][j];
+		}
+	}
+
+	for(int i = 0; i<8;i++)
+	{
+		for(int j = 0; j<8;j++)
+		{
+			if(currentBoard.isOccupied(i,j) && currentBoard.get(i,j) -> getType() == KING)
+			{
+				for(int x = i-1;x<i+2;x++)
+				{
+					for(int y = j-1;y<j+2;y++)
+					{
+						ksaf += control[x][y];
+					}
+				}
+			}
+		}
+	}
+
+	for(int i = 0; i<8;i++)
+	{
+		for(int j = 0; j<8;j++)
+		{
+			if(currentBoard.isOccupied(i,j))
+			{
+				mob += (double) (currentBoard.get(i,j) -> getMoves() -> size() ) * (currentBoard.get(i,j) -> getTeam() ? 1 : -1);
+			}
+		}
+	}
+
+	value = mater + 0.2 * center + 0.4 * mob + 0.2 * ksaf; 
 	return value;
 }
 

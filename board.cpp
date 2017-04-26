@@ -14,7 +14,7 @@ bool board::isOccupied(int x, int y)
 
 board::board(){
 
-
+	tomove = true;
 	for(int i = 0 ;i<8;i++)
 	{
 		for(int j = 0 ;j < 8;j++)
@@ -36,6 +36,7 @@ board::board(){
 board::board(const board& bin)
 {
 
+	tomove = bin.tomove;
 	for(int i = 0 ;i<8;i++)
 	{
 		for(int j = 0 ;j < 8;j++)
@@ -230,9 +231,14 @@ void board::printBoard()
 	std::cout<<"\n";
 }
 
-
+bool board::toMove()
+{
+	return tomove;
+}
 void board::execmove(piece * p, int x, int y, enum piecetype ptype )
 {
+
+	tomove = !tomove;
 	bool team = p->getTeam();
 	if(p -> getType() == PAWN) //check for an enpassant capture
 	{

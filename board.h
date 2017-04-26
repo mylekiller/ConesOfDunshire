@@ -42,10 +42,12 @@ class board
 		int check(bool); // returns 0 if no check -1 if black in check 1 if white in check
 		bool inCheck(bool);
 		bool operator==(const board& ) const; 
-
+		bool toMove();
 		piece* get(int,int) const ;
 
 	private:
+
+		bool tomove;
 		piece* gameboard[8][8];   //pointer based 2d array of pointers to pieces
 		bool attacks[2][8][8]; //shows the squares that are attacked to check for check/checkmate/castling 1 = white 0 = black
 		piece* copypiece(piece*);
