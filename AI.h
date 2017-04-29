@@ -67,7 +67,7 @@ class AI{
 public:
 	AI();
 	~AI();
-	moveResult minimax(board&, bool, int);
+	moveResult minimax(board&, bool, int,int,int);
 	moveResult iterate(board&, bool, int);
 	double minSearch(board&, int , int ,int,int );
 	double maxSearch(board&, int, int ,int ,int);
@@ -75,6 +75,7 @@ public:
 	double getPieceValue(enum piecetype);    //returns value of a piece
 	bool isRefutation(int,int,int,int,int);
 	void addRefutation(int,int,int,int,int,int);
+	void removeRefutation(int ,int,int,int,int,int);
 
 	
 private:

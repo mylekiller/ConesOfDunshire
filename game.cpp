@@ -62,7 +62,6 @@ bool game::trymove(int sx,int sy, int tx, int ty, enum piecetype ptype)
 		if(boardGame.isAllowed(boardGame.get(sx,sy), tx, ty, turn))
 		{
 			boardGame.execmove(boardGame.get(sx,sy),tx,ty ,ptype);
-			boardGame.printAttacks();
 			turn = !turn;
 			return true;
 		}
@@ -101,5 +100,5 @@ int game::inCheck(bool team) {
 
 std::pair<std::pair<int,int> , std::pair<int,int> > game::getAIMove()
 {
-	return ai.iterate(boardGame, turn, 3).m;
+	return ai.iterate(boardGame, turn, 4).m;
 }

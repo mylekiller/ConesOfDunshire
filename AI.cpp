@@ -4,19 +4,27 @@
 #include "pawn.h"
 #include <time.h>
 
+#include <random>
+
 
 
 
 AI::AI(){
 
-	srand(time(NULL));
+
+	std::random_device rd; 
+	std::mt19937 gen(rd()); //seeds it
+
+	std::uniform_int_distribution<long long> dist(0,ULONG_MAX);
+
+	std::cout<<sizeof(size_t)<<"\n";
 	for(size_t t = 0; t<12 ;t++)
 	{
 		for(size_t i = 0; i<8;i++)
 		{
 			for(size_t j = 0; j<8;j++)
 			{
-				hashvalues[t][i][j] = rand();
+				hashvalues[t][i][j] = dist(gen);
 				std::cout<<hashvalues[t][i][j];
 			}
 		}
@@ -33,16 +41,38 @@ AI::~AI(){}
 
 moveResult AI::iterate(board& currentBoard, bool team, int depth)
 {
+
+	//return minimax(currentBoard,team,depth,-INT_MAX,INT_MAX);
 	moveResult r;
-	for(int d = 2; d<=depth; d++)
+	r = minimax(currentBoard,team,2,-INT_MAX,INT_MAX);
+
+	std::cout<<"Initial value was: "<<r.value<<"\n";
+	for(int d = 3; d<=depth; d++)
 	{
-		r = minimax(currentBoard, team, d);
-		std::cout<<d<<"\n";
+		double windowlow = r.value - 0.5;
+		double windowhigh = r.value + 0.5;
+
+		
+		do{
+			std::cout<<"Doing to do while....\n";
+			std::cout<<"The window is from: "<<windowlow <<" to "<<windowhigh<<"\n";
+			r = minimax(currentBoard, team, d , windowlow, windowhigh);
+
+			if(r.value <= windowlow || r.value>=windowhigh)
+			{
+				windowlow -= 0.5;
+				windowhigh += 0.5;
+				continue;
+			}
+			break;
+			
+		}while(true);
+
 	}
 	return r;
 }
 
-moveResult AI::minimax(board& currentBoard, bool team, int depth)
+moveResult AI::minimax(board& currentBoard, bool team, int depth,int alpha,int beta)
 {
 	double bestValue = INT_MAX;    //placeholder value, should be exceeded by anything
 	if(team)    //if AI is playing for white
@@ -87,7 +117,7 @@ moveResult AI::minimax(board& currentBoard, bool team, int depth)
 					double value;
 					if(team)    //fi AI is playing for white
 					{
-						value = minSearch(newBoard, 1, -INT_MAX, INT_MAX, depth);
+						value = minSearch(newBoard, 1, alpha, beta, depth);
 						if(value > bestValue)
 						{
 
@@ -104,11 +134,11 @@ moveResult AI::minimax(board& currentBoard, bool team, int depth)
 					}
 					else    //if AI is playing for black
 					{
-						std::cout<<"Starting max search with max depth..."<<depth<<"\n";
-						value = maxSearch(newBoard, 1 , -INT_MAX, INT_MAX , depth);
+						
+						value = maxSearch(newBoard, 1 ,alpha, beta , depth);
 						if(value < bestValue)
 						{
-							std::cout<<"Found a better move...\n";
+				
 							bestValue = 			 value;
 							bestMove.first.first =	 i;
 							bestMove.first.second =  j;
@@ -132,16 +162,13 @@ moveResult AI::minimax(board& currentBoard, bool team, int depth)
 
 double AI::minSearch(board& currentBoard, int depth , int alpha, int beta , int maxdepth)
 {
-
-
 	
 	if(depth == maxdepth)
 	{
-		std::cout<<"Evaluating with max depth == "<<maxdepth<<"\n"; 
 		return evaluate(currentBoard);
 	}
 
-	int bestValue = INT_MAX;
+	int bestValue = beta;
 
 	for(int i = 0; i < 8; ++i)
 	{
@@ -149,10 +176,12 @@ double AI::minSearch(board& currentBoard, int depth , int alpha, int beta , int 
 		{
 			if(currentBoard.isOccupied(i,j) && !currentBoard.get(i,j)->getTeam())
 			{
+				int count = 0;
 				bool cutoff = false;
 				auto moves = currentBoard.get(i,j)->getMoves();
 				for(auto it = moves->begin(); it != moves->end(); ++it)
 				{
+					count++;
 						if(isRefutation(i,j,(*it)[0],(*it)[1],depth))
 						{
 							board newBoard(currentBoard);
@@ -174,13 +203,6 @@ double AI::minSearch(board& currentBoard, int depth , int alpha, int beta , int 
 								transpositions[newBoard].value = value;
 								transpositions[newBoard].depth = maxdepth;
 								board newnewboard(newBoard);
-								std::cout<<"Initial test..."<<(newBoard==newnewboard)<<"\n";
-								std::cout<<"The current size is ... "<<transpositions.size()<<"\n";
-								std::cout<<"This should be tru too......."<<(transpositions[newBoard].value == value)<<"\n";
-								
-								std::cout<<"This should be tru:...."<<transpositions.count(newBoard)<<"\n";
-
-								std::cout<<"Final test..." << (newBoard == newnewboard)<<"\n";
 							}
 							if(value < bestValue )
 							{
@@ -195,8 +217,12 @@ double AI::minSearch(board& currentBoard, int depth , int alpha, int beta , int 
 							{
 								std::cout<<"Beta cutoff in refutation move!\n";
 								cutoff = true;
-								break;
+								return beta;
 							}
+						}
+						else
+						{
+							std::cout<<"Nope!\n";
 						}
 					
 				}
@@ -212,9 +238,6 @@ double AI::minSearch(board& currentBoard, int depth , int alpha, int beta , int 
 					}
 					board newBoard(currentBoard);
 
-
-					std::cout<<newBoard.get(i,j)<<"\n";
-					std::cout<<currentBoard.get(i,j)<<"\n";
 					if(!newBoard.isAllowed(newBoard.get(i,j), (*it)[0], (*it)[1], false))
 					{
 						continue;
@@ -226,7 +249,7 @@ double AI::minSearch(board& currentBoard, int depth , int alpha, int beta , int 
 					double value;
 					if(transpositions.find(newBoard) != transpositions.end() && transpositions[newBoard].depth >= maxdepth)
 					{
-						std::cout<<"Found a match !!!!\n:P:P:P:P:P\n\n\n\n\n\n\n:P:P:P:P:P:P:\n\n\n\n\n\n\n";
+
 						value = (transpositions.find(newBoard) -> second).value;
 					}
 					else
@@ -235,13 +258,7 @@ double AI::minSearch(board& currentBoard, int depth , int alpha, int beta , int 
 						transpositions[newBoard].value=value;
 						transpositions[newBoard].depth=maxdepth;
 						board newnewboard(newBoard);
-						std::cout<<"Initial test..."<<(newBoard==newnewboard)<<"\n";
-						std::cout<<"The current size is ... "<<transpositions.size()<<"\n";
-						std::cout<<"This should be tru too......."<<(transpositions[newBoard].value == value)<<"\n";
 						
-						std::cout<<"This should be tru:...."<<transpositions.count(newBoard)<<"\n";
-
-						std::cout<<"Final test..." << (newBoard == newnewboard)<<"\n";
 					}
 					if(value < bestValue )
 					{
@@ -256,7 +273,7 @@ double AI::minSearch(board& currentBoard, int depth , int alpha, int beta , int 
 					{
 						std::cout<<"Beta cutoff!\n";
 						addRefutation(i,j,(*it)[0],(*it)[1],depth,value);
-						break;
+						return beta;
 					}
 				}
 			}
@@ -275,7 +292,7 @@ double AI::maxSearch(board& currentBoard, int depth , int alpha , int beta , int
 		return evaluate(currentBoard);
 	}
 
-	double bestValue = -INT_MAX;
+	double bestValue = alpha;
 	for(int i = 0; i < 8; ++i)
 	{
 		for(int j = 0; j < 8; ++j)
@@ -290,7 +307,6 @@ double AI::maxSearch(board& currentBoard, int depth , int alpha , int beta , int
 				{
 					if(isRefutation(i,j,(*it)[0],(*it)[1],depth))
 					{
-							std::cout<<"Inside the if!!!!!!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 							board newBoard(currentBoard);
 							if(!newBoard.isAllowed(newBoard.get(i,j), (*it)[0], (*it)[1], true))
 							{
@@ -302,7 +318,6 @@ double AI::maxSearch(board& currentBoard, int depth , int alpha , int beta , int
 
 							if(transpositions.find(newBoard) != transpositions.end() && transpositions[newBoard].depth >= maxdepth)
 							{
-								std::cout<<"Found a match from refutation!!!!!\n\n\n\n\n\n\n";
 								value = (transpositions.find(newBoard) -> second).value;
 							}
 							else
@@ -311,20 +326,26 @@ double AI::maxSearch(board& currentBoard, int depth , int alpha , int beta , int
 								transpositions[newBoard].value=value;
 								transpositions[newBoard].depth = maxdepth;
 							}
-							if(value > bestValue)
+
+							//doesnt work if you start with a set window for alpha and beta 
+							// works if you start with INT_MAX and -INT_MAX
+
+							if(value > bestValue) //update bestValue
 							{
 								bestValue = value;
 							}
-							if(value > alpha )
+							if(value > alpha ) //Update the best from this depth (alpha)
 							{
 								alpha = value;
 							}
-							if(beta <= alpha)
+							if(beta <= alpha) // If the lowest value at a higher depth (beta) is less than or equal to the highest from
+												//this depth (alpha), we can break.
 							{
 								std::cout<<"Alpha cutoff with refutation move!\n";
 								cutoff = true;
-								break;
+								return alpha;
 							}
+							removeRefutation(i,j,(*it)[0],(*it)[1],depth,value);
 						
 					}
 				}
@@ -334,7 +355,7 @@ double AI::maxSearch(board& currentBoard, int depth , int alpha , int beta , int
 				{
 					if(isRefutation(i,j,(*it[0]),(*it)[1],depth))
 					{
-						std::cout<<"continue???\n";
+				
 						continue;
 					}
 						
@@ -349,17 +370,11 @@ double AI::maxSearch(board& currentBoard, int depth , int alpha , int beta , int
 
 					if(transpositions.find(newBoard) != transpositions.end() && transpositions[newBoard].depth>=maxdepth)
 					{
-						std::cout<<count<<"  |  Found a match!!!!!\n\n\n\n\n\n\n";
-						std::cout<<"The depth is: "<<depth<<"\n";
-						board testBoard;
-						testBoard.addPiece(new pawn(3,4,false));
-						std::cout<<(transpositions.find(testBoard) != transpositions.end()) << "\n";
-						std::cout<<"The current size is: "<<transpositions.size()<<"\n";
+					
 						value = (transpositions.find(newBoard) -> second).value;
 					}
 					else
 					{
-						std::cout<<count<<"   |   Potatoes!!\n";
 						count++;
 						value= minSearch(newBoard, depth+1, alpha, beta,maxdepth);
 						transpositions[newBoard].value=value;
@@ -377,7 +392,7 @@ double AI::maxSearch(board& currentBoard, int depth , int alpha , int beta , int
 					{
 						std::cout<<"Alpha cutoff!\n";
 						addRefutation(i,j,(*it)[0],(*it)[1],depth,value);
-						break;
+						return alpha;
 					}
 				}
 			}
@@ -405,10 +420,11 @@ double AI::evaluate(board& currentBoard)
 	{
 		case 2:
 			return INT_MAX * (team ? -1 : 1);
-		break;
+		
+			break;
 		case 3:
 			return 0;
-		break;
+			break;
 	}
 	for(int i = 0; i < 8; ++i)
 	{
@@ -446,31 +462,43 @@ double AI::evaluate(board& currentBoard)
 	{
 		for(int j = 0; j<8;j++)
 		{
-			if(currentBoard.isOccupied(i,j) && currentBoard.get(i,j) -> getType() == KING)
+			if(currentBoard.inbounds(i,j) && currentBoard.isOccupied(i,j) && currentBoard.get(i,j) -> getType() == KING)
 			{
 				for(int x = i-1;x<i+2;x++)
 				{
 					for(int y = j-1;y<j+2;y++)
 					{
-						ksaf += control[x][y];
+						if(currentBoard.inbounds(x,y))
+						{
+							ksaf += control[x][y];
+						}
 					}
 				}
 			}
 		}
 	}
 
-	for(int i = 0; i<8;i++)
+	if(checkval == 0)
 	{
-		for(int j = 0; j<8;j++)
+		for(int i = 0; i<8;i++)
 		{
-			if(currentBoard.isOccupied(i,j))
+			for(int j = 0; j<8;j++)
 			{
-				mob += (double) (currentBoard.get(i,j) -> getMoves() -> size() ) * (currentBoard.get(i,j) -> getTeam() ? 1 : -1);
+				if(currentBoard.isOccupied(i,j))
+				{
+				
+					mob += (double) (currentBoard.get(i,j) -> getMoves() -> size() ) * (currentBoard.get(i,j) -> getTeam() ? 1 : -1);
+				}
 			}
 		}
 	}
+	else
+	{
+		mob = 0;
+	}
 
-	value = mater + 0.2 * center + 0.4 * mob + 0.2 * ksaf; 
+
+	value = mater + 0.2 * center + 0.05 * mob + 0.02 * ksaf; 
 	return value;
 }
 
@@ -501,7 +529,7 @@ double AI::getPieceValue(enum piecetype type)
 
 bool AI::isRefutation(int sx,int sy, int ex,int ey, int depth)
 {
-	std::cout<<"HIII!!\n\n";
+
 	refutation r;
 	r.m.first.first = sx;
 	r.m.first.second = sy;
@@ -526,5 +554,20 @@ void AI::addRefutation(int sx, int sy, int ex, int ey, int depth , int value)
 	refutations[r].m.second.second = ey;
 	refutations[r].depth = depth;
 	refutations[r].value = value;
+
+}
+void AI::removeRefutation(int sx, int sy, int ex, int ey, int depth , int value)
+{
+	refutation r;
+	r.m.first.first = sx;
+	r.m.first.second = sy;
+	r.m.second.first = ex;
+	r.m.second.second = ey;
+	r.depth = depth;
+
+
+	refutations.erase(r);
+
+
 
 }
