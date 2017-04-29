@@ -235,8 +235,8 @@ int main( int argc, char* args[] ) {
 							if (p != nullptr) {
 								if (p -> getType() == KING && (newGame.inCheck(p -> getTeam()) == 1 || newGame.inCheck(p -> getTeam()) == 2)) {
 									gCheck.render(gRenderer, j*100, i*100, NULL);
-									if (selected && p -> getType() == KING) {
-										gSelected.render(gRenderer, xcord*100, ycord*100, NULL);
+									if (selected && xcord == j && ycord == i && p -> getType() == KING) {
+										gSelected.render(gRenderer, j*100, i*100, NULL);
 									}
 								}
 								gChessPiecesTexture.render(gRenderer, j*100, i*100, &gChessPieces[ p -> getType()+(!p->getTeam()*6) ]);
