@@ -88,8 +88,11 @@ $(piece).o: $(piece).cpp $(piece).h
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm *.o
-	rm $(TARGETS)
+	@echo "Cleaning..."
+	@rm *.a
+	@rm *.o
+	@rm $(TARGETS)
 
-cleangraphics:
-	rm chess
+cleancmd:
+	@echo "Cleaning CMD Program..."
+	@rm runchess.out
