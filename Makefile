@@ -16,12 +16,12 @@ main=	main
 game=	game
 comp=	AI
 piece=	piece
-TARGETS=	runchess.out chesslib.a
-GRAPHICS= chess
+TARGETS= chess
+CMD= runchess.out
 
 all: $(TARGETS)
 
-graphics: $(GRAPHICS)
+cmd: $(CMD)
 
 chess: chesslib.a LTexture.o chessboard.o
 	@echo "Linking $@..."

@@ -1,7 +1,7 @@
 /* Main for the Cones of Dunshire chess game, includes all graphics rendering and interacts with 
 all of the chess classes to make a game */
 
-//Using SDL, SDL_image, standard math, and strings
+//Using SDL, SDL_image, and strings
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <string>

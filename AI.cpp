@@ -218,7 +218,7 @@ double AI::minSearch(board& currentBoard, int depth , double alpha, double beta 
 							{
 								//std::cout<<"Beta cutoff in refutation move!\n";
 								cutoff = true;
-								//return beta;
+								return beta;
 							}
 						}
 						else
@@ -344,7 +344,7 @@ double AI::maxSearch(board& currentBoard, int depth , double alpha , double beta
 							{
 								//std::cout<<"Alpha cutoff with refutation move!\n";
 								cutoff = true;
-								//return alpha;
+								return alpha;
 							}
 							removeRefutation(i,j,(*it)[0],(*it)[1],depth,value);
 						
