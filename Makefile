@@ -16,12 +16,12 @@ main=	main
 game=	game
 comp=	AI
 piece=	piece
-TARGETS=	runchess.out chesslib.a
-GRAPHICS= chess
+TARGETS= chess
+CMD= runchess.out
 
 all: $(TARGETS)
 
-graphics: $(GRAPHICS)
+cmd: $(CMD)
 
 chess: chesslib.a LTexture.o chessboard.o
 	@echo "Linking $@..."
@@ -88,8 +88,11 @@ $(piece).o: $(piece).cpp $(piece).h
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm *.o
-	rm $(TARGETS)
+	@echo "Cleaning..."
+	@rm *.a
+	@rm *.o
+	@rm $(TARGETS)
 
-cleangraphics:
-	rm chess
+cleancmd:
+	@echo "Cleaning CMD Program..."
+	@rm runchess.out

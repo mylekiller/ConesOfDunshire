@@ -10,7 +10,7 @@
 
 
 
-static size_t hashvalues[12][8][8];
+static long long int hashvalues[12][8][8];
 
 
 typedef std::pair<std::pair<int,int>,std::pair<int,int> > move;
