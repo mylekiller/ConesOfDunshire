@@ -4,11 +4,9 @@ all of the chess classes to make a game */
 //Using SDL, SDL_image, standard math, and strings
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <stdio.h>
 #include <string>
 #include "LTexture.h"
 #include "game.h"
-#include "piece.h"
 
 
 //Constants for Different Pieces 
@@ -153,12 +151,12 @@ int main( int argc, char* args[] ) {
 				closeSplash();
 				bool selected = false;
 				bool moved = false;
-				int xcord; //The Constantly updated Cords based on clicks 
-				int ycord;
-				int xcordi;//The initial cords of a successful move
-				int ycordi;
-				int xcordf;//The final cords of a successful move
-				int ycordf;
+				int xcord = 0; //The Constantly updated Cords based on clicks
+				int ycord = 0;
+				int xcordi = 0;//The initial cords of a successful move
+				int ycordi = 0;
+				int xcordf = 0;//The final cords of a successful move
+				int ycordf = 0;
 				int endGame = 0;
 				//While application is running
 				while( !quit && keepPlaying) {	

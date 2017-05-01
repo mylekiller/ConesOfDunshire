@@ -67,15 +67,15 @@ class AI{
 public:
 	AI();
 	~AI();
-	moveResult minimax(board&, bool, int,int,int);
+	moveResult minimax(board&, bool, int,double,double);
 	moveResult iterate(board&, bool, int);
-	double minSearch(board&, int , int ,int,int );
-	double maxSearch(board&, int, int ,int ,int);
+	double minSearch(board&, int , double ,double,int );
+	double maxSearch(board&, int, double ,double ,int);
 	double evaluate(board&);    //evaluates board state; number is pieces in favor of white
 	double getPieceValue(enum piecetype);    //returns value of a piece
 	bool isRefutation(int,int,int,int,int);
-	void addRefutation(int,int,int,int,int,int);
-	void removeRefutation(int ,int,int,int,int,int);
+	void addRefutation(int,int,int,int,int,double);
+	void removeRefutation(int ,int,int,int,int,double);
 
 	
 private:
