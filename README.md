@@ -26,14 +26,14 @@ https://www.chess.com/learn-how-to-play-chess
 We are assuming the user is familiar with the game of chess and can play the game. If not, the above link goes through the rules. 
 
 Group time log:
-3/1/2017 (2 hours) : Created initial classes and makefiles (just the structure) while totally paying attention in systems and stats
-3/1/2017 (30 Min): Kyle, Chris and Drew made sure that the github repo was working correctly and made sure that everyone could commit to the repo. Creating an initial makefile for the project was semi-annoying but thinking about all of our dependencies allowed us to get a working version written.
-3/8/2017 (50 Minutes) - Kenzie and Drew worked in lab on dividing up the tasks for lab6. Kenzie will work on the files and implementation for the rook and queen pieces while Drew will work on the pawn and King pieces. Our goal is to be finished with implementing all six types of chess pieces by the end of this lab. 
-4/12/2017 (1 hour) - Met to discuss what else needed to be done, fixed some bugs in the pieces movement
-4/18/2017 (1 hour) - Met to discuss a plan of action, goal of having everything interacting by Sunday. Want to have 90% of the project done by this weekend. Tested to make sure the board graphics were working and will work on adding the rules for the game, as well a implementing our plan of action that we have written up for our minimax algorithm for the AI.
-4/18/2017 (2 hours) - Met to work on project, this included taking a zip-car to the South Bend train station to secure essential materials for the project and continued on to a local donut shop to continue discussing project and apply machine learning to their manufacturing process.
-4/23/17 (5 hours) - Met to work on project. This included fixing some of the errors with our AI, working on castling and promotion, and adding more to the graphics. We created the checkmate and stalemate screens and fixed numerous issues within our code.
-4/30/17 (3 hours) - Met to work on presentations for OOP week and work on our code. We created the Makefile dependencies and divided up who would present on what part of our project. We also continued to work on the AI and trying to make it more efficient. 
-5/02/17 (3 hours) - Met to continue working on the AI and the final report doc. Also started working on commenting the code as well as the individual reports.
+*3/1/2017 (2 hours) : Created initial classes and makefiles (just the structure) while totally paying attention in systems and stats
+*3/1/2017 (30 Min): Kyle, Chris and Drew made sure that the github repo was working correctly and made sure that everyone could commit to the repo. Creating an initial makefile for the project was semi-annoying but thinking about all of our dependencies allowed us to get a working version written.
+*3/8/2017 (50 Minutes) - Kenzie and Drew worked in lab on dividing up the tasks for lab6. Kenzie will work on the files and implementation for the rook and queen pieces while Drew will work on the pawn and King pieces. Our goal is to be finished with implementing all six types of chess pieces by the end of this lab. 
+*4/12/2017 (1 hour) - Met to discuss what else needed to be done, fixed some bugs in the pieces movement
+*4/18/2017 (1 hour) - Met to discuss a plan of action, goal of having everything interacting by Sunday. Want to have 90% of the project done by this weekend. Tested to make sure the board graphics were working and will work on adding the rules for the game, as well a implementing our plan of action that we have written up for our minimax algorithm for the AI.
+*4/18/2017 (2 hours) - Met to work on project, this included taking a zip-car to the South Bend train station to secure essential materials for the project and continued on to a local donut shop to continue discussing project and apply machine learning to their manufacturing process.
+*4/23/17 (5 hours) - Met to work on project. This included fixing some of the errors with our AI, working on castling and promotion, and adding more to the graphics. We created the checkmate and stalemate screens and fixed numerous issues within our code.
+*4/30/17 (3 hours) - Met to work on presentations for OOP week and work on our code. We created the Makefile dependencies and divided up who would present on what part of our project. We also continued to work on the AI and trying to make it more efficient. 
+*5/02/17 (3 hours) - Met to continue working on the AI and the final report doc. Also started working on commenting the code as well as the individual reports.
 
 This is in addition to the individual time logs included in our group report and in our four individual reports. 
