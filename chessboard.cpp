@@ -208,6 +208,15 @@ int main( int argc, char* args[] ) {
 								}
 							}
 						}
+						if (e.type == SDL_KEYDOWN) {
+							if (e.key.keysym.sym == SDLK_a) {
+								quit = 1;
+								endGame = 3;
+							}
+							if (e.key.keysym.sym == SDLK_n) {
+								quit = 1;
+							}
+						}
 					}
 
 					//Clear screen
@@ -252,7 +261,9 @@ int main( int argc, char* args[] ) {
 						moved = true;
 					}
 					SDL_Delay(100);
-					endGame = newGame.inCheck(newGame.getTurn());
+					if (quit != 1) {
+						endGame = newGame.inCheck(newGame.getTurn());
+					}
 					if (endGame != 0 && endGame != 1) {
 						quit = 1;
 					}
@@ -263,6 +274,9 @@ int main( int argc, char* args[] ) {
 					SDL_ShowWindow(splashWindow);
 					SDL_RaiseWindow(splashWindow);
 					bool readyToMoveOn = false;
+					if (endGame == 0 || endGame == 1) {
+						readyToMoveOn = true;
+					}
 					while (!readyToMoveOn && !quit) {
 						while (SDL_PollEvent(&e) != 0) {
 							if( e.type == SDL_QUIT ) {
