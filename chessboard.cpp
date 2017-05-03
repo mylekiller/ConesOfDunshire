@@ -60,7 +60,7 @@ bool init();
 bool loadMedia();
 
 //Frees media and shuts down SDL
-void close();
+void closeReg();
 
 //Frees and Closes Splash Screen
 void closeSplash();
@@ -306,8 +306,8 @@ int main( int argc, char* args[] ) {
 		}
 	}
 
-	//Free resources and close SDL
-	close();
+	//Free resources and closeReg SDL
+	closeReg();
 
 	return 0;
 }
@@ -525,7 +525,7 @@ bool loadMedia()
 	return success;
 }
 
-void close()
+void closeReg()
 {
 	//Free loaded images
 	gChessPiecesTexture.free();
