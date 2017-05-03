@@ -54,7 +54,7 @@ LTexture gWhiteWins;
 LTexture gStalemate;
 
 //Starts up SDL and creates window
-bool init();
+bool initR();
 
 //Loads media
 bool loadMedia();
@@ -70,7 +70,7 @@ bool doPromotion(game&, int, int, int, int, bool&, bool&);
 
 int main( int argc, char* args[] ) {
 	//Start up SDL and create window
-	if( !init() ) {
+	if( !initR() ) {
 		printf( "Failed to initialize!\n" );
 	}
 	else {
@@ -312,7 +312,7 @@ int main( int argc, char* args[] ) {
 	return 0;
 }
 
-bool init()
+bool initR()
 {
 	//Initialization flag
 	bool success = true;
