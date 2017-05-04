@@ -511,18 +511,23 @@ bool board::isAllowed(piece* p , int x , int y, bool turn)
 				{
 					if(x == p ->getX() - 2)
 					{
-						for(int cx = p->getX(); cx > p->getX() - 2 ; cx--)
+						for(int cx = p->getX()-1; cx > p->getX() - 2 ; cx--)
 						{
 							if(attacks[p->getTeam() ? 0 : 1][cx][p->getY()] || isOccupied(cx,p->getY()))
+							{
+					
 								return false;
+							}
 						}
 					}
 					if(x == p->getX() + 2)
 					{
-						for(int cx = p->getX(); cx < p->getX() + 2 ; cx++)
+						for(int cx = p->getX()+1; cx < p->getX() + 2 ; cx++)
 						{
 							if(attacks[p->getTeam() ? 0 : 1][cx][p->getY()] || isOccupied(cx,p->getY()))
+							{
 								return false;
+							}
 						}
 					}
 				}
