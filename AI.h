@@ -9,7 +9,6 @@
 #define AI_H
 
 
-
 static long long int hashvalues[12][8][8];
 
 

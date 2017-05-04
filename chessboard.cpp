@@ -54,13 +54,13 @@ LTexture gWhiteWins;
 LTexture gStalemate;
 
 //Starts up SDL and creates window
-bool init();
+bool initR();
 
 //Loads media
 bool loadMedia();
 
 //Frees media and shuts down SDL
-void close();
+void closeReg();
 
 //Frees and Closes Splash Screen
 void closeSplash();
@@ -70,7 +70,7 @@ bool doPromotion(game&, int, int, int, int, bool&, bool&);
 
 int main( int argc, char* args[] ) {
 	//Start up SDL and create window
-	if( !init() ) {
+	if( !initR() ) {
 		printf( "Failed to initialize!\n" );
 	}
 	else {
@@ -208,6 +208,15 @@ int main( int argc, char* args[] ) {
 								}
 							}
 						}
+						if (e.type == SDL_KEYDOWN) {
+							if (e.key.keysym.sym == SDLK_a) {
+								quit = 1;
+								endGame = 3;
+							}
+							if (e.key.keysym.sym == SDLK_n) {
+								quit = 1;
+							}
+						}
 					}
 
 					//Clear screen
@@ -252,7 +261,9 @@ int main( int argc, char* args[] ) {
 						moved = true;
 					}
 					SDL_Delay(100);
-					endGame = newGame.inCheck(newGame.getTurn());
+					if (quit != 1) {
+						endGame = newGame.inCheck(newGame.getTurn());
+					}
 					if (endGame != 0 && endGame != 1) {
 						quit = 1;
 					}
@@ -263,6 +274,9 @@ int main( int argc, char* args[] ) {
 					SDL_ShowWindow(splashWindow);
 					SDL_RaiseWindow(splashWindow);
 					bool readyToMoveOn = false;
+					if (endGame == 0 || endGame == 1) {
+						readyToMoveOn = true;
+					}
 					while (!readyToMoveOn && !quit) {
 						while (SDL_PollEvent(&e) != 0) {
 							if( e.type == SDL_QUIT ) {
@@ -306,13 +320,13 @@ int main( int argc, char* args[] ) {
 		}
 	}
 
-	//Free resources and close SDL
-	close();
+	//Free resources and closeReg SDL
+	closeReg();
 
 	return 0;
 }
 
-bool init()
+bool initR()
 {
 	//Initialization flag
 	bool success = true;
@@ -525,7 +539,7 @@ bool loadMedia()
 	return success;
 }
 
-void close()
+void closeReg()
 {
 	//Free loaded images
 	gChessPiecesTexture.free();
