@@ -1,8 +1,13 @@
+MACHINE= $(shell uname -s)
+ifeq ($(MACHINE),Darwin)
+	GFLAGS= -lsdl2 -lsdl2_image
+else
+	GFLAGS= -lSDL2 -lSDL2_image
+endif
 CC=	g++
 CFLAGS =	-std=c++11 -Wall -ggdb
 LD=		g++
 LDFLAGS=	-L. -ggdb
-GFLAGS=	-lsdl2 -lsdl2_image
 AR=		ar
 ARFLAGS=	rcs
 piece1=	pawn
@@ -23,7 +28,7 @@ all: $(TARGETS)
 
 cmd: $(CMD)
 
-chess: chesslib.a LTexture.o chessboard.o
+chess: LTexture.o chessboard.o chesslib.a
 	@echo "Linking $@..."
 	@$(LD) $(LDFLAGS) $(GFLAGS) -o $@ $^
 
@@ -95,4 +100,5 @@ clean:
 
 cleancmd:
 	@echo "Cleaning CMD Program..."
+	@rm *.o
 	@rm runchess.out

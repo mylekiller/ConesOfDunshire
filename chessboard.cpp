@@ -9,6 +9,7 @@ all of the chess classes to make a game */
 #include "game.h"
 
 
+
 //Constants for Different Pieces 
 int const WHITEKING = 5;
 int const WHITEQUEEN = 4;
@@ -23,6 +24,8 @@ int const BLACKKNIGHT = 7;
 int const BLACKROOK = 9;
 int const BLACKPAWN = 6;
 
+int const FRAMES_PER_SECOND = 20;
+
 //The windows for the main chess game
 SDL_Window* gWindow = NULL;
 //The window for the splash menu
@@ -32,6 +35,7 @@ SDL_Renderer* gRenderer = NULL;
 //Renderer for the splash menu
 SDL_Renderer* splashRenderer = NULL;
 
+//Array of pieces to render
 SDL_Rect gChessPieces[ 12 ];
 
 //Individual Pieces Sprite Sheet
@@ -82,18 +86,21 @@ int main( int argc, char* args[] ) {
 
 			//Event handler
 			SDL_Event e;
-
+			//Keep track of when to actually quit the game
 			bool keepPlaying = true;
+			//MAIN GAME LOOP
 			while (keepPlaying) {
-				// Create a new game object to interact with
+				//Store game variables such as when to return to the menu(quit) and playerMode and color
 				bool quit = false;
 				bool chooseMode = false;
 				bool onePlayer = false;
 				bool twoPlayer = false;
 				bool playerColor = true;
 				int players = 0;
+				// Create a new game object to interact with
 				game newGame;
 				while (!chooseMode && !quit) {
+					//Open the splash window and get one player or two player game
 					while (SDL_PollEvent( &e ) != 0) {
 						if (e.type == SDL_QUIT) {
 							quit = true;
@@ -105,6 +112,7 @@ int main( int argc, char* args[] ) {
 								keepPlaying = false;
 							}
 						}
+						//Highlight the button when a player mouses over it
 						if (e.type == SDL_MOUSEMOTION) {
 							int x,y;
 							SDL_GetMouseState(&x,&y);
@@ -125,6 +133,7 @@ int main( int argc, char* args[] ) {
 								twoPlayer = false;
 							}
 						}
+						//Record when a player clicks
 						if (e.type == SDL_MOUSEBUTTONDOWN) {
 							if(onePlayer) {
 								players = 1;
@@ -136,6 +145,7 @@ int main( int argc, char* args[] ) {
 							}
 						}
 					}
+					//Render the Screen
 					SDL_SetRenderDrawColor( splashRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 					SDL_RenderClear( splashRenderer );
 					gSplash.render(splashRenderer,0,0,NULL);
@@ -147,7 +157,7 @@ int main( int argc, char* args[] ) {
 					}
 					SDL_RenderPresent(splashRenderer);
 				}
-
+				//Move to the actual chess game
 				closeSplash();
 				bool selected = false;
 				bool moved = false;
@@ -158,8 +168,8 @@ int main( int argc, char* args[] ) {
 				int xcordf = 0;//The final cords of a successful move
 				int ycordf = 0;
 				int endGame = 0;
-				//While application is running
-				while( !quit && keepPlaying) {	
+				//Chess loop
+				while( !quit && keepPlaying) {
 					//Handle events on queue
 					while( SDL_PollEvent( &e ) != 0 ) {
 						//User requests quit
@@ -173,23 +183,29 @@ int main( int argc, char* args[] ) {
 								keepPlaying = false;
 							}
 						}
+						//Check to see if when the user clicks what the game should do
 						if (e.type == SDL_MOUSEBUTTONDOWN) {
 							int x, y;
 							SDL_GetMouseState(&x, &y);
+							//If you click on a previously selected piece deselect it
 							if (selected) {
 								if (x/100 == xcord && y/100 == ycord) {
 									selected = !selected;
 								}
+								//If you click on a square that has not been previously selected decide what to do
 								else {
 									bool outcome;
 									piece * p = newGame.getpiece(xcord, -1*(ycord-7));
+									//If a pawn moves onto the opposite edge do the promotion graphics
 									if(p -> getType() == PAWN && ((p -> getTeam() && y/100 == 0) || (!(p->getTeam()) && y/100 == 7))) {
 										outcome = doPromotion(newGame, xcord, ycord, x/100, y/100, quit, keepPlaying);
 									}
+									//Any other square try to move the selected piece there
 									else {
 										outcome = newGame.trymove(xcord, -1*(ycord-7), x/100, -1*((y/100)-7));
 									}
 									selected = !selected;
+									//If the move is successful show the move on the board
 									if (outcome) {
 										xcordi = xcord;
 										ycordi = ycord;
@@ -199,6 +215,7 @@ int main( int argc, char* args[] ) {
 									}
 								}
 							}
+							//If no piece has been selected and there is a peice on that square select it
 							else {
 								piece * p = newGame.getpiece(x/100, -1*((y/100)-7));
 								if (p != nullptr && p -> getTeam() == newGame.getTurn()) {
@@ -208,11 +225,13 @@ int main( int argc, char* args[] ) {
 								}
 							}
 						}
+						//If 'a' is pressed the game is an "Agree to draw"
 						if (e.type == SDL_KEYDOWN) {
 							if (e.key.keysym.sym == SDLK_a) {
 								quit = 1;
 								endGame = 3;
 							}
+							//If 'n' is pressed the user is taken to the menu to start a new game
 							if (e.key.keysym.sym == SDLK_n) {
 								quit = 1;
 							}
@@ -226,10 +245,11 @@ int main( int argc, char* args[] ) {
 					//Render Background Image
 					gChessBoard.render(gRenderer,0,0,NULL);
 
+					//Render the yellow selected backgroud
 					if (selected) {
 						gSelected.render(gRenderer,xcord*100, ycord*100, NULL);
 					}
-
+					//Render the to from backgrounds
 					if(moved) {
 						gSelected.render(gRenderer,xcordi*100, ycordi*100, NULL);
 						gSelected.render(gRenderer,xcordf*100, ycordf*100, NULL);
@@ -240,6 +260,7 @@ int main( int argc, char* args[] ) {
 						for (int j = 0; j < 8; j++) {
 							piece * p = newGame.getpiece(j, -1*(i-7));
 							if (p != nullptr) {
+								//If rendering a king check to see if the king is in check and render the red check background
 								if (p -> getType() == KING && (newGame.inCheck(p -> getTeam()) == 1 || newGame.inCheck(p -> getTeam()) == 2)) {
 									gCheck.render(gRenderer, j*100, i*100, NULL);
 									if (selected && xcord == j && ycord == i && p -> getType() == KING) {
@@ -251,6 +272,7 @@ int main( int argc, char* args[] ) {
 						}
 					}
 					SDL_RenderPresent( gRenderer );
+					//If the AI is playing and its their turn be call the AI movement function and move for the AI
 					if (players == 1 && (newGame.getTurn() != playerColor)) {
 						std::pair<std::pair<int,int>, std::pair<int,int>> tofrom = newGame.getAIMove();
 						newGame.trymove(tofrom.first.first, tofrom.first.second, tofrom.second.first, tofrom.second.second);
@@ -260,7 +282,7 @@ int main( int argc, char* args[] ) {
 						ycordf = -1*(tofrom.second.second-7);
 						moved = true;
 					}
-					SDL_Delay(100);
+					//Check for endgame situations
 					if (quit != 1) {
 						endGame = newGame.inCheck(newGame.getTurn());
 					}
@@ -269,11 +291,14 @@ int main( int argc, char* args[] ) {
 					}
 				}
 				quit = 0;
+				//If we didn't want to quit the game show the endgame graphics
 				if (keepPlaying) {
-					SDL_HideWindow(gWindow);
+					SDL_HideWindow(splashWindow);
 					SDL_ShowWindow(splashWindow);
 					SDL_RaiseWindow(splashWindow);
+					SDL_HideWindow(gWindow);
 					bool readyToMoveOn = false;
+					//If new game was requested skip right to the menu
 					if (endGame == 0 || endGame == 1) {
 						readyToMoveOn = true;
 					}
@@ -299,6 +324,7 @@ int main( int argc, char* args[] ) {
 								}
 							}
 						}
+						//Render the correct endgame image
 						SDL_SetRenderDrawColor( splashRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 						SDL_RenderClear( splashRenderer);
 
@@ -313,7 +339,6 @@ int main( int argc, char* args[] ) {
 						}
 
 						SDL_RenderPresent(splashRenderer);
-						SDL_Delay(100);
 					}
 				}
 			}
@@ -356,8 +381,8 @@ bool initR()
 		else
 		{
 			//Create renderer for window
-			splashRenderer = SDL_CreateRenderer(splashWindow, -1, SDL_RENDERER_ACCELERATED);
-			gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED );
+			splashRenderer = SDL_CreateRenderer(splashWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+			gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 			if( gRenderer == NULL || splashRenderer == NULL)
 			{
 				printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -481,6 +506,7 @@ bool loadMedia()
 		success = false;
 	}
 	else {
+		//Set the size of the images
 		gSelected.setWidth(100);
 		gSelected.setHeight(100);
 		gSelected.setBlendMode(SDL_BLENDMODE_BLEND);
@@ -491,6 +517,7 @@ bool loadMedia()
 		success = false;
 	}
 	else {
+		//Set the size of the menu
 		gSplash.setWidth(SPLASH_WIDTH);
 		gSplash.setHeight(SPLASH_HEIGHT);
 	}
@@ -499,6 +526,7 @@ bool loadMedia()
 		success = false;
 	}
 	else {
+		//Set the size of the buttons
 		gOverlay.setWidth(670);
 		gOverlay.setHeight(138);
 		gOverlay.setBlendMode( SDL_BLENDMODE_BLEND );
@@ -561,7 +589,7 @@ void closeReg()
 	gStalemate.free();
 
 
-	//Destroy window	
+	//Destroy windows and renders
 	SDL_DestroyRenderer( gRenderer );
 	SDL_DestroyRenderer (splashRenderer);
 	SDL_DestroyWindow( gWindow );
@@ -578,6 +606,7 @@ void closeReg()
 
 void closeSplash() {
 	//Show the main chess window
+	SDL_HideWindow(gWindow);
 	SDL_ShowWindow(gWindow);
 	SDL_RaiseWindow(gWindow);
 
@@ -586,6 +615,7 @@ void closeSplash() {
 }
 
 bool doPromotion(game& newGame, int xinit, int yinit, int xfinal, int yfinal, bool& quit, bool& keepPlaying) {
+	//If promotion is allowed bring up the promotion menu
 	if (newGame.checkPromotion(xinit, -1*(yinit-7), xfinal, -1*(yfinal -7))) {
 		SDL_Event e;
 		while (1) {
@@ -602,6 +632,7 @@ bool doPromotion(game& newGame, int xinit, int yinit, int xfinal, int yfinal, bo
 						return false;
 					}
 				}
+				//When the user selects a piece make the move with the selected peice so that the pawn promotes
 				if (e.type == SDL_MOUSEBUTTONDOWN) {
 					int x,y;
 					SDL_GetMouseState(&x,&y);
@@ -623,6 +654,7 @@ bool doPromotion(game& newGame, int xinit, int yinit, int xfinal, int yfinal, bo
 					}
 				}
 			}
+			//Draw the promotion menu
 			SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 			SDL_RenderClear( gRenderer );
 
