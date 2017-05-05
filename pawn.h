@@ -11,7 +11,7 @@ class pawn:public piece
 		pawn(const pawn&);
 		~pawn();   //destructor
 
-		void print(); //prints board
+		void print(); //prints piece
 		void setMoves(board*);  //fils vector of "moves" with all possible moves
 		void setAttacks(board*); //gets vector of possible attacks
 		void resetMoves();
