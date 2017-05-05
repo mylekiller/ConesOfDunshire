@@ -4,7 +4,7 @@
 
 #ifndef PIECE_H
 #define	PIECE_H
-
+//Piece header file that contains properties that all 6 pieces inherit
 enum piecetype
 {
 	PAWN,
