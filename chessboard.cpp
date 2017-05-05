@@ -95,7 +95,6 @@ int main( int argc, char* args[] ) {
 				int players = 0;
 				game newGame;
 				while (!chooseMode && !quit) {
-					std::cout <<"Splash Loop";
 					while (SDL_PollEvent( &e ) != 0) {
 						if (e.type == SDL_QUIT) {
 							quit = true;
@@ -162,7 +161,6 @@ int main( int argc, char* args[] ) {
 				int endGame = 0;
 				//While application is running
 				while( !quit && keepPlaying) {
-					std::cout << "Main Loop";
 					//Handle events on queue
 					while( SDL_PollEvent( &e ) != 0 ) {
 						//User requests quit
@@ -281,7 +279,6 @@ int main( int argc, char* args[] ) {
 						readyToMoveOn = true;
 					}
 					while (!readyToMoveOn && !quit) {
-						std::cout <<"in the final loop\n";
 						while (SDL_PollEvent(&e) != 0) {
 							if( e.type == SDL_QUIT ) {
 								quit = true;
