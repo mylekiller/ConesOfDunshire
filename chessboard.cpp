@@ -580,6 +580,7 @@ void closeReg()
 
 void closeSplash() {
 	//Show the main chess window
+	SDL_HideWindow(gWindow);
 	SDL_ShowWindow(gWindow);
 	SDL_RaiseWindow(gWindow);
 
