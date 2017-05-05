@@ -4,18 +4,18 @@
 #ifndef GAME_H
 #define GAME_H
 
-
+//Header file for the game class 
 class game{
 public:
-	game();
-	~game();
+	game(); //constructor
+	~game(); //deconstructor
 	void print();
-	bool trymove(int,int,int,int, enum piecetype = QUEEN);
+	bool trymove(int,int,int,int, enum piecetype = QUEEN); 
 	piece* getpiece(int,int);
-	bool getTurn();
-	int inCheck(bool team);
-	bool checkPromotion(int,int,int,int);
-	std::pair<std::pair<int,int> , std::pair<int,int> > getAIMove();
+	bool getTurn(); //gets which player's turn it is
+	int inCheck(bool team); //checks to see if King is in check
+	bool checkPromotion(int,int,int,int); //checks if promotion is possible
+	std::pair<std::pair<int,int> , std::pair<int,int> > getAIMove(); //implements AI
 private:
 	board boardGame;
 	bool turn; //again white = true black = false
