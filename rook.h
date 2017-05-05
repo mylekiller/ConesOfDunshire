@@ -13,7 +13,7 @@ class rook:public piece
                 ~rook();   //destructor
                 void setMoves(board* bin);
                 void setAttacks(board*); //gets attacks
-                void print();  //prints board
+                void print();  //prints piece
 
                bool operator==(const piece& pin) const;
         private:
