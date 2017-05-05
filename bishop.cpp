@@ -1,7 +1,7 @@
 #include "bishop.h"
 #include "board.h"
-
-void bishop::setMoves(board* bin)
+//Implementation of Bishop class, includes functions that get all possible moves for the rook (based on how to piece is allowed to move following the conventional rules of chess)
+void bishop::setMoves(board* bin) //gets possible moves
 {
 	for( int xdir = -1; xdir <= 1; xdir +=2 )
 	{
@@ -11,14 +11,14 @@ void bishop::setMoves(board* bin)
 
 			for( int dis = 1; dis <= 7; dis++ )
 			{
-				x = getX() + xdir * dis;
+				x = getX() + xdir * dis; //bishops move diagonally
 				y = getY() + ydir * dis;
 
 				if(inbounds(x,y) && bin -> isOccupied(x,y))
 				{
 					if(bin -> getTeam(x,y) != getTeam())
 					{
-						addMove(x,y);
+						addMove(x,y); //adds move if open and in bounds
 					}
 					break;
 				}
@@ -34,7 +34,7 @@ void bishop::setMoves(board* bin)
 		}
 	}
 }
-void bishop::setAttacks(board* bin)
+void bishop::setAttacks(board* bin) //gets all possible attacks
 {
 	for( int xdir = -1; xdir <= 1; xdir +=2 )
 	{
@@ -67,7 +67,7 @@ void bishop::setAttacks(board* bin)
 	}
 }
 
-void bishop::print()
+void bishop::print() //prints out the piece
 {
 	if(!getTeam())
 		std::cout<<'b';
@@ -85,7 +85,7 @@ bool bishop::operator==(const piece& pin) const
 	}
 	return false;
 }
-bishop::bishop(int x, int y, bool team) : piece(x,y,team)
+bishop::bishop(int x, int y, bool team) : piece(x,y,team) //constructor
 {
 	setType(BISHOP);
 }
@@ -94,4 +94,4 @@ bishop::bishop(const bishop& bin) : piece(bin.x,bin.y,bin.team)
 	setType(BISHOP);
 	copyData((piece*)(&bin));
 }
-bishop::~bishop(){}
+bishop::~bishop(){} //deconstructor
