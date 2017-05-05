@@ -111,17 +111,12 @@ moveResult AI::minimax(board& currentBoard, bool team, int depth,double alpha,do
 				{
 
 
-					bool qmove = false;
+
 					board newBoard(currentBoard);    //newBoard is where each move is tried
-					if(!newBoard.isAllowed(newBoard.get(i,j), (*it)[0], (*it)[1], team))
-					{
-						//std::cout<<"Skipping move... Can't move: "<<newBoard.get(i,j)->getTeam() <<" from: "<<i <<","<<j <<" to : "<<(*it)[0]<<","<< (*it)[1]<<"\n";
-						continue;
-					}
-					if(newBoard.get(i,j) -> getType() == QUEEN && (*it)[0] ==4  && (*it)[1] == 4)
-					{
-						qmove = true;
-					}
+					if(!newBoard.isAllowed(newBoard.get(i,j), (*it)[0], (*it)[1], team)) {
+                        //std::cout<<"Skipping move... Can't move: "<<newBoard.get(i,j)->getTeam() <<" from: "<<i <<","<<j <<" to : "<<(*it)[0]<<","<< (*it)[1]<<"\n";
+                        continue;
+                    }
 
 
 					newBoard.execmove(newBoard.get(i,j), (*it)[0], (*it)[1]);
@@ -366,7 +361,6 @@ double AI::maxSearch(board& currentBoard, int depth , double alpha , double beta
 			if(currentBoard.isOccupied(i,j) && currentBoard.get(i,j)->getTeam())
 			{
 
-				bool cutoff = false;
 				auto moves = currentBoard.get(i,j)->getMoves();
 
 				for(auto it = moves->begin(); it != moves->end(); ++it)
@@ -630,6 +624,7 @@ double AI::getPieceValue(enum piecetype type)
 			return 0;
 			break;
 	}
+    return -1;
 }
 
 /*

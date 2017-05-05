@@ -133,6 +133,7 @@ piece* board::copypiece(piece* p)
 			return new king(*((king*)(p)));
 			break;
 	}
+	return NULL;
 }
 
 
