@@ -1,8 +1,8 @@
 #include "king.h"
 #include "board.h"
 
-
-king::king(int x, int y,bool team):piece(x,y,team){
+//Implementation of King class, includes functions that get all possible moves for the rook (based on how to piece is allowed to move following the conventional rules of chess)
+king::king(int x, int y,bool team):piece(x,y,team){ //constructor
 	setType(KING);
 }
 king::king(const king& kin) : piece(kin.x,kin.y,kin.team)
@@ -14,7 +14,7 @@ king::king(const king& kin) : piece(kin.x,kin.y,kin.team)
 //destructor
 king::~king(){}
 
-void king::print()
+void king::print() //prints the piece depending on which team
 {
 	if(getTeam())
 		std::cout<<'K';
@@ -43,13 +43,13 @@ void king::setMoves(board* bin)
 			if(xdir == 0 && ydir == 0)
 				continue;
 			int x,y;
-			x = getX() + xdir;
+			x = getX() + xdir; //allows King to move one space in any direction
 			y = getY() + ydir;
 			if(inbounds(x,y) && bin -> isOccupied(x,y))
 			{
 				if(bin -> getTeam(x,y) != getTeam())
 				{
-					addMove(x,y);
+					addMove(x,y); //adds move if inbounds and open
 				}
 				else
 					continue;
