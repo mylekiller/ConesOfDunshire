@@ -1,3 +1,9 @@
+MACHINE= $(shell uname -s)
+ifeq ($(MACHINE),Darwin)
+	GFLAGS= -lsdl2 -lsdl2_image
+else
+	GFLAGS= -lSDL2 -lSDL2_image
+endif
 CC=	g++
 CFLAGS =	-std=c++11 -Wall -ggdb
 LD=		g++
@@ -95,4 +101,5 @@ clean:
 
 cleancmd:
 	@echo "Cleaning CMD Program..."
+	@rm *.o
 	@rm runchess.out
