@@ -1,19 +1,19 @@
 #include "rook.h"
 #include "board.h"
+//Implementation of Rook class, includes functions that get all possible moves for the rook (based on how to piece is allowed to move following the conventional rules of chess)
 void rook::setMoves(board* bin)
-{
-       
+{       
         for(int xdir = -1;xdir<=1;xdir+=2)
         {
                 int x,y; 
                 for (int dis = 1; dis <= 7; dis++) {
-                        x = getX() + xdir*dis;
+                        x = getX() + xdir*dis; //rooks move in x direction
                         y = getY();
                         if(inbounds(x,y) && bin -> isOccupied(x,y))
                         {
                                 if(bin -> getTeam(x,y) != getTeam())
                                 {
-                                        addMove(x,y);
+                                        addMove(x,y); //will add move if inbounds and not currently occupied
                                 }
                                 break;
                         }
@@ -33,7 +33,7 @@ void rook::setMoves(board* bin)
                 int x,y;  
                 for (int dis = 1; dis <= 7; dis++) {
                         x = getX();
-                        y = getY() + ydir*dis;
+                        y = getY() + ydir*dis; //or rooks can move in y direction
 
 
                         if(inbounds(x,y) && bin -> isOccupied(x,y))
@@ -56,7 +56,7 @@ void rook::setMoves(board* bin)
         }
  }
 
- void rook::setAttacks(board* bin)
+ void rook::setAttacks(board* bin) //function to store all pieces that the rook can attack
  {
      for(int xdir = -1;xdir<=1;xdir+=2)
         {
@@ -121,7 +121,7 @@ bool rook::operator==(const piece& pin) const
     return false;
 }
 
- void rook::print()
+ void rook::print() //prints rook pieces
  {
          if(getTeam())
                  std::cout<<'R';
@@ -130,7 +130,7 @@ bool rook::operator==(const piece& pin) const
  }
  
  
- rook::rook(int x, int y, bool team) : piece(x,y,team)
+ rook::rook(int x, int y, bool team) : piece(x,y,team) //constructor
  {
     setType(ROOK);
  }
@@ -139,4 +139,4 @@ bool rook::operator==(const piece& pin) const
     setType(ROOK);
     copyData((piece*)(&rin));
  }
- rook::~rook(){}
+ rook::~rook(){} //decontructor 
