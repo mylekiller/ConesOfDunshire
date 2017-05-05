@@ -583,7 +583,7 @@ void closeSplash() {
 	SDL_RaiseWindow(gWindow);
 
 	//Hide Old Window
-	SDL_HideWindow(splashWindow);
+	//SDL_HideWindow(splashWindow);
 }
 
 bool doPromotion(game& newGame, int xinit, int yinit, int xfinal, int yfinal, bool& quit, bool& keepPlaying) {
