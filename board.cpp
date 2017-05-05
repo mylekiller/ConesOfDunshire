@@ -6,13 +6,14 @@
 #include "queen.h"
 #include "king.h"
 #include "knight.h"
+//Implementation of the board class, creates a board and checks through the rules of chess
 
-bool board::isOccupied(int x, int y)
+bool board::isOccupied(int x, int y) //checks if a specific spot is occupied already
 {
 	return gameboard[x][y] != nullptr;
 }
 
-board::board(){
+board::board(){ //constructor, creates a 2D array for the chessboard
 
 	tomove = true;
 	for(int i = 0 ;i<8;i++)
@@ -28,7 +29,7 @@ board::board(){
 		{
 			for(int j = 0; j<8; j++)
 			{
-				attacks[t][i][j] =false;
+				attacks[t][i][j] =false; //creates 3D array for the attacks
 			}
 		}
 	}
@@ -69,7 +70,7 @@ board::board(const board& bin)
 	}
 }	
 
-board::~board(){
+board::~board(){ //board deconstructor that deallocates the memory
 	for(int i = 0; i<8; i++)
 	{
 		for(int j =0;j<8;j++)
@@ -110,7 +111,7 @@ bool board::operator==( const board& bin) const
 	return true;
 }
 
-piece* board::copypiece(piece* p)
+piece* board::copypiece(piece* p) //copies the piece
 {
 	switch(p -> getType())
 	{
@@ -137,7 +138,7 @@ piece* board::copypiece(piece* p)
 }
 
 
-void board::printAttacks()
+void board::printAttacks() //prints out the possible attacks
 {
 	std::cout<<"\n";
 	for(int i =0; i<20;i++)
@@ -188,7 +189,7 @@ void board::printMovedTwo()
 		std::cout<<"-";
 	std::cout<<"\n";
 }
-bool board::getTeam(int x, int y)
+bool board::getTeam(int x, int y) //gets which team, white or black 
 {
 	if(isOccupied(x,y))
 	{
@@ -198,11 +199,11 @@ bool board::getTeam(int x, int y)
 }
 
 
-void board::addPiece(piece* pin)
+void board::addPiece(piece* pin) //adds the piece to the board, allows user to move pieces
 {
 	gameboard[pin->getX()][pin->getY()] = pin;
 }
-void board::printBoard()
+void board::printBoard() //prints the board
 {
 	for(int j = 7; j>=0;j--)
 	{
@@ -236,7 +237,7 @@ bool board::toMove()
 {
 	return tomove;
 }
-void board::execmove(piece * p, int x, int y, enum piecetype ptype )
+void board::execmove(piece * p, int x, int y, enum piecetype ptype ) //executes a move, checks to make sure move is open and in bounds, and follows rules of chess
 {
 
 	tomove = !tomove;
@@ -343,10 +344,6 @@ void board::execmove(piece * p, int x, int y, enum piecetype ptype )
 }
 void board::update(bool team)
 {
-
-	
-
-
 	for(int t = 0; t<=1; t++)
 	{
 		for(int i = 0;i<8;i++)
@@ -373,9 +370,7 @@ void board::update(bool team)
 
 			}
 		}
-	}
-
-	
+	}	
 	for(int i = 0; i< 8; i++)
 	{
 		for(int j = 0;j<8;j++)
@@ -413,7 +408,7 @@ void board::update(bool team)
 	}
 
 }
-bool board::inbounds(int x, int y)
+bool board::inbounds(int x, int y) //checks if in bounds (in the 8 by 8 board)
 {
 	return x>=0 && x<8 && y>=0 && y<8;
 }
@@ -423,7 +418,7 @@ piece* board::get(int x, int y) const
 }
 
 
-int board::check(bool team)
+int board::check(bool team) 
 {
 
 	for(int i = 0; i<8;i++)
@@ -460,7 +455,7 @@ int board::check(bool team)
 
 }
 
-bool board::inCheck(bool team)
+bool board::inCheck(bool team) //checks if the king is in check
 {
 	for(int i = 0; i<8;i++)
 	{
@@ -503,10 +498,8 @@ bool board::hasMove(bool team)
 	return false;
 }
 
-bool board::isAllowed(piece* p , int x , int y, bool turn)
+bool board::isAllowed(piece* p , int x , int y, bool turn) //checks to make sure a move is allowed
 {
-
-
 		std::vector<int*>* moves = p -> getMoves();
 		for(auto it = moves -> begin(); it!= moves -> end(); it++)
 		{
@@ -550,7 +543,7 @@ bool board::isAllowed(piece* p , int x , int y, bool turn)
 	
 	return false;
 }
-bool board::checkEnPassant( int x, int y, bool team)
+bool board::checkEnPassant( int x, int y, bool team) 
 {	
 	int checkx = x;
 	int checky = team ? y-1 : y+1;
