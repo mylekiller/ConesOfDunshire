@@ -19,7 +19,7 @@
 #ifndef	BOARD_H
 #define BOARD_H
 
-
+//Board header file, includes functions for creating the chess board, printing the board, gettings attacks, checking if occupied or attacked, etc.
 class board
 {
 	public:
@@ -31,14 +31,14 @@ class board
 		bool isOccupied(int, int);   //returns whether a space (x,y) is occupied
 		bool getTeam(int, int); //returns team of the piece at (x,y) or false if no piece is there (should not be used without checking isOccupied)
 		void addPiece(piece*);
-		void printBoard();
-		void printAttacks();
-		bool checkEnPassant(int, int,bool);
-		bool inbounds(int,int);
+		void printBoard(); //prints the board
+		void printAttacks(); //prints the possible attacks
+		bool checkEnPassant(int, int,bool); //checks if en passant is available
+		bool inbounds(int,int); //checks to make sure move is in bounds of the board
 		void execmove(piece *, int, int,enum piecetype = QUEEN);
 		bool isAllowed(piece *, int, int,bool);
 		void update(bool);
-		void printMovedTwo();
+		void printMovedTwo(); //for pawns that moved two spaces
 		int check(bool); // returns 0 if no check -1 if black in check 1 if white in check
 		bool inCheck(bool);
 		bool operator==(const board& ) const; 
