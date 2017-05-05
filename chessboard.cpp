@@ -24,6 +24,8 @@ int const BLACKKNIGHT = 7;
 int const BLACKROOK = 9;
 int const BLACKPAWN = 6;
 
+int const FRAMES_PER_SECOND = 20;
+
 //The windows for the main chess game
 SDL_Window* gWindow = NULL;
 //The window for the splash menu
@@ -84,7 +86,6 @@ int main( int argc, char* args[] ) {
 
 			//Event handler
 			SDL_Event e;
-
 			//Keep track of when to actually quit the game
 			bool keepPlaying = true;
 			//MAIN GAME LOOP
@@ -281,7 +282,6 @@ int main( int argc, char* args[] ) {
 						ycordf = -1*(tofrom.second.second-7);
 						moved = true;
 					}
-					SDL_Delay(100);
 					//Check for endgame situations
 					if (quit != 1) {
 						endGame = newGame.inCheck(newGame.getTurn());
@@ -339,7 +339,6 @@ int main( int argc, char* args[] ) {
 						}
 
 						SDL_RenderPresent(splashRenderer);
-						SDL_Delay(100);
 					}
 				}
 			}
