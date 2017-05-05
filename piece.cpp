@@ -19,11 +19,11 @@ piece::piece(int x, int y, bool team)
 //destructor
 piece::~piece()
 {
-	for(int i = 0; i<moves.size();i++)   //iterates through the vector of moves
+	for(size_t i = 0; i<moves.size();i++)   //iterates through the vector of moves
 	{
 		delete [] moves[i];   //deletes each array of integers
 	}
-	for(int i = 0; i<attacks.size();i++)   //iterates through the vector of moves
+	for(size_t i = 0; i<attacks.size();i++)   //iterates through the vector of moves
 	{
 		delete [] attacks[i];   //deletes each array of integers
 	}
