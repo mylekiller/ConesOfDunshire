@@ -2,7 +2,8 @@
 #include "pawn.h"
 #include "board.h"
 //constructor; args: x position, y position, team
-pawn::pawn(int x, int y,bool team):piece(x,y,team){
+//Implementation of pawn class, includes functions that get all possible moves for the rook (based on how to piece is allowed to move following the conventional rules of chess)
+pawn::pawn(int x, int y,bool team):piece(x,y,team){ //pawn constructor that inherits from piece class
 	movedtwo = false;
 	setType(PAWN);
 }
@@ -16,7 +17,7 @@ pawn::pawn(const pawn& pin) : piece(pin.x,pin.y,pin.team)
 pawn::~pawn(){}
 
 
-void pawn::print()
+void pawn::print() //prints the piece
 {
 	if(getTeam())
 		std::cout<<'P';
