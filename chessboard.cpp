@@ -273,7 +273,7 @@ int main( int argc, char* args[] ) {
 				if (keepPlaying) {
 					SDL_ShowWindow(splashWindow);
 					SDL_RaiseWindow(splashWindow);
-					//SDL_HideWindow(gWindow);
+					SDL_HideWindow(gWindow);
 					bool readyToMoveOn = false;
 					if (endGame == 0 || endGame == 1) {
 						readyToMoveOn = true;
@@ -583,7 +583,7 @@ void closeSplash() {
 	SDL_RaiseWindow(gWindow);
 
 	//Hide Old Window
-	//SDL_HideWindow(splashWindow);
+	SDL_HideWindow(splashWindow);
 }
 
 bool doPromotion(game& newGame, int xinit, int yinit, int xfinal, int yfinal, bool& quit, bool& keepPlaying) {
