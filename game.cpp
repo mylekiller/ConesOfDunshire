@@ -100,5 +100,5 @@ int game::inCheck(bool team) {
 
 std::pair<std::pair<int,int> , std::pair<int,int> > game::getAIMove()
 {
-	return ai.iterate(boardGame, turn, 4).m;
+	return ai.iterate(boardGame, turn, 3).m;
 }
