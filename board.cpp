@@ -302,8 +302,6 @@ void board::execmove(piece * p, int x, int y, enum piecetype ptype )
 	gameboard[x][y] = p;
 
 
-	int tempx = p->getX();
-	int tempy = p->getY();
 
 	
 	gameboard[p->getX()][p->getY()] = NULL;
@@ -330,6 +328,12 @@ void board::execmove(piece * p, int x, int y, enum piecetype ptype )
 				break;
 			case BISHOP:
 				addPiece(new bishop(x,y,team));
+				break;
+			case PAWN:
+				std::cout<<"Error: trying to promote to pawn!\n";
+				break;
+			case KING:
+				std::cout<<"Error: trying to promote to king!\n";
 				break;
 		}
 	}
