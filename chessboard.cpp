@@ -24,7 +24,6 @@ int const BLACKKNIGHT = 7;
 int const BLACKROOK = 9;
 int const BLACKPAWN = 6;
 
-int const FRAMES_PER_SECOND = 20;
 
 //The windows for the main chess game
 SDL_Window* gWindow = NULL;
