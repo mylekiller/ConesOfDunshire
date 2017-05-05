@@ -28,7 +28,7 @@ all: $(TARGETS)
 
 cmd: $(CMD)
 
-chess: chesslib.a LTexture.o chessboard.o
+chess: LTexture.o chessboard.o chesslib.a
 	@echo "Linking $@..."
 	@$(LD) $(LDFLAGS) $(GFLAGS) -o $@ $^
 
