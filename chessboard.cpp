@@ -7,7 +7,7 @@ all of the chess classes to make a game */
 #include <string>
 #include "LTexture.h"
 #include "game.h"
-#include <iostream>
+
 
 
 //Constants for Different Pieces 
