@@ -271,7 +271,7 @@ int main( int argc, char* args[] ) {
 				}
 				quit = 0;
 				if (keepPlaying) {
-					SDL_HideWindow(gWindow);
+					//SDL_HideWindow(gWindow);
 					SDL_ShowWindow(splashWindow);
 					SDL_RaiseWindow(splashWindow);
 					bool readyToMoveOn = false;
