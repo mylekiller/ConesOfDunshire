@@ -273,7 +273,7 @@ int main( int argc, char* args[] ) {
 				if (keepPlaying) {
 					SDL_ShowWindow(splashWindow);
 					SDL_RaiseWindow(splashWindow);
-					SDL_HideWindow(gWindow);
+					//SDL_HideWindow(gWindow);
 					bool readyToMoveOn = false;
 					if (endGame == 0 || endGame == 1) {
 						readyToMoveOn = true;
