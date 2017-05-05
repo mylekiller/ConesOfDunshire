@@ -3,6 +3,7 @@
 #ifndef BISHOP_H
 #define BISHOP_H
 
+//Header file for the bishop class, modeled after all the different piece classes, inherits from the overall piece class
 
 class bishop:public piece
 {
@@ -11,9 +12,7 @@ class bishop:public piece
 		bishop(const bishop&);
 		~bishop();   //destructor
 		void setMoves(board*);   //fils vector of "moves" with all possible moves
-		void setAttacks(board*);
-
-
+		void setAttacks(board*); //gets possible attacks
 		void print();
 
 		bool operator==(const piece& pin) const;
