@@ -195,7 +195,7 @@ double AI::minSearch(board& currentBoard, int depth , double alpha, double beta 
 			if(currentBoard.isOccupied(i,j) && !currentBoard.get(i,j)->getTeam())
 			{
 				int count = 0;
-				bool cutoff = false;
+
 				auto moves = currentBoard.get(i,j)->getMoves();
 				/*
 				 * Check the refutations first because they are more likely to cause a cutoff
@@ -259,7 +259,7 @@ double AI::minSearch(board& currentBoard, int depth , double alpha, double beta 
 							if(beta <= alpha)
 							{
 								//std::cout<<"Beta cutoff in refutation move!\n";
-								cutoff = true;
+
 								return beta;
 							}
 						}
@@ -269,10 +269,7 @@ double AI::minSearch(board& currentBoard, int depth , double alpha, double beta 
 						}
 					
 				}
-				if(cutoff)
-				{
-					continue;
-				}
+
 				/*
 				 *  Doing the same thing as above but for the normal moves (not refutations)   :
 				 *
@@ -411,7 +408,7 @@ double AI::maxSearch(board& currentBoard, int depth , double alpha , double beta
 												//this depth (alpha), we can break.
 							{
 								//std::cout<<"Alpha cutoff with refutation move!\n";
-								cutoff = true;
+
 								return alpha;
 							}
 							removeRefutation(i,j,(*it)[0],(*it)[1],depth,value);
