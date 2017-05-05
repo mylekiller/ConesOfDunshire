@@ -8,7 +8,6 @@ CC=	g++
 CFLAGS =	-std=c++11 -Wall -ggdb
 LD=		g++
 LDFLAGS=	-L. -ggdb
-GFLAGS=	-lsdl2 -lsdl2_image
 AR=		ar
 ARFLAGS=	rcs
 piece1=	pawn
